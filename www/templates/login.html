@@ -1,34 +1,34 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<link rel="stylesheet" href="css/login.css">
-		<title>Login</title>
-	</head>
-	<body>
-		<div class="container">
-			<form class="form-signin">
-				<div style="text-align: -webkit-center;">
-					<img src="img/logo.png" style="max-height:150px;
-					max-width: 150px;
-					margin-bottom: 5px;
-					border-radius: 50%;
-					background-color: white;"/>
-				</div>
-				<input type="email" id="inputEmail" class="form-control" placeholder="Usuário" required autofocus>
-				<div class="password">
-					<input type="password" id="inputPassword" class="form-control" placeholder="Senha" required style="z-index: 0">
-					 <span class="glyphicon glyphicon-eye-open" style="color: gray"></span>
-				</div>
-				<div class="checkbox">
-					<label>
-						<input type="checkbox" value="Lembrar">
-						Lembrar </label>
-				</div>
-				<button data-id="btnLogin" class="btn btn-lg btn-danger btn-block" type="button">
-					Entrar
-				</button>
-			</form>
-		</div>
-		<!-- /container -->
-	</body>
+    <head>
+        <link rel="stylesheet" href="css/login.css">
+        <title>Login</title>
+    </head>
+    <body>
+        <div class="container">
+            <form class="form-signin" data-id="formLogin">
+                <div style="text-align: -webkit-center;">
+                    <img src="img/logo.png" style="max-height:150px;
+                         max-width: 150px;
+                         margin-bottom: 5px;
+                         border-radius: 50%;
+                         background-color: white;"/>
+                </div>
+                <input type="email" id="inputUsuario" name="usuario" class="form-control" placeholder="Usuário" required autofocus>
+                <div class="password">
+                    <input type="password" id="inputPassword" name="senha" class="form-control" placeholder="Senha" required style="z-index: 0">
+                    <span class="glyphicon glyphicon-eye-open" style="color: gray"></span>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input id="checkBoxLembrar" type="checkbox" value="Lembrar" checked="checked">
+                        Lembrar </label>
+                </div>
+                <button data-id="btnLogin" class="btn btn-lg btn-danger btn-block" type="button">
+                    Entrar
+                </button>
+            </form>
+        </div>
+        <!-- /container -->
+    </body>
 </html>
