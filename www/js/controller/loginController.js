@@ -1,15 +1,15 @@
-/* global logUtil, Mustache, loginModel, contaController */
+/* global logUtil, Mustache, loginModel, contaController, alertUtil, mainController */
 
 var loginController = {
     TEMPLATE_LOGIN: "",
     OBJECT_TO_BIND: "[data-content=content]",
-    loadTemplateLogin: function (cb) {
+    load: function (cb) {
         loginModel.getAll(function (res) {
             if (res) {
-                alert("Bem Vindo " + res.usuario);
-                contaController.loadTemplateContaCadastro();
+                alertUtil.confirm("Bem Vindo " + res.usuario);
+                mainController.render();
             } else {
-                loginController.renderTemplateLogin(function () {
+                loginController.render(function () {
                     if (cb) {
                         cb();
                     }
@@ -17,7 +17,7 @@ var loginController = {
             }
         });
     },
-    renderTemplateLogin: function (cb) {
+    render: function (cb) {
         var html = Mustache.render(this.TEMPLATE_LOGIN);
         $(this.OBJECT_TO_BIND).html(html);
         this.bindEvents();
@@ -26,34 +26,43 @@ var loginController = {
         }
     },
     bindEvents: function () {
-        $('[data-id=btnLogin]').click(loginController.getLogin);
-
-        $("#inputPassword").on("keyup", function () {
-            if ($(this).val())
-                $(".glyphicon-eye-open").show();
-            else
-                $(".glyphicon-eye-open").hide();
+        $('[data-id=btnLogin]').click(loginController.getLogin);        
+        
+        $(".glyphicon-eye-open").click(function () {
+            $("#inputPassword").attr('type', 'text');            
+            $(".glyphicon-eye-open").hide();
+            $(".glyphicon-eye-close").show();
         });
 
-        $(".glyphicon-eye-open").click(function () {
-            if ($("#inputPassword").attr('type') === 'text') {
-                $("#inputPassword").attr('type', 'password');
-            } else {
-                $("#inputPassword").attr('type', 'text');
-            }
+        $(".glyphicon-eye-close").click(function () {
+            $("#inputPassword").attr('type', 'password');
+            $(".glyphicon-eye-open").show();
+            $(".glyphicon-eye-close").hide();
         });
     },
     getLogin: function () {
         var usuario = $('[data-id=formLogin]').serializeObject();
+        
+        if (!usuario.usuario){
+            alertUtil.confirm("Informe o Usuário!");
+            return;
+        }
+        
+        if (!usuario.senha){
+            alertUtil.confirm("Informe a Senha!");
+            return;
+        }
+        
+        //Aqui teremos no futuro uma validação com o WS
         if (usuario.senha !== "L") {
-            alert("Usuário e Senha incorretos.");
+            alertUtil.confirm("Usuário e Senha incorretos.");
             return;
         }
 
         if ($('#checkBoxLembrar').prop('checked') === true) {
             loginModel.insert(usuario);
         }
-        alert("Bem vindo "+usuario.usuario);
-        contaController.loadTemplateContaCadastro();
+        alertUtil.confirm("Bem vindo " + usuario.usuario);
+        mainController.render();
     }
 };

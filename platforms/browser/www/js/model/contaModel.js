@@ -8,7 +8,7 @@ var contaModel = {
                 "saldo_inicial real not null default 0)";
 
         dbUtil.DATABASE.transaction(function (t) {
-            t.executeSql(sql, [], function (res) {
+            t.executeSql(sql, [], function (t, res) {
                 if (cb) {
                     cb(res);
                 }

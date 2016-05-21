@@ -8,6 +8,9 @@
     <feature name="SQLitePlugin">
         <param name="android-package" value="io.sqlc.SQLitePlugin" />
     </feature>
+    <feature name="Notification">
+        <param name="android-package" value="org.apache.cordova.dialogs.Notification" />
+    </feature>
     <allow-intent href="market:*" />
     <name>LineMob</name>
     <icon src="www\img\logo.png" />

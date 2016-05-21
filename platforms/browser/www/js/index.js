@@ -1,4 +1,4 @@
-/* global dbUtil, logUtil, contaController */
+/* global dbUtil, logUtil, contaController, loginController */
 
 var app = {
     initialize: function () {
@@ -10,19 +10,20 @@ var app = {
     onDeviceReady: function () {
         alert("OnDeviceReady!");
         dbUtil.createSchema(function (res) {
-            logUtil.log("PostCreateSchema", res);
             app.loadTemplates(function () {
-                contaController.loadTemplateContaCadastro();
+                loginController.loadTemplateLogin();
             });
         });
     },
     loadTemplates: function (cb) {
         $.get('templates/contaCadastro.html', function (string) {
             contaController.TEMPLATE_CONTA_CADASTRO = string;
-            logUtil.log("Template contaCadastro loaded -> ", string);
-            if (cb) {
-                cb();
-            }
+            $.get('templates/login.html', function (string) {
+                loginController.TEMPLATE_LOGIN = string;
+                if (cb) {
+                    cb();
+                }
+            });
         });
     }
 };

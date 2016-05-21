@@ -12,6 +12,9 @@
         },
         "cordova-sqlite-storage": {
             "PACKAGE_NAME": "org.linepack"
+        },
+        "cordova-plugin-dialogs": {
+            "PACKAGE_NAME": "org.linepack"
         }
     },
     "dependent_plugins": {},
@@ -23,10 +26,27 @@
             "clobbers": [
                 "SQLitePlugin"
             ]
+        },
+        {
+            "file": "plugins/cordova-plugin-dialogs/www/notification.js",
+            "id": "cordova-plugin-dialogs.notification",
+            "pluginId": "cordova-plugin-dialogs",
+            "merges": [
+                "navigator.notification"
+            ]
+        },
+        {
+            "file": "plugins/cordova-plugin-dialogs/www/browser/notification.js",
+            "id": "cordova-plugin-dialogs.notification_browser",
+            "pluginId": "cordova-plugin-dialogs",
+            "merges": [
+                "navigator.notification"
+            ]
         }
     ],
     "plugin_metadata": {
         "cordova-plugin-whitelist": "1.2.2",
-        "cordova-sqlite-storage": "1.4.1"
+        "cordova-sqlite-storage": "1.4.1",
+        "cordova-plugin-dialogs": "1.2.1"
     }
 }
