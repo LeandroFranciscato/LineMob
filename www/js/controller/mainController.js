@@ -6,10 +6,24 @@ var mainController = {
     render: function (cb) {
         var html = Mustache.render(this.TEMPLATE_BARRA_TOPO);
         $("[data-content=content]").html(html);
+        this.bindEvents();
         //contaController.load();
         if (cb) {
             cb();
         }
+    },
+    bindEvents: function () {
+        $(".tudo").on("swipeleft", function (e) {
+            mainController.menuEsquerdo();
+        }).on("swiperight", function (e) {
+            mainController.menuEsquerdo();
+        });
+
+        $("#centro-abaixo").click(function () {
+            if (mainController.SITUACAO_MENU_ESQUERDO === 1) {
+                mainController.menuEsquerdo();
+            }
+        });
     },
     menuEsquerdo: function () {
         var border;

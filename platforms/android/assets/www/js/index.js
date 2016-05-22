@@ -8,7 +8,6 @@ var app = {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
     onDeviceReady: function () {
-        alert("OnDeviceReady!");
         dbUtil.createSchema(function (res) {
             app.loadTemplates(function () {
                 loginController.load();
