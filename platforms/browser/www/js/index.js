@@ -1,4 +1,4 @@
-/* global dbUtil, logUtil, contaController, loginController */
+/* global dbUtil, logUtil, contaController, loginController, mainController */
 
 var app = {
     initialize: function () {
@@ -8,21 +8,23 @@ var app = {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
     onDeviceReady: function () {
-        alert("OnDeviceReady!");
-        dbUtil.createSchema(function (res) {
-            app.loadTemplates(function () {
-                loginController.loadTemplateLogin();
-            });
-        });
+        //dbUtil.createSchema(function (res) {
+         /*   app.loadTemplates(function () {
+                loginController.load();
+            });*/
+//        });
     },
     loadTemplates: function (cb) {
         $.get('templates/contaCadastro.html', function (string) {
             contaController.TEMPLATE_CONTA_CADASTRO = string;
             $.get('templates/login.html', function (string) {
                 loginController.TEMPLATE_LOGIN = string;
-                if (cb) {
-                    cb();
-                }
+                $.get('templates/barra-topo.html', function (string) {
+                    mainController.TEMPLATE_BARRA_TOPO = string;
+                    if (cb) {
+                        cb();
+                    }
+                });
             });
         });
     }

@@ -19,12 +19,9 @@ var app = {
             contaController.TEMPLATE_CONTA_CADASTRO = string;
             $.get('templates/login.html', function (string) {
                 loginController.TEMPLATE_LOGIN = string;
-                $.get('templates/barra-topo.html', function (string) {
-                    mainController.TEMPLATE_BARRA_TOPO = string;
-                    if (cb) {
-                        cb();
-                    }
-                });
+                if (cb) {
+                    cb();
+                }
             });
         });
     }

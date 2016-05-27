@@ -2,11 +2,10 @@
 
 var loginController = {
     TEMPLATE_LOGIN: "",
-    OBJECT_TO_BIND: "[data-content=content]",
+    OBJECT_TO_BIND: "#dialog",
     load: function (cb) {
         loginModel.getAll(function (res) {
             if (res) {
-                alertUtil.confirm("Bem Vindo " + res.usuario);
                 mainController.render();
             } else {
                 loginController.render(function () {
@@ -26,10 +25,10 @@ var loginController = {
         }
     },
     bindEvents: function () {
-        $('[data-id=btnLogin]').click(loginController.getLogin);        
-        
+        $('[data-id=btnLogin]').click(loginController.getLogin);
+
         $(".glyphicon-eye-open").click(function () {
-            $("#inputPassword").attr('type', 'text');            
+            $("#inputPassword").attr('type', 'text');
             $(".glyphicon-eye-open").hide();
             $(".glyphicon-eye-close").show();
         });
@@ -42,17 +41,17 @@ var loginController = {
     },
     getLogin: function () {
         var usuario = $('[data-id=formLogin]').serializeObject();
-        
-        if (!usuario.usuario){
+
+        if (!usuario.usuario) {
             alertUtil.confirm("Informe o Usuário!");
             return;
         }
-        
-        if (!usuario.senha){
+
+        if (!usuario.senha) {
             alertUtil.confirm("Informe a Senha!");
             return;
         }
-        
+
         //Aqui teremos no futuro uma validação com o WS
         if (usuario.senha !== "L") {
             alertUtil.confirm("Usuário e Senha incorretos.");

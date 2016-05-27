@@ -1,23 +1,24 @@
-/* global logUtil, Mustache, loginModel, contaController, alertUtil */
+/* global logUtil, Mustache, loginModel, contaController, alertUtil, mainController */
 
 var loginController = {
     TEMPLATE_LOGIN: "",
     OBJECT_TO_BIND: "[data-content=content]",
-    loadTemplateLogin: function (cb) {
-        loginModel.getAll(function (res) {
+    load: function (cb) {
+        //loginModel.getAll(function (res) {
+        var res = 'LEANDRO';        
             if (res) {
-                alert("Bem Vindo " + res.usuario);
-                contaController.loadTemplateContaCadastro();
+                alertUtil.confirm("Bem Vindo " + res.usuario);
+                mainController.render();
             } else {
-                loginController.renderTemplateLogin(function () {
+                loginController.render(function () {
                     if (cb) {
                         cb();
                     }
                 });
             }
-        });
+        //});
     },
-    renderTemplateLogin: function (cb) {
+    render: function (cb) {
         var html = Mustache.render(this.TEMPLATE_LOGIN);
         $(this.OBJECT_TO_BIND).html(html);
         this.bindEvents();
@@ -42,6 +43,18 @@ var loginController = {
     },
     getLogin: function () {
         var usuario = $('[data-id=formLogin]').serializeObject();
+        
+        if (!usuario.usuario){
+            alertUtil.confirm("Informe o Usuário!");
+            return;
+        }
+        
+        if (!usuario.senha){
+            alertUtil.confirm("Informe a Senha!");
+            return;
+        }
+        
+        //Aqui teremos no futuro uma validação com o WS
         if (usuario.senha !== "L") {
             alertUtil.confirm("Usuário e Senha incorretos.");
             return;
@@ -50,7 +63,7 @@ var loginController = {
         if ($('#checkBoxLembrar').prop('checked') === true) {
             loginModel.insert(usuario);
         }
-        alert("Bem vindo " + usuario.usuario);
-        contaController.loadTemplateContaCadastro();
+        alertUtil.confirm("Bem vindo " + usuario.usuario);
+        mainController.render();
     }
 };

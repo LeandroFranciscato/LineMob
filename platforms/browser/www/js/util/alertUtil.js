@@ -1,21 +1,22 @@
 var alertUtil = {
     confirm: function (mensagem, titulo, buttons, cb) {
-        
-        if (!titulo){
-            titulo = "Mensagem!";
+
+        if (!titulo) {
+            titulo = "";
         }
-        
-        if (!buttons){
-            buttons = "OK";
+
+        if (!buttons) {
+            buttons = [];
+            buttons.push("OK");
         }
         navigator.notification.confirm(
-                titulo,
+                mensagem,
                 function (btnEscolhido) {
                     if (cb) {
-                        cb();
+                        cb(btnEscolhido);
                     }
                 },
-                mensagem,
+                titulo,
                 buttons);
     }
 };
