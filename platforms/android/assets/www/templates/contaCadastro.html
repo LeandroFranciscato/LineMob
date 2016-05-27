@@ -1,1 +1,55 @@
-CADASTRO DE CONTAS
+<html>
+    <head>        
+        <link href="css/contaCadastro.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title">Cadastro de Contas</h3>
+            </div>
+            <div class="panel-body">
+                <form>                    
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <label for="nome">Nome da Conta</label>
+                                <input type="text" class="form-control" id="nome">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <label for="date-inicio">Data Saldo Inicial</label>
+                                <input type="date" class="form-control" id="data-inicio">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <label for="saldo">Saldo</label>
+                                <input type="number" class="form-control" id="saldo">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <button data-id="btn-salvar" class="btn btn-lg btn-danger btn-block" type="button">
+                                Salvar
+                            </button>
+                        </div>                    
+                        <div class="col-xs-6">
+                            <button data-id="btn-cancelar" class="btn btn-lg btn-danger btn-block" type="button">
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>   
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

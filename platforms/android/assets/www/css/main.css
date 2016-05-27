@@ -106,3 +106,27 @@ body {
     top: 0;
     left: -220px;
 }
+
+.menu-esquerdo #div-img-menu-esquerdo{
+    text-align: -webkit-center;
+    margin-top: 15px;
+    margin-bottom: 15px;    
+}
+
+.menu-esquerdo #img-menu-esquerdo{
+    width: 150px;
+    background-color: whitesmoke;
+}
+
+.menu-esquerdo #links{
+    height: 100%;
+    width: 100%;
+    background-color: lightgray;
+}
+
+.menu-esquerdo #ul-links{
+    width: 100%;
+    height: 100%;
+    position: initial;
+    display: block;
+}
