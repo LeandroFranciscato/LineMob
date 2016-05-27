@@ -17,11 +17,14 @@ var app = {
     loadTemplates: function (cb) {
         $.get('templates/contaCadastro.html', function (string) {
             contaController.TEMPLATE_CONTA_CADASTRO = string;
-            $.get('templates/login.html', function (string) {
-                loginController.TEMPLATE_LOGIN = string;
-                if (cb) {
-                    cb();
-                }
+            $.get('templates/contaLista.html', function (string) {
+                contaController.TEMPLATE_CONTA_LISTA = string;
+                $.get('templates/login.html', function (string) {
+                    loginController.TEMPLATE_LOGIN = string;
+                    if (cb) {
+                        cb();
+                    }
+                });
             });
         });
     }

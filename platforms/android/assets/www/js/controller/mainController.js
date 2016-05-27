@@ -8,6 +8,7 @@ var mainController = {
         $("#header").css("display", "block");
         $("#wrapper").css("display", "block");
         $("#menu-esquerdo").css("display", "block");
+        $("#scroller").html("");
         $("#dialog").css("display", "none");        
         loaded();
         this.bindEvents();        

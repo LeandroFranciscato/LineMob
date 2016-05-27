@@ -1,0 +1,45 @@
+<html>
+    <head>        
+        <link href="css/conta.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title">Contas</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-striped">
+                    <th>#</th>
+                    <th>Nome</th>
+                    <th>Data Início</th>
+                    <th>Saldo</th>
+
+                    {{#contas}}
+                    <tr>
+                        <td>
+                            <label>
+                                <input type="checkbox" value="">                                    
+                            </label>
+                        </td>
+                        <td>{{nome}}</td>
+                        <td>{{data}}</td>
+                        <td>{{valor}}</td>
+                    </tr>      
+                    {{/contas}}
+                </table>
+                <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-danger" onclick="contaController.new()">Novo</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-danger">Editar</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-danger">Excluir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

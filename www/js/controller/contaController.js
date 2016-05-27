@@ -1,25 +1,57 @@
-/* global Mustache, logUtil */
+/* global Mustache, logUtil, mainController, contaModel, alertUtil */
 
 var contaController = {
     TEMPLATE_CONTA_CADASTRO: "",
+    TEMPLATE_CONTA_LISTA: "",
     OBJECT_TO_BIND: "#scroller",
-    load: function (data, cb) {
-        if (!data) {
-            Mustache.parse(this.TEMPLATE_CONTA_CADASTRO);
-            this.render(data, function () {
+    load: function (cb) {
+        Mustache.parse(this.TEMPLATE_CONTA_LISTA);
+        contaModel.getAll(function (results) {
+            var dados = {};
+            dados.contas = [];
+
+            if (results && results.item) {
+                for (var i = 0; i < results.length; i++) {
+                    dados.contas.push(results.item(i));
+                }
+            }
+            contaController.render(dados, function () {
                 if (cb) {
                     cb();
                 }
             });
-        }
+        });
+    },
+    new : function () {
+        Mustache.parse(this.TEMPLATE_CONTA_CADASTRO);
+        contaController.render();
     },
     render: function (data, cb) {
-        data = (data) ? data : {};
-        var html = Mustache.render(this.TEMPLATE_CONTA_CADASTRO, data);
-        $(this.OBJECT_TO_BIND).html(html);
-        mainController.menuEsquerdo();
+        var html;
+        if (data) {
+            html = Mustache.render(contaController.TEMPLATE_CONTA_LISTA, data);
+        } else {
+            html = Mustache.render(contaController.TEMPLATE_CONTA_CADASTRO);
+        }
+        mainController.render();
+        $(contaController.OBJECT_TO_BIND).html(html);
+        if (mainController.SITUACAO_MENU_ESQUERDO === 1) {
+            mainController.menuEsquerdo();
+        }
+        loaded();
         if (cb) {
             cb();
         }
+    },
+    insert: function () {
+        var data = $("#form-cadastro-conta").serializeObject();
+        contaModel.insert(data, function (results) {
+            if (results) {
+                alertUtil.confirm("Conta cadastrada com sucesso!");
+                contaController.load();
+            } else {
+                alertUtil.confirm("Problemas ao inserir Conta...");
+            }
+        });
     }
 }; 
