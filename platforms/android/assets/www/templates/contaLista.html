@@ -8,26 +8,32 @@
             <div class="panel-heading">
                 <h3 class="panel-title">Contas</h3>
             </div>
-            <div class="panel-body">
+            <div class="panel-body">                
                 <table class="table table-striped">
                     <th>#</th>
-                    <th>Nome</th>
+                    <th style="display:none;">selecionado</th>
+                    <th style="display:none;">id</th>                    
+                    <th>Nome</th>                    
                     <th>Data Início</th>
-                    <th>Saldo</th>
+                    <th>Saldo</th>                    
 
                     {{#contas}}
                     <tr>
                         <td>
                             <label>
-                                <input type="checkbox" value="">                                    
+                                <input id="check-conta-{{id}}" type="checkbox" onclick="contaController.checkInList({{id}})"> 
                             </label>
                         </td>
+                        <td style="display:none;" id="conta-selecionada-{{id}}">0</td>
+                        <td style="display: none">{{id}}</td>
                         <td>{{nome}}</td>
                         <td>{{data}}</td>
                         <td>{{valor}}</td>
+                        
+                        
                     </tr>      
                     {{/contas}}
-                </table>
+                </table>                
                 <div class="btn-group btn-group-justified" role="group" aria-label="...">
                     <div class="btn-group" role="group">
                         <button type="button" class="btn btn-danger" onclick="contaController.new()">Novo</button>

@@ -53,5 +53,16 @@ var contaController = {
                 alertUtil.confirm("Problemas ao inserir Conta...");
             }
         });
+    },
+    checkInList: function (idConta) {
+        var checked = $('#check-conta-' + idConta).prop("checked");
+        
+        if (checked && checked === true) {
+            checked = 1;
+        } else {
+            checked = 0;
+        }
+
+        $('#conta-selecionada-' + idConta).html(checked);
     }
 }; 
