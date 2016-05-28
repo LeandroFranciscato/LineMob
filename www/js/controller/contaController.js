@@ -22,7 +22,7 @@ var contaController = {
             });
         });
     },
-    new : function () {
+    novo: function () {
         Mustache.parse(this.TEMPLATE_CONTA_CADASTRO);
         contaController.render();
     },
@@ -56,7 +56,7 @@ var contaController = {
     },
     checkInList: function (idConta) {
         var checked = $('#check-conta-' + idConta).prop("checked");
-        
+
         if (checked && checked === true) {
             checked = 1;
         } else {
@@ -64,5 +64,30 @@ var contaController = {
         }
 
         $('#conta-selecionada-' + idConta).html(checked);
+    },
+    delete: function () {
+
+        var buttons = ["Não", "Sim"];
+        alertUtil.confirm("Deseja realmente deletar?", "Deletando...", buttons, function (btn) {
+
+            if (btn == 2) {
+                var contas = $('#tab-contas').tableToJSON();
+                for (var i = 0; i <= contas.length; i++) {
+                    if (contas[i] && contas[i].selecionado == 1) {
+                        contaModel.delete(contas[i].id,
+                                function (res) {
+
+                                    if (res && res.rowsAffected !== 1) {
+                                        alertUtil.confirm("Erro ao deletar CONTA, id:" + contas[i].id);
+                                    }
+                                });
+                    }
+                }
+                alertUtil.confirm("Deletado com Sucesso!");
+                contaController.load();
+            }
+        });
+
+
     }
 }; 

@@ -45,5 +45,13 @@ var contaModel = {
                         util.LOG("Erro no getAll de contas -> ", err);
                     });
         });
+    },
+    delete: function (id, cb) {
+        var sql = "delete from conta where id = ?";
+        dbUtil.executeSql(sql, [id], function (res) {
+            if (cb) {
+                cb(res);
+            }
+        });
     }
 };
