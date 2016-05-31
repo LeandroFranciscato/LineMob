@@ -53,5 +53,17 @@ var contaModel = {
                 cb(res);
             }
         });
+    },
+    update: function (data, cb) {
+        var sql = "update conta " +
+                "   set nome = ?," +
+                "       data = ?," +
+                "       valor = ?" +
+                " where id = ?";
+        dbUtil.executeSql(sql, [data.nome, data.data, data.valor, data.id], function (res) {
+            if (cb) {
+                cb(res);
+            }
+        });
     }
 };

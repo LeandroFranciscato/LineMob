@@ -10,11 +10,15 @@
             </div>
             <div class="panel-body">                
                 <table id="tab-contas" class="table table-striped">
-                    <th>#</th>
+                    <th>
+                        <label>
+                            <input id="check-conta" type="checkbox" onclick="contaController.checkInList()"> 
+                        </label>
+                    </th>
                     <th style="display:none;">selecionado</th>
                     <th style="display:none;">id</th>                    
                     <th>Nome</th>                    
-                    <th>Data Início</th>
+                    <th>Data</th>
                     <th>Saldo</th>                    
 
                     {{#contas}}
@@ -29,21 +33,23 @@
                         <td>{{nome}}</td>
                         <td>{{data}}</td>
                         <td>{{valor}}</td>
-                        
-                        
+
+
                     </tr>      
                     {{/contas}}
-                </table>                
-                <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-danger" onclick="contaController.novo()">Novo</button>
-                    </div>
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-danger">Editar</button>
-                    </div>
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-danger" onclick="contaController.delete()">Excluir</button>
-                    </div>
+                </table>                                
+                <div class="panel-footer">
+                    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-danger" onclick="contaController.novo()">Novo</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-danger" onclick="contaController.edit()">Editar</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-danger" onclick="contaController.delete()">Excluir</button>
+                        </div>
+                    </div>                
                 </div>
             </div>
         </div>

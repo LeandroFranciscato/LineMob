@@ -26,6 +26,15 @@ var contaController = {
         Mustache.parse(this.TEMPLATE_CONTA_CADASTRO);
         contaController.render();
     },
+    editar: function (data) {
+        Mustache.parse(this.TEMPLATE_CONTA_CADASTRO);
+        contaController.render(null, function () {
+            $('#id-conta').prop("value", data.id);
+            $('#nome-conta').prop("value", data.nome);
+            $('#data-conta').prop("value", data.data);
+            $('#saldo-conta').prop("value", data.saldo);
+        });
+    },
     render: function (data, cb) {
         var html;
         if (data) {
@@ -42,27 +51,49 @@ var contaController = {
         if (cb) {
             cb();
         }
-    },
+    }
+    ,
     insert: function () {
         var data = $("#form-cadastro-conta").serializeObject();
-        contaModel.insert(data, function (results) {
-            if (results) {
-                alertUtil.confirm("Conta cadastrada com sucesso!");
-                contaController.load();
-            } else {
-                alertUtil.confirm("Problemas ao inserir Conta...");
-            }
-        });
+        if (data.id) {
+            contaModel.update(data, function (results) {
+                if (results && results.rowsAffected === 1) {
+                    alertUtil.confirm("Conta alterada com sucesso!");
+                    contaController.load();
+                } else {
+                    alertUtil.confirm("Problemas ao alterar Conta...");
+                }
+            });
+        } else {
+            contaModel.insert(data, function (results) {
+                if (results && results.rowsAffected === 1) {
+                    alertUtil.confirm("Conta cadastrada com sucesso!");
+                    contaController.load();
+                } else {
+                    alertUtil.confirm("Problemas ao inserir Conta...");
+                }
+            });
+        }
     },
     checkInList: function (idConta) {
-        var checked = $('#check-conta-' + idConta).prop("checked");
 
+        if (!idConta) {
+            var contas = $('#tab-contas').tableToJSON();
+            for (var i = 0; i <= contas.length; i++) {
+                if (contas[i]) {
+                    var checkedAll = $('#check-conta').prop("checked");
+                    $('#check-conta-' + contas[i].id).prop("checked", checkedAll);
+                    this.checkInList(contas[i].id);
+                }
+            }
+        }
+
+        var checked = $('#check-conta-' + idConta).prop("checked");
         if (checked && checked === true) {
             checked = 1;
         } else {
             checked = 0;
         }
-
         $('#conta-selecionada-' + idConta).html(checked);
     },
     delete: function () {
@@ -76,7 +107,6 @@ var contaController = {
                     if (contas[i] && contas[i].selecionado == 1) {
                         contaModel.delete(contas[i].id,
                                 function (res) {
-
                                     if (res && res.rowsAffected !== 1) {
                                         alertUtil.confirm("Erro ao deletar CONTA, id:" + contas[i].id);
                                     }
@@ -87,7 +117,26 @@ var contaController = {
                 contaController.load();
             }
         });
+    },
+    edit: function () {
+        var qtdeSelecionados = 0;
+        var contas = $('#tab-contas').tableToJSON();
+        var conta = {};
 
+        for (var i = 0; i <= contas.length; i++) {
+            if (contas[i] && contas[i].selecionado == 1) {
+                qtdeSelecionados++;
+                conta.id = contas[i].id;
+                conta.nome = contas[i].Nome;
+                conta.data = contas[i].Data;
+                conta.saldo = contas[i].Saldo;
+            }
+        }
 
+        if (qtdeSelecionados > 1 || qtdeSelecionados === 0) {
+            alertUtil.confirm("Selecione um (1) registro para editar.", " Editando...");
+        } else {
+            this.editar(conta);
+        }
     }
 }; 

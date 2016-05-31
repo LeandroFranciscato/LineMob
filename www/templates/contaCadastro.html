@@ -5,37 +5,39 @@
     <body>
         <div class="panel panel-danger">
             <div class="panel-heading">
-                <h3 class="panel-title">Cadastro de Contas</h3>
+                <h3 class="panel-title">Cadastro de Conta</h3>
             </div>
             <div class="panel-body">
                 <form id="form-cadastro-conta">                    
+                    
+                    <div class="form-group" style="display: none;">                       
+                        <input type="text" class="form-control" id="id-conta" name="id">
+                    </div>
+                    
                     <div class="form-group">
                         <label for="nome">Nome da Conta</label>
-                        <input type="text" class="form-control" id="nome" name="nome">
+                        <input type="text" class="form-control" id="nome-conta" name="nome">
                     </div>
 
                     <div class="form-group">
                         <label for="date-inicio">Data Saldo Inicial</label>
-                        <input type="date" class="form-control" id="data-inicio" name="data">
+                        <input type="date" class="form-control" id="data-conta" name="data">
                     </div>
 
                     <div class="form-group">
                         <label for="saldo">Saldo</label>
-                        <input type="number" class="form-control" id="saldo" name="valor">
+                        <input type="number" class="form-control" id="saldo-conta" name="valor">
                     </div>
-
-                    <div class="row"> 
-                        <div class="col-xs-6">
-                            <button data-id="btn-salvar" class="btn btn-lg btn-danger btn-block" type="button" onclick="contaController.insert()">
-                                Salvar
-                            </button>
-                        </div>                    
-                        <div class="col-xs-6">
-                            <button data-id="btn-cancelar" class="btn btn-lg btn-danger btn-block" type="reset">
-                                Limpar
-                            </button>
+                    <div class="panel-footer">
+                        <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-danger" onclick="contaController.insert()">Salvar</button>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <button type="reset" class="btn btn-danger">Limpar</button>
+                            </div>
                         </div>
-                    </div>   
+                    </div>
                 </form>
             </div>
         </div>
