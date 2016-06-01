@@ -1,5 +1,5 @@
 # LineMob
-Aplicativo para controle de finanças pessoais. (Em desenvolvimento)
+Aplicativo Mobile para controle de finanças pessoais. (Em desenvolvimento)
 
 # FrameWorks
 <ul>
