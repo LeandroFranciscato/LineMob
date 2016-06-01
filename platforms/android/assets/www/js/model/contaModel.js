@@ -46,6 +46,21 @@ var contaModel = {
                     });
         });
     },
+    getByRange: function (inicial, final, cb) {
+        var sql = "select * from conta order by nome limit ?,?";
+
+        dbUtil.DATABASE.transaction(function (transaction) {
+            transaction.executeSql(sql, [inicial, final],
+                    function (tx, results) {
+                        if (cb) {
+                            cb(results.rows);
+                        }
+                    },
+                    function (err) {
+                        util.LOG("Erro no getByRanges de contas -> ", err);
+                    });
+        });
+    },
     delete: function (id, cb) {
         var sql = "delete from conta where id = ?";
         dbUtil.executeSql(sql, [id], function (res) {

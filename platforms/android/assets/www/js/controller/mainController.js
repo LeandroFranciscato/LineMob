@@ -9,7 +9,7 @@ var mainController = {
         $("#wrapper").css("display", "block");
         $("#menu-esquerdo").css("display", "block");
         $("#scroller").html("");
-        $("#dialog").css("display", "none");        
+        $("#dialog").css("display", "none");
         loaded();
         this.bindEvents();        
         if (cb) {
@@ -58,5 +58,9 @@ var mainController = {
             }, 150);
             this.SITUACAO_MENU_ESQUERDO = 0;
         }
+    },
+    mostraBotaoMenu: function () {
+        $("#icone-menu").css("display", "initial");
+        $("#icone-voltar").css("display", "none");
     }
 };

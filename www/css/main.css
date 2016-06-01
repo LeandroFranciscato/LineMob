@@ -94,6 +94,15 @@ body {
     margin-left: 10px;
 }
 
+.barra-topo #icone-voltar{
+    display:none; /*-webkit-box;*/
+}
+
+.barra-topo #icone-menu{
+    display: inline;
+}
+
+
 .menu-esquerdo{
     width: 220px;
     height: 100%;

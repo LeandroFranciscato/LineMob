@@ -4,9 +4,18 @@ var contaController = {
     TEMPLATE_CONTA_CADASTRO: "",
     TEMPLATE_CONTA_LISTA: "",
     OBJECT_TO_BIND: "#scroller",
-    load: function (cb) {
+    load: function (inicial, final, cb) {
+
+        if (!inicial) {
+            inicial = 1;
+        }
+
+        if (!final) {
+            final = 3;
+        }
+
         Mustache.parse(this.TEMPLATE_CONTA_LISTA);
-        contaModel.getAll(function (results) {
+        contaModel.getByRange(inicial, final, function (results) {
             var dados = {};
             dados.contas = [];
 
@@ -16,23 +25,11 @@ var contaController = {
                 }
             }
             contaController.render(dados, function () {
+                contaController.mostraBotaoVoltarLista();
                 if (cb) {
                     cb();
                 }
             });
-        });
-    },
-    novo: function () {
-        Mustache.parse(this.TEMPLATE_CONTA_CADASTRO);
-        contaController.render();
-    },
-    editar: function (data) {
-        Mustache.parse(this.TEMPLATE_CONTA_CADASTRO);
-        contaController.render(null, function () {
-            $('#id-conta').prop("value", data.id);
-            $('#nome-conta').prop("value", data.nome);
-            $('#data-conta').prop("value", data.data);
-            $('#saldo-conta').prop("value", data.saldo);
         });
     },
     render: function (data, cb) {
@@ -50,29 +47,6 @@ var contaController = {
         loaded();
         if (cb) {
             cb();
-        }
-    }
-    ,
-    insert: function () {
-        var data = $("#form-cadastro-conta").serializeObject();
-        if (data.id) {
-            contaModel.update(data, function (results) {
-                if (results && results.rowsAffected === 1) {
-                    alertUtil.confirm("Conta alterada com sucesso!");
-                    contaController.load();
-                } else {
-                    alertUtil.confirm("Problemas ao alterar Conta...");
-                }
-            });
-        } else {
-            contaModel.insert(data, function (results) {
-                if (results && results.rowsAffected === 1) {
-                    alertUtil.confirm("Conta cadastrada com sucesso!");
-                    contaController.load();
-                } else {
-                    alertUtil.confirm("Problemas ao inserir Conta...");
-                }
-            });
         }
     },
     checkInList: function (idConta) {
@@ -96,26 +70,43 @@ var contaController = {
         }
         $('#conta-selecionada-' + idConta).html(checked);
     },
-    delete: function () {
+    novo: function () {
+        Mustache.parse(this.TEMPLATE_CONTA_CADASTRO);
+        contaController.render(null, function () {
+            contaController.mostraBotaoVoltarCadastro();
+        });
 
-        var buttons = ["Não", "Sim"];
-        alertUtil.confirm("Deseja realmente deletar?", "Deletando...", buttons, function (btn) {
-
-            if (btn == 2) {
-                var contas = $('#tab-contas').tableToJSON();
-                for (var i = 0; i <= contas.length; i++) {
-                    if (contas[i] && contas[i].selecionado == 1) {
-                        contaModel.delete(contas[i].id,
-                                function (res) {
-                                    if (res && res.rowsAffected !== 1) {
-                                        alertUtil.confirm("Erro ao deletar CONTA, id:" + contas[i].id);
-                                    }
-                                });
-                    }
+    },
+    insert: function () {
+        var data = $("#form-cadastro-conta").serializeObject();
+        if (data.id) {
+            contaModel.update(data, function (results) {
+                if (results && results.rowsAffected === 1) {
+                    alertUtil.confirm("Conta alterada com sucesso!");
+                    contaController.load();
+                } else {
+                    alertUtil.confirm("Problemas ao alterar Conta...");
                 }
-                alertUtil.confirm("Deletado com Sucesso!");
-                contaController.load();
-            }
+            });
+        } else {
+            contaModel.insert(data, function (results) {
+                if (results && results.rowsAffected === 1) {
+                    alertUtil.confirm("Conta cadastrada com sucesso!");
+                    contaController.load();
+                } else {
+                    alertUtil.confirm("Problemas ao inserir Conta...");
+                }
+            });
+        }
+    },
+    editar: function (data) {
+        Mustache.parse(this.TEMPLATE_CONTA_CADASTRO);
+        contaController.render(null, function () {
+            $('#id-conta').prop("value", data.id);
+            $('#nome-conta').prop("value", data.nome);
+            $('#data-conta').prop("value", data.data);
+            $('#saldo-conta').prop("value", data.saldo);
+            contaController.mostraBotaoVoltarCadastro();
         });
     },
     edit: function () {
@@ -138,5 +129,46 @@ var contaController = {
         } else {
             this.editar(conta);
         }
+    },
+    delete: function () {
+
+        var buttons = ["Não", "Sim"];
+        alertUtil.confirm("Deseja realmente deletar?", "Deletando...", buttons, function (btn) {
+
+            if (btn == 2) {
+                var contas = $('#tab-contas').tableToJSON();
+                for (var i = 0; i <= contas.length; i++) {
+                    if (contas[i] && contas[i].selecionado == 1) {
+                        contaModel.delete(contas[i].id,
+                                function (res) {
+                                    if (res && res.rowsAffected !== 1) {
+                                        alertUtil.confirm("Erro ao deletar CONTA, id:" + contas[i].id);
+                                    }
+                                });
+                    }
+                }
+                alertUtil.confirm("Deletado com Sucesso!");
+                contaController.load();
+            }
+        });
+    },
+    mostraBotaoVoltar: function () {
+        $("#icone-menu").css("display", "none");
+        $("#icone-voltar").css("display", "initial");
+        $("#icone-voltar").unbind();
+    },
+    mostraBotaoVoltarCadastro: function () {
+        this.mostraBotaoVoltar();
+        $("#icone-voltar").click(function () {
+            contaController.load();
+        });
+    },
+    mostraBotaoVoltarLista: function () {
+        this.mostraBotaoVoltar();
+        $("#icone-voltar").click(function () {
+            mainController.render(function () {
+                mainController.mostraBotaoMenu();
+            });
+        });
     }
 }; 
