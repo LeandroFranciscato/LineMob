@@ -12,6 +12,8 @@ Aplicativo Mobile para controle de finanças pessoais. (Em desenvolvimento)
  <a href="https://github.com/cubiq/iscroll"><li>Iscroll</li></a>
  <a href="https://github.com/stephband/jquery.event.swipe"><li>JQueryEventSwipe</li></a>
  <a href="https://github.com/janl/mustache.js"><li>Mustache</li></a>
+ <a href="https://github.com/flatlogic/awesome-bootstrap-checkbox"><li>Awesome Bootstrap Chekbox</li></a>
+ <a href="https://github.com/FortAwesome/Font-Awesome/"><li>Font Awesome</li></a>
 </ul>
 
 # Compatibilidade

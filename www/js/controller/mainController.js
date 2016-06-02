@@ -11,7 +11,7 @@ var mainController = {
         $("#scroller").html("");
         $("#dialog").css("display", "none");
         loaded();
-        this.bindEvents();        
+        this.bindEvents();
         if (cb) {
             cb();
         }
@@ -62,5 +62,6 @@ var mainController = {
     mostraBotaoMenu: function () {
         $("#icone-menu").css("display", "initial");
         $("#icone-voltar").css("display", "none");
+        $(document).unbind("backbutton");        
     }
 };

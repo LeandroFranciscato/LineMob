@@ -1,9 +1,10 @@
-<html>
+<html
     <head>        
         <link href="css/conta.css" rel="stylesheet" type="text/css"/>
+        <link href="css/plugins/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+        <link href="css/plugins/awesome-bootstrap-checkbox.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
-
         <div class="panel panel-danger">
             <div class="panel-heading">
                 <h3 class="panel-title">Contas</h3>
@@ -11,9 +12,10 @@
             <div class="panel-body">                
                 <table id="tab-contas" class="table table-striped">
                     <th>
-                        <label>
-                            <input id="check-conta" type="checkbox" onclick="contaController.checkInList()"> 
-                        </label>
+                        <div class="checkbox checkbox-danger">                            
+                            <input class="styled" id="check-conta" type="checkbox" onclick="contaController.checkInList()"> 
+                            <label for="check-conta"></label>
+                        </div>                        
                     </th>
                     <th style="display:none;">selecionado</th>
                     <th style="display:none;">id</th>                    
@@ -23,10 +25,11 @@
 
                     {{#contas}}
                     <tr>
-                        <td>
-                            <label>
-                                <input id="check-conta-{{id}}" type="checkbox" onclick="contaController.checkInList({{id}})"> 
-                            </label>
+                        <td>                            
+                            <div class="checkbox checkbox-danger">                                                            
+                                <input class="styled" id="check-conta-{{id}}" type="checkbox" onclick="contaController.checkInList({{id}})"> 
+                                <label for="check-conta-{{id}}"></label>
+                            </div>
                         </td>
                         <td style="display:none;" id="conta-selecionada-{{id}}">0</td>
                         <td style="display: none">{{id}}</td>

@@ -80,14 +80,23 @@ var contaController = {
     insert: function () {
         var data = $("#form-cadastro-conta").serializeObject();
         if (data.id) {
-            contaModel.update(data, function (results) {
-                if (results && results.rowsAffected === 1) {
-                    alertUtil.confirm("Conta alterada com sucesso!");
-                    contaController.load();
-                } else {
-                    alertUtil.confirm("Problemas ao alterar Conta...");
+            var problema = 0;
+            var ids = data.id.split("-");
+            for (var i = 0; i <= ids.length; i++) {
+                if (ids[i]) {
+                    data.id = ids[i];
+                    contaModel.update(data, function (results) {
+                        if (results && results.rowsAffected !== 1) {
+                            alertUtil.confirm("Problemas ao alterar Conta...");
+                            problema = 1;
+                        }
+                    });
                 }
-            });
+            }
+            if (problema === 0) {
+                alertUtil.confirm("Alterado com sucesso!");
+                contaController.load();
+            }
         } else {
             contaModel.insert(data, function (results) {
                 if (results && results.rowsAffected === 1) {
@@ -117,15 +126,29 @@ var contaController = {
         for (var i = 0; i <= contas.length; i++) {
             if (contas[i] && contas[i].selecionado == 1) {
                 qtdeSelecionados++;
-                conta.id = contas[i].id;
-                conta.nome = contas[i].Nome;
-                conta.data = contas[i].Data;
-                conta.saldo = contas[i].Saldo;
+
+                if (conta.id === undefined) {
+                    conta.id = contas[i].id + "-";
+                    conta.nome = contas[i].Nome;
+                    conta.data = contas[i].Data;
+                    conta.saldo = contas[i].Saldo;
+                } else {
+                    conta.id += contas[i].id + "-";
+                    if (conta.nome !== contas[i].Nome) {
+                        conta.nome = "";
+                    }
+                    if (conta.data !== contas[i].Data) {
+                        conta.data = "";
+                    }
+                    if (conta.saldo !== contas[i].Saldo) {
+                        conta.saldo = "";
+                    }
+                }
             }
         }
 
-        if (qtdeSelecionados > 1 || qtdeSelecionados === 0) {
-            alertUtil.confirm("Selecione um (1) registro para editar.", " Editando...");
+        if (qtdeSelecionados === 0) {
+            alertUtil.confirm("Selecione ao menos um (1) registro para editar.", " Editando...");
         } else {
             this.editar(conta);
         }
@@ -156,16 +179,25 @@ var contaController = {
         $("#icone-menu").css("display", "none");
         $("#icone-voltar").css("display", "initial");
         $("#icone-voltar").unbind();
+        $(document).unbind("backbutton");
     },
     mostraBotaoVoltarCadastro: function () {
         this.mostraBotaoVoltar();
         $("#icone-voltar").click(function () {
             contaController.load();
         });
+        $(document).bind("backbutton", function (evt) {
+            contaController.load();
+        });
     },
     mostraBotaoVoltarLista: function () {
         this.mostraBotaoVoltar();
         $("#icone-voltar").click(function () {
+            mainController.render(function () {
+                mainController.mostraBotaoMenu();
+            });
+        });
+        $(document).bind("backbutton", function (evt) {
             mainController.render(function () {
                 mainController.mostraBotaoMenu();
             });
