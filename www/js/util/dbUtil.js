@@ -1,4 +1,4 @@
-/* global contaModel, loginModel, logUtil */
+/* global contaModel, loginModel, logUtil, alertUtil */
 
 var dbUtil = {
     DATABASE: "",
@@ -23,7 +23,10 @@ var dbUtil = {
                         }
                     },
                     function (err) {
-                        logUtil.log("Erro executando sql ->", err);
+                        alertUtil.confirm("Erro executando sql ->", err);
+                        if (cb) {
+                            cb(err);
+                        }
                     });
         });
 

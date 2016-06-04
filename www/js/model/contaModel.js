@@ -80,5 +80,15 @@ var contaModel = {
                 cb(res);
             }
         });
+    },
+    updateColunaDinamica: function (id, coluna, valor, cb) {
+        var sql = "update conta " +
+                "   set " + coluna + " = '" + valor + "'" +
+                " where id = " + id;
+        dbUtil.executeSql(sql, [], function (res) {
+            if (cb) {
+                cb(res);
+            }
+        });
     }
 };
