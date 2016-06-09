@@ -10,21 +10,19 @@
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
         <link href="css/main.css" rel="stylesheet" type="text/css"/>
 
-        <!--MODEL-->
+        <!--MODEL
         <script type="text/javascript" src="js/model/contaModel.js"></script>
         <script type="text/javascript" src="js/model/loginModel.js"></script>
 
-        <!--UTIL-->
+        <!--UTIL
         <script type="text/javascript" src="js/util/logUtil.js"></script>
-        <script type="text/javascript" src="js/util/dbUtil.js"></script>
-        <script type="text/javascript" src="js/util/alertUtil.js"></script>
 
-        <!--CONTROLLER        -->
+        <!--CONTROLLER        
         <script src="js/controller/mainController.js" type="text/javascript"></script>
         <script src="js/controller/contaController.js" type="text/javascript"></script>
         <script src="js/controller/loginController.js" type="text/javascript"></script>
 
-        <!--FRAMEWORKS-->
+        <!--FRAMEWORKS
         <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
         <script type="text/javascript" src="js/jquery.serializeObject.min.js"></script>
         <script type="text/javascript" src="js/jquery.tabletojson.js"></script>
@@ -36,23 +34,21 @@
         <script type="text/javascript" src="js/jquery.event.swipe.js"></script>  
         <script type="text/javascript" src="js/iscroll.js"></script>
         
-        <!-- TESTE HERANÇA-->
-        <script src="js/jspa/Entity.js" type="text/javascript"></script>
-        <script src="js/model/Conta.js" type="text/javascript"></script>
-        <script src="js/dao/DAO.js" type="text/javascript"></script>
-        
-        
-        <script type="text/javascript">
-            var myScroll;
-            function loaded() {
-                myScroll = new IScroll('#wrapper', {mouseWheel: true});
-            }
-            document.addEventListener('touchmove', function (e) {
-                e.preventDefault();
-            }, false);
-        </script>
+        <!-- TESTE HERANÇA-->        
+        <script src="cordova.js" type="text/javascript"></script>        
+        <!--           
+    <script type="text/javascript">
+        var myScroll;
+        function loaded() {
+            myScroll = new IScroll('#wrapper', {mouseWheel: true});
+        }
+        document.addEventListener('touchmove', function (e) {
+            e.preventDefault();
+        }, false);
+    </script>-->
     </head>
     <body>
+        <!--
         <div id="dialog"></div>
         <div id="menu-esquerdo" class="menu-esquerdo">
             <div id="div-img-menu-esquerdo">
@@ -76,6 +72,10 @@
         </div>
         <div id="wrapper">
             <div id="scroller"></div>
-        </div>        
+        </div>   
+        -->
+
+        <script src="js/cordova.sqlite.entity.framework.js" type="text/javascript"></script>
+        <script src="js/model/Conta.js" type="text/javascript"></script>        
     </body>
 </html>
