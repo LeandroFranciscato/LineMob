@@ -3,17 +3,12 @@
 var Entity = function (tableName) {
     this.id = "";
     this.tableName = tableName;
-    initialize();
-
-    function initialize() {
-        console.log("Tabela " + tableName + " Criada.");
-    }
 
     this.getFields = function (cb) {
         var fields = [];
         var values = [];
         for (var key in this) {
-            if (key != undefined && typeof this[key] !== 'function' && key != "tableName" && key != "id") {
+            if (key != undefined && typeof this[key] !== 'function' && key !== "tableName" && key !== "id") {
                 fields.push(key);
                 values.push("'" + this[key] + "'");
             }
@@ -25,9 +20,14 @@ var Entity = function (tableName) {
 };
 
 var daoUtil = {
-    insert: function (entity, cb) {
-        entity.getFields(function (fields, values) {
-            var sql = "insert into " + entity.tableName + "(" + fields + ") values (" + values + ")";
+    initialize: function (entity, cb) {
+        entity.getFields(function (fields) {
+            var sql = "create table if not exists " + entity.tableName + "(";
+            for (var i = 0; i < fields.length; i++) {
+                sql += fields[i] + " text,";
+            }
+
+            sql = sql + " id integer not null primary key autoincrement)";
             dbUtil.executeSql(sql, [], function (res) {
                 if (cb) {
                     cb(res);
@@ -35,23 +35,58 @@ var daoUtil = {
             });
         });
     },
-    getAll: function (entity, cb) {
-        var sql = "select * from " + entity.tableName + " order by id desc";
-        dbUtil.executeSql(sql, [], function (res) {
-            if (res && res.rows && res.rows.item) {
-                var retorno = [];
-                for (var i = 0; i < res.rows.length; i++) {
-                    retorno.push(res.rows.item(i));
+    insert: function (entity, cb) {
+        entity.getFields(function (fields, values) {
+            var sql = "insert into " + entity.tableName + "(" + fields + ") values (" + values + ")";
+            dbUtil.executeSql(sql, [], function (res) {
+                if (cb) {
+                    cb(res.rowsAffected);
                 }
+            });
+        });
+    },
+    delete: function (entity, cb) {
+        var sql = "delete from " + entity.tableName + " where id = ?";
+        dbUtil.executeSql(sql, [entity.id], function (res) {
+            if (cb) {
+                cb(res.rowsAffected);
+            }
+        });
+    },
+    getAll: function (entity, orderByColumn, cb) {
+        var sql = "select * from " + entity.tableName + " order by " + orderByColumn;
+        dbUtil.executeSql(sql, [], function (res) {
+            daoUtil.sucessGets(res, function (retorno) {
                 if (cb) {
                     cb(retorno);
                 }
-            } else {
-                if (cb) {
-                    cb();
-                }
-            }
+            });
         });
+    },
+    getByRange: function (entity, orderByColumn, start, end, cb) {
+        var sql = "select * from " + entity.tableName + " order by " + orderByColumn + " limit ?, ?";
+        dbUtil.executeSql(sql, [start, end], function (res) {
+            daoUtil.sucessGets(res, function (retorno) {
+                if (cb) {
+                    cb(retorno);
+                }
+            });
+        });
+    },
+    sucessGets: function (res, cb) {
+        if (res && res.rows && res.rows.item) {
+            var retorno = [];
+            for (var i = 0; i < res.rows.length; i++) {
+                retorno.push(res.rows.item(i));
+            }
+            if (cb) {
+                cb(retorno);
+            }
+        } else {
+            if (cb) {
+                cb();
+            }
+        }
     }
 };
 
@@ -88,7 +123,7 @@ var dbUtil = {
                             }
                         },
                         function (err) {
-                            alertUtil.confirm("Erro executando sql ->", err);
+                            alertUtil.confirm("Erro executando sql ->", err.toString());
                             if (cb) {
                                 cb(err);
                             }
