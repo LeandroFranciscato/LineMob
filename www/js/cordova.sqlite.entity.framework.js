@@ -45,6 +45,40 @@ var daoUtil = {
             });
         });
     },
+    update: function (entity, cb) {
+        entity.getFields(function (fields, values) {
+            var sql = "update " + entity.tableName + " set ";
+            for (var i = 0; i < fields.length; i++) {
+                sql += fields[i] + " = " + values[i] + ",";
+            }
+            sql = sql.substr(0, sql.length - 1);
+            sql += " where id = " + entity.id;
+            dbUtil.executeSql(sql, [], function (res) {
+                if (cb) {
+                    cb(res.rowsAffected);
+                }
+            });
+        });
+    },
+    updateDinamicColumn: function (entity, coluna, cb) {
+        entity.getFields(function (fields, values) {
+            var valor = "";
+            for (var i = 0; i < fields.length; i++) {
+                if (fields[i] === coluna) {
+                    valor = values[i];
+                    break;
+                }
+            }
+            var sql = "update " + entity.tableName +
+                    "   set " + coluna + " = " + valor +
+                    " where id = ?";
+            dbUtil.executeSql(sql, [entity.id], function (res) {
+                if (cb) {
+                    cb(res.rowsAffected);
+                }
+            });
+        });
+    },
     delete: function (entity, cb) {
         var sql = "delete from " + entity.tableName + " where id = ?";
         dbUtil.executeSql(sql, [entity.id], function (res) {
@@ -56,9 +90,19 @@ var daoUtil = {
     getAll: function (entity, orderByColumn, cb) {
         var sql = "select * from " + entity.tableName + " order by " + orderByColumn;
         dbUtil.executeSql(sql, [], function (res) {
-            daoUtil.sucessGets(res, function (retorno) {
+            daoUtil.sucessGets(entity, res, function (retorno) {
                 if (cb) {
                     cb(retorno);
+                }
+            });
+        });
+    },
+    getById: function (entity, cb) {
+        var sql = "select * from " + entity.tableName + " where id = ?";
+        dbUtil.executeSql(sql, [entity.id], function (res) {
+            daoUtil.sucessGets(entity, res, function (retorno) {
+                if (cb) {
+                    cb(retorno[0]);
                 }
             });
         });
@@ -66,18 +110,34 @@ var daoUtil = {
     getByRange: function (entity, orderByColumn, start, end, cb) {
         var sql = "select * from " + entity.tableName + " order by " + orderByColumn + " limit ?, ?";
         dbUtil.executeSql(sql, [start, end], function (res) {
-            daoUtil.sucessGets(res, function (retorno) {
+            daoUtil.sucessGets(entity, res, function (retorno) {
                 if (cb) {
                     cb(retorno);
                 }
             });
         });
     },
-    sucessGets: function (res, cb) {
+    getCount: function (entity, cb) {
+        var sql = "select count(*) qtde from " + entity.tableName;
+        dbUtil.executeSql(sql, [], function (res) {
+            daoUtil.sucessGets(null, res, function (retorno) {
+                if (cb) {
+                    cb(retorno[0].qtde);
+                }
+            });
+        });
+    },
+    sucessGets: function (entity, res, cb) {
         if (res && res.rows && res.rows.item) {
             var retorno = [];
             for (var i = 0; i < res.rows.length; i++) {
-                retorno.push(res.rows.item(i));
+                var obj = res.rows.item(i);
+
+                if (entity) {
+                    Object.setPrototypeOf(obj, Object.getPrototypeOf(entity));
+                }
+
+                retorno.push(obj);
             }
             if (cb) {
                 cb(retorno);
