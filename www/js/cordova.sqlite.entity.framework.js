@@ -157,7 +157,7 @@ var dbUtil = {
     initialize: function (cb) {
         if (!this.DATABASE) {
             this.DATABASE = window.sqlitePlugin.openDatabase({name: this.NOME_DATABASE, location: this.LOCALIZACAO_DATABASE},
-                    function (tx) {
+                    function (tx) {                        
                         if (cb) {
                             cb(tx);
                         }

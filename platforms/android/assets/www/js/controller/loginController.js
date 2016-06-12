@@ -1,18 +1,15 @@
-/* global logUtil, Mustache, loginModel, contaController, alertUtil, mainController */
+/* global logUtil, Mustache, loginModel, contaController, alertUtil, mainController, daoUtil */
 
 var loginController = {
     TEMPLATE_LOGIN: "",
     OBJECT_TO_BIND: "#dialog",
     load: function (cb) {
-        loginModel.getAll(function (res) {
-            if (res) {
+        var usuario = new Usuario();
+        daoUtil.getAll(usuario, "id", function (res) {
+            if (res && res.length > 0) {
                 mainController.render();
             } else {
-                loginController.render(function () {
-                    if (cb) {
-                        cb();
-                    }
-                });
+                loginController.render();
             }
         });
     },
@@ -40,7 +37,11 @@ var loginController = {
         });
     },
     getLogin: function () {
-        var usuario = $('[data-id=formLogin]').serializeObject();
+        var dadosForm = $('[data-id=formLogin]').serializeObject();
+
+        var usuario = new Usuario();
+        usuario.usuario = dadosForm.usuario;
+        usuario.senha = dadosForm.senha;
 
         if (!usuario.usuario) {
             alertUtil.confirm("Informe o Usuário!");
@@ -59,7 +60,7 @@ var loginController = {
         }
 
         if ($('#checkBoxLembrar').prop('checked') === true) {
-            loginModel.insert(usuario);
+            daoUtil.insert(usuario);
         }
         alertUtil.confirm("Bem vindo " + usuario.usuario);
         mainController.render();

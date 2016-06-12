@@ -1,6 +1,6 @@
 var Conta = function () {
     this.nome = "";
-    this.data = "";
-    this.valor = "";    
+    this.dataFundacao = "";
+    this.valorSaldoInicial = "";
 };
 Conta.prototype = new Entity("conta");

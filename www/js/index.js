@@ -1,4 +1,4 @@
-/* global dbUtil, logUtil, contaController, loginController, mainController */
+/* global dbUtil, logUtil, contaController, loginController, mainController, daoUtil */
 
 var app = {
     initialize: function () {
@@ -8,9 +8,11 @@ var app = {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
     onDeviceReady: function () {
-        dbUtil.createSchema(function (res) {
-            app.loadTemplates(function () {
-                loginController.load();
+        dbUtil.initialize(function () {
+            app.createTables(function () {
+                app.loadTemplates(function () {
+                    loginController.load();
+                });
             });
         });
     },
@@ -27,10 +29,39 @@ var app = {
                             cb();
                         }
                     });
-                })
-
+                });
             });
         });
+    },
+    createTables: function (cb) {
+        var storage = window.localStorage;
+        if (!storage.getItem("dataBaseCreated")) {
+            var usuario = new Usuario();
+            daoUtil.initialize(usuario, function () {
+                var conta = new Conta();
+                daoUtil.initialize(conta, function () {
+                    var cartao = new Cartao();
+                    daoUtil.initialize(cartao, function () {
+                        var categoria = new Categoria();
+                        daoUtil.initialize(categoria, function () {
+                            var pessoa = new Pessoa();
+                            daoUtil.initialize(pessoa, function () {
+                                var mov = new Movimento();
+                                daoUtil.initialize(mov, function () {
+                                    storage.setItem("dataBaseCreated", "1");
+                                    if (cb) {
+                                        cb();
+                                    }
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        }
+        if (cb) {
+            cb();
+        }
     }
 };
 

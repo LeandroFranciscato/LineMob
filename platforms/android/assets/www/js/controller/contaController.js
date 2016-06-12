@@ -1,4 +1,4 @@
-/* global Mustache, logUtil, mainController, contaModel, alertUtil */
+/* global Mustache, logUtil, mainController, contaModel, alertUtil, daoUtil */
 
 var contaController = {
     TEMPLATE_CONTA_CADASTRO: "",
@@ -8,23 +8,18 @@ var contaController = {
     loadLista: function (inicial, final, cb) {
 
         if (!inicial) {
-            inicial = 1;
+            inicial = 0;
         }
 
         if (!final) {
             final = 3;
         }
 
-        contaModel.getByRange(inicial, final, function (results) {
-            var dados = {};
-            dados.contas = [];
-
-            if (results && results.item) {
-                for (var i = 0; i < results.length; i++) {
-                    dados.contas.push(results.item(i));
-                }
-            }
-            contaController.render("lista", dados, function () {
+        var conta = new Conta();
+        daoUtil.getByRange(conta, "nome", inicial, final, function (results) {
+            var data = {};
+            data.contas = results;
+            contaController.render("lista", data, function () {
                 contaController.mostraBotaoVoltarLista();
                 if (cb) {
                     cb();
@@ -102,7 +97,10 @@ var contaController = {
     checkInList: function (idConta) {
 
         if (!idConta) {
-            var contas = $('#tab-contas').tableToJSON();
+            var contas = $('#tab-contas').tableToJSON({
+                ignoreColumns: [1],
+                headings: ["selecionado", "nome", "dataFundacao", "valorSaldoInicial"]
+            });
             for (var i = 0; i <= contas.length; i++) {
                 if (contas[i]) {
                     var checkedAll = $('#check-conta').prop("checked");
@@ -133,8 +131,13 @@ var contaController = {
                 }
             });
         } else {
-            contaModel.insert(data, function (results) {
-                if (results && results.rowsAffected === 1) {
+            var conta = new Conta();
+            conta.nome = data.nome;
+            conta.dataFundacao = data.dataFundacao;
+            conta.valorSaldoInicial = data.valorSaldoInicial;
+
+            daoUtil.insert(conta, function (rowsAffected) {
+                if (rowsAffected === 1) {
                     alertUtil.confirm("Conta cadastrada com sucesso!");
                     contaController.loadLista();
                 } else {
@@ -167,7 +170,7 @@ var contaController = {
     },
     updateMultiplaEscolha: function () {
         var ids = $("#id-conta").val();
-        ids = ids.split("-");        
+        ids = ids.split("-");
 
         var campo = $("#nome-campo").prop("name");
         var valorCampo = $("#nome-campo").val();
