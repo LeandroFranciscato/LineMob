@@ -11,31 +11,32 @@
             </div>
             <div class="panel-body">                
                 <table id="tab-contas" class="table table-striped">
-                    <th>
-                        <div class="checkbox checkbox-danger">                            
-                            <input class="styled" id="check-conta" type="checkbox" onclick="contaController.checkInList()"> 
-                            <label for="check-conta"></label>
-                        </div>                        
-                    </th>
-                    <th style="display:none;">selecionado</th>
-                    <th style="display:none;">id</th>                    
-                    <th>Nome</th>                    
-                    <th>Data Fundação</th>
-                    <th>Saldo Inicial</th>                    
-
-                    {{#contas}}
                     <tr>
+                        <th>
+                            <div class="checkbox checkbox-danger">                            
+                                <input class="styled" id="check-conta" type="checkbox" onclick="contaController.checkInList()"> 
+                                <label for="check-conta"></label>
+                            </div>                        
+                        </th>
+                        <th name="selecionado" style="display:none;">selecionado</th>
+                        <th name="id" style="display:none;">id</th>                    
+                        <th name="nome">Nome</th>                    
+                        <th name="dataFundacao">Data Fundação</th>
+                        <th name="valorSaldoInicial">Saldo Inicial</th>                    
+                    </tr>
+                    {{#contas}}
+                    <tr name="contas">
                         <td>                            
                             <div class="checkbox checkbox-danger">                                                            
                                 <input class="styled" id="check-conta-{{id}}" type="checkbox" onclick="contaController.checkInList({{id}})"> 
                                 <label for="check-conta-{{id}}"></label>
                             </div>
                         </td>
-                        <td style="display:none;" id="conta-selecionada-{{id}}">0</td>
-                        <td style="display: none">{{id}}</td>
-                        <td>{{nome}}</td>
-                        <td>{{dataFundacao}}</td>
-                        <td>{{valorSaldoInicial}}</td>
+                        <td name="selecionado" style="display:none;" id="conta-selecionada-{{id}}">0</td>
+                        <td name="id" style="display: none">{{id}}</td>
+                        <td name="nome">{{nome}}</td>
+                        <td name="dataFundacao">{{dataFundacao}}</td>
+                        <td name="valorSaldoInicial">{{valorSaldoInicial}}</td>
 
 
                     </tr>      

@@ -97,10 +97,7 @@ var contaController = {
     checkInList: function (idConta) {
 
         if (!idConta) {
-            var contas = $('#tab-contas').tableToJSON({
-                ignoreColumns: [1],
-                headings: ["selecionado", "nome", "dataFundacao", "valorSaldoInicial"]
-            });
+            var contas = tableToJSON("#tab-contas");
             for (var i = 0; i <= contas.length; i++) {
                 if (contas[i]) {
                     var checkedAll = $('#check-conta').prop("checked");
