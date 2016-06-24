@@ -1,4 +1,4 @@
-/* global logUtil, Mustache, loginModel, contaController, alertUtil, mainController, daoUtil */
+/* global logUtil, Mustache, contaController, alertUtil, mainController, daoUtil */
 
 var loginController = {
     TEMPLATE_LOGIN: "",

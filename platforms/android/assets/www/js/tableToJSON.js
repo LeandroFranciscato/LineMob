@@ -5,7 +5,7 @@ function tableToJSON(tableId) {
     data = [];
 
     if (tr) {
-        for (var i_tr = 1; i_tr < tr.length; i_tr++) {            
+        for (var i_tr = 1; i_tr < tr.length; i_tr++) {
 
             var td = $(tr[i_tr]).find("td");
 

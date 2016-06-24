@@ -117,8 +117,11 @@ var contaController = {
     },
     insert: function () {
         var data = $("#form-cadastro-conta").serializeObject();
+        var conta = new Conta();
+        Object.setPrototypeOf(data, Object.getPrototypeOf(conta));
+        
         if (data.id) {
-            data.id = data.id.replace("-", "");
+            data.id = data.id.replace("-", "");            
             contaModel.update(data, function (results) {
                 if (results && results.rowsAffected === 1) {
                     alertUtil.confirm("Conta Alterada com sucesso!");
@@ -149,15 +152,17 @@ var contaController = {
         alertUtil.confirm("Deseja realmente deletar?", "Deletando...", buttons, function (btn) {
 
             if (btn == 2) {
-                var contas = $('#tab-contas').tableToJSON();
+                var contas = tableToJSON('#tab-contas');
                 for (var i = 0; i <= contas.length; i++) {
+
                     if (contas[i] && contas[i].selecionado == 1) {
-                        contaModel.delete(contas[i].id,
-                                function (res) {
-                                    if (res && res.rowsAffected !== 1) {
-                                        alertUtil.confirm("Erro ao deletar CONTA, id:" + contas[i].id);
-                                    }
-                                });
+                        var conta = new Conta();
+                        conta.id = contas[i].id;
+                        daoUtil.delete(conta, function (res) {
+                            if (res != 1) {
+                                alertUtil.confirm("Erro ao deletar conta: " + conta, id);
+                            }
+                        });
                     }
                 }
                 alertUtil.confirm("Deletado com Sucesso!");
