@@ -43,12 +43,11 @@ body {
     left: 0;
     width: 100%;
     background: #ccc;
-    overflow: hidden;
-    display: none;
+    overflow: hidden;    
 }
 
 #scroller {
-    background-color: white;
+    background-color: whitesmoke;
     position: absolute;
     z-index: 1;
     -webkit-tap-highlight-color: rgba(0,0,0,0);

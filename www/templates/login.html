@@ -1,31 +1,39 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <link rel="stylesheet" href="css/login.css">
-        <title>Login</title>
-    </head>
-    <body>
-        <div class="container">
-            <form class="form-signin" data-id="formLogin">
-                <div style="text-align: -webkit-center;">
-                    <img id="img-form-signin" src="img/logo.png" />
-                </div>
-                <input type="email" id="inputUsuario" name="usuario" class="form-control" placeholder="Usuário" required autofocus>
-                <div class="password">
-                    <input type="password" id="inputPassword" name="senha" class="form-control" placeholder="Senha" required style="z-index: 0">
-                    <span class="glyphicon glyphicon-eye-open" style="color: gray; display: initial" ></span>
-                    <span class="glyphicon glyphicon-eye-close" style="color: gray"></span>
-                </div>
-                <div class="checkbox">
-                    <label>
-                        <input id="checkBoxLembrar" type="checkbox" value="Lembrar" checked="checked">
-                        Lembrar </label>
-                </div>
-                <button data-id="btnLogin" class="btn btn-lg btn-danger btn-block" type="button">
+<div class="container row">    
+    <form class="form-signin col s12" data-id="formLogin">        
+
+        <div class="row">
+            <div class="col s12 center">
+                <img id="img-form-signin" src="img/logo.png" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s12">
+                <input type="email" id="inputUsuario" name="usuario" placeholder="exemplo@dominio.com">
+                <label for="inputUsuario" class="active">E-mail</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s12">
+                <input type="password" id="inputPassword" name="senha" placeholder="********">                    
+                <label for="inputPassword" class="active">Senha</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12">
+                <input id="checkBoxLembrar" type="checkbox" class="filled-in" checked="checked" />
+                <label for="checkBoxLembrar">Lembrar</label>
+            </div>
+        </div>            
+
+        <div class="row">
+            <div class="col s12">
+                <button data-id="btnLogin" class="btn waves-effect waves-light" type="button">
                     Entrar
                 </button>
-            </form>
+            </div>
         </div>
-        <!-- /container -->
-    </body>
-</html>
+    </form>
+</div>

@@ -11,19 +11,19 @@
                 <form id="form-cadastro-conta">                    
 
                     <div class="form-group" style="display: none;">                       
-                        <input type="text" class="form-control" id="id-conta" name="id">
+                        <input type="text" class="form-control" id="id-conta" name="id" value="{{id}}">
                     </div>
 
                     <label for="select-campo">Selecione o campo para edição</label>
                     <select id="select-campo" class="form-control" onchange="contaController.selecionaCampoEdicaoMultipla()">                                                
                         <option value="nome" selected>Nome da Conta</option>
-                        <option value="data">Data Início Saldo</option>
-                        <option value="valor">Valor Saldo</option>
+                        <option value="dataFundacao">Data Início Saldo</option>
+                        <option value="valorSaldoInicial">Valor Saldo</option>
                     </select>
                     
                     <div class="form-group">
-                        <label id="prompt-campo" for="nome-campo">Nome da Conta</label>
-                        <input type="text" class="form-control" id="nome-campo" name="nome">
+                        <label id="prompt-campo" for="valor-campo">Nome da Conta</label>
+                        <input type="text" class="form-control" id="valor-campo" name="nome">
                     </div>
 
                     <div class="panel-footer">

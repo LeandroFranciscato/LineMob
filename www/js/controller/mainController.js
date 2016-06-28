@@ -5,11 +5,10 @@ var mainController = {
     SITUACAO_MENU_ESQUERDO: 0,
     render: function (cb) {
         var html = Mustache.render(this.TEMPLATE_MAIN);
+        $("#wrapper").css("top", "50px");
         $("#header").css("display", "block");
-        $("#wrapper").css("display", "block");
         $("#menu-esquerdo").css("display", "block");
-        $("#scroller").html("");
-        $("#dialog").css("display", "none");
+        $("#scroller").html("");        
         loaded();
         this.bindEvents();
         if (cb) {
@@ -62,6 +61,6 @@ var mainController = {
     mostraBotaoMenu: function () {
         $("#icone-menu").css("display", "initial");
         $("#icone-voltar").css("display", "none");
-        $(document).unbind("backbutton");        
+        $(document).unbind("backbutton");
     }
 };

@@ -1,4 +1,4 @@
-/* global Mustache, logUtil, mainController, contaModel, alertUtil, daoUtil */
+/* global Mustache, logUtil, mainController, alertUtil, daoUtil */
 
 var contaController = {
     TEMPLATE_CONTA_CADASTRO: "",
@@ -33,7 +33,7 @@ var contaController = {
         });
     },
     loadContaEdicao: function () {
-        var contas = $('#tab-contas').tableToJSON();
+        var contas = tableToJSON('#tab-contas');
         var conta = {};
         var qtdeSelecionados = 0;
 
@@ -47,27 +47,19 @@ var contaController = {
                     conta.id += contas[i].id + "-";
                 }
 
-                conta.nome = contas[i].Nome;
-                conta.data = contas[i].Data;
-                conta.saldo = contas[i].Saldo;
+                conta.nome = contas[i].nome;
+                conta.dataFundacao = contas[i].dataFundacao;
+                conta.valorSaldoInicial = contas[i].valorSaldoInicial;
             }
         }
 
-        var operacao = "";
         if (qtdeSelecionados === 0) {
             alertUtil.confirm("Selecione ao menos um (1) registro para editar.", " Editando...");
             return;
         } else if (qtdeSelecionados === 1) {
-            contaController.render("cadastro", null, function () {
-                $('#id-conta').val(conta.id);
-                $('#nome-conta').val(conta.nome);
-                $('#data-conta').val(conta.data);
-                $('#saldo-conta').val(conta.saldo);
-            });
+            contaController.render("cadastro", conta);
         } else if (qtdeSelecionados > 1) {
-            contaController.render("edicao", null, function () {
-                $('#id-conta').val(conta.id);
-            });
+            contaController.render("edicao", conta);
         }
         contaController.mostraBotaoVoltarCadastro();
     },
@@ -78,7 +70,8 @@ var contaController = {
             html = Mustache.render(this.TEMPLATE_CONTA_LISTA, data);
         } else if (operacao === "cadastro") {
             Mustache.parse(this.TEMPLATE_CONTA_CADASTRO);
-            html = Mustache.render(this.TEMPLATE_CONTA_CADASTRO);
+            data = (data) ? data : {};
+            html = Mustache.render(this.TEMPLATE_CONTA_CADASTRO, data);
         } else if (operacao === "edicao") {
             Mustache.parse(this.TEMPLATE_CONTA_EDICAO);
             html = Mustache.render(this.TEMPLATE_CONTA_EDICAO, data);
@@ -117,13 +110,17 @@ var contaController = {
     },
     insert: function () {
         var data = $("#form-cadastro-conta").serializeObject();
+
         var conta = new Conta();
-        Object.setPrototypeOf(data, Object.getPrototypeOf(conta));
-        
+        conta.nome = data.nome;
+        conta.dataFundacao = data.dataFundacao;
+        conta.valorSaldoInicial = data.valorSaldoInicial;
+
         if (data.id) {
-            data.id = data.id.replace("-", "");            
-            contaModel.update(data, function (results) {
-                if (results && results.rowsAffected === 1) {
+            data.id = data.id.replace("-", "");
+            conta.id = data.id;
+            daoUtil.update(conta, function (rowsAffected) {
+                if (rowsAffected === 1) {
                     alertUtil.confirm("Conta Alterada com sucesso!");
                     contaController.loadLista();
                 } else {
@@ -131,11 +128,6 @@ var contaController = {
                 }
             });
         } else {
-            var conta = new Conta();
-            conta.nome = data.nome;
-            conta.dataFundacao = data.dataFundacao;
-            conta.valorSaldoInicial = data.valorSaldoInicial;
-
             daoUtil.insert(conta, function (rowsAffected) {
                 if (rowsAffected === 1) {
                     alertUtil.confirm("Conta cadastrada com sucesso!");
@@ -174,14 +166,19 @@ var contaController = {
         var ids = $("#id-conta").val();
         ids = ids.split("-");
 
-        var campo = $("#nome-campo").prop("name");
-        var valorCampo = $("#nome-campo").val();
+        var campo = $("#valor-campo").prop("name");
+        var valorCampo = $("#valor-campo").val();
 
         for (var i = 0; i < ids.length; i++) {
             if (ids[i]) {
-                contaModel.updateColunaDinamica(ids[i], campo, valorCampo, function (res) {
-                    if (res && res.rowsAffected != 1) {
-                        alertUtil.confirm("Erro ao atualizar CONTA, id: " + ids[i]);
+
+                var conta = new Conta();
+                conta.id = ids[i];
+                conta[campo] = valorCampo;
+
+                daoUtil.updateDinamicColumn(conta, campo, function (rowsAffected) {
+                    if (rowsAffected != 1) {
+                        alertUtil.confirm("Erro ao atualizar CONTA, id: " + conta.id);
                     }
                 });
             }
@@ -194,16 +191,16 @@ var contaController = {
 
         if (campo === "nome") {
             $("#prompt-campo").html("Nome da Conta");
-            $("#nome-campo").prop("name", "nome");
-            $("#nome-campo").prop("type", "text");
-        } else if (campo === "data") {
+            $("#valor-campo").prop("name", "nome");
+            $("#valor-campo").prop("type", "text");
+        } else if (campo === "dataFundacao") {
             $("#prompt-campo").html("Data Saldo Início");
-            $("#nome-campo").prop("name", "data");
-            $("#nome-campo").prop("type", "date");
-        } else if (campo === "valor") {
+            $("#valor-campo").prop("name", "dataFundacao");
+            $("#valor-campo").prop("type", "date");
+        } else if (campo === "valorSaldoInicial") {
             $("#prompt-campo").html("Saldo Inicial");
-            $("#nome-campo").prop("name", "valor");
-            $("#nome-campo").prop("type", "number");
+            $("#valor-campo").prop("name", "valorSaldoInicial");
+            $("#valor-campo").prop("type", "number");
         }
     },
     mostraBotaoVoltar: function () {
