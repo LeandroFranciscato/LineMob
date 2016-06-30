@@ -43,12 +43,11 @@ body {
     left: 0;
     width: 100%;
     background: #ccc;
-    overflow: hidden;
-    display: none;
+    overflow: hidden;    
 }
 
 #scroller {
-    background-color: white;
+    background-color: whitesmoke;
     position: absolute;
     z-index: 1;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -119,12 +118,13 @@ body {
 .menu-esquerdo #div-img-menu-esquerdo{
     text-align: -webkit-center;
     margin-top: 15px;
-    margin-bottom: 15px;    
+    margin-bottom: 15px;        
 }
 
 .menu-esquerdo #img-menu-esquerdo{
     width: 150px;
     background-color: whitesmoke;
+    border-radius: 50%;
 }
 
 .menu-esquerdo #links{

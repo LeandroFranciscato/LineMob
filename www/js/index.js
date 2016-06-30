@@ -25,9 +25,12 @@ var app = {
                     contaController.TEMPLATE_CONTA_EDICAO = string;
                     $.get('templates/login.html', function (string) {
                         loginController.TEMPLATE_LOGIN = string;
-                        if (cb) {
-                            cb();
-                        }
+                        $.get('templates/inicio.html', function (string) {
+                            mainController.TEMPLATE_MAIN = string;
+                            if (cb) {
+                                cb();
+                            }
+                        })
                     });
                 });
             });
@@ -58,9 +61,10 @@ var app = {
                     });
                 });
             });
-        }
-        if (cb) {
-            cb();
+        } else {
+            if (cb) {
+                cb();
+            }
         }
     }
 };

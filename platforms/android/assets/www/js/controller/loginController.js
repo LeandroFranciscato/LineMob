@@ -1,8 +1,8 @@
-/* global logUtil, Mustache, contaController, alertUtil, mainController, daoUtil */
+/* global logUtil, Mustache, contaController, alertUtil, mainController, daoUtil, Materialize */
 
 var loginController = {
     TEMPLATE_LOGIN: "",
-    OBJECT_TO_BIND: "#dialog",
+    OBJECT_TO_BIND: "#scroller",
     load: function (cb) {
         var usuario = new Usuario();
         daoUtil.getAll(usuario, "id", function (res) {
@@ -16,25 +16,15 @@ var loginController = {
     render: function (cb) {
         var html = Mustache.render(this.TEMPLATE_LOGIN);
         $(this.OBJECT_TO_BIND).html(html);
-        this.bindEvents();
+        $("#wrapper").css("top", "0px");
+        this.bindEvents();        
+        loaded();
         if (cb) {
             cb();
         }
     },
     bindEvents: function () {
-        $('[data-id=btnLogin]').click(loginController.getLogin);
-
-        $(".glyphicon-eye-open").click(function () {
-            $("#inputPassword").attr('type', 'text');
-            $(".glyphicon-eye-open").hide();
-            $(".glyphicon-eye-close").show();
-        });
-
-        $(".glyphicon-eye-close").click(function () {
-            $("#inputPassword").attr('type', 'password');
-            $(".glyphicon-eye-open").show();
-            $(".glyphicon-eye-close").hide();
-        });
+        $('[data-id=btnLogin]').click(loginController.getLogin);       
     },
     getLogin: function () {
         var dadosForm = $('[data-id=formLogin]').serializeObject();

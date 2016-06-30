@@ -1,4 +1,4 @@
-/* global logUtil, Mustache, contaController, alertUtil, mainController, daoUtil, Materialize */
+/* global logUtil, Mustache, contaController, alertUtil, mainController, daoUtil, Materialize, database_helper */
 
 var loginController = {
     TEMPLATE_LOGIN: "",
@@ -17,14 +17,14 @@ var loginController = {
         var html = Mustache.render(this.TEMPLATE_LOGIN);
         $(this.OBJECT_TO_BIND).html(html);
         $("#wrapper").css("top", "0px");
-        this.bindEvents();        
+        this.bindEvents();
         loaded();
         if (cb) {
             cb();
         }
     },
     bindEvents: function () {
-        $('[data-id=btnLogin]').click(loginController.getLogin);       
+        $('[data-id=btnLogin]').click(loginController.getLogin);
     },
     getLogin: function () {
         var dadosForm = $('[data-id=formLogin]').serializeObject();
@@ -54,5 +54,20 @@ var loginController = {
         }
         alertUtil.confirm("Bem vindo " + usuario.usuario);
         mainController.render();
+    },
+    logout: function () {
+        alertUtil.confirm(
+                "Esta ação fará com que todos os dados locais sejam perdidos, deseja mesmo continuar?",
+                "Saindo...",
+                ["Não", "Sim"],
+                function (btnEscolhido) {
+                    if (btnEscolhido == 2){
+                        dbUtil.dropDatabase(function () {
+                            window.localStorage.removeItem("dataBaseCreated");
+                            navigator.app.exitApp();
+                        });
+                    }
+                }
+        );
     }
 };

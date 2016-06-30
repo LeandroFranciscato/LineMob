@@ -1,82 +1,39 @@
-<html
-    <head>        
-        <link href="css/conta.css" rel="stylesheet" type="text/css"/>
-        <link href="css/plugins/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-        <link href="css/plugins/awesome-bootstrap-checkbox.css" rel="stylesheet" type="text/css"/>
-    </head>
-    <body>
-        <div class="panel panel-danger">
-            <div class="panel-heading">
-                <h3 class="panel-title">Contas</h3>
-            </div>
-            <div class="panel-body">                
-                <table id="tab-contas" class="table table-striped">
-                    <tr>
-                        <th>
-                            <div class="checkbox checkbox-danger">                            
-                                <input class="styled" id="check-conta" type="checkbox" onclick="contaController.checkInList()"> 
-                                <label for="check-conta"></label>
-                            </div>                        
-                        </th>
-                        <th style="display:none;">selecionado</th>
-                        <th style="display:none;">id</th>                    
-                        <th>Nome</th>                    
-                        <th>Data Fundação</th>
-                        <th>Saldo Inicial</th>                    
-                    </tr>
-                    {{#contas}}
-                    <tr name="contas">
-                        <td>                            
-                            <div class="checkbox checkbox-danger">                                                            
-                                <input class="styled" id="check-conta-{{id}}" type="checkbox" onclick="contaController.checkInList({{id}})"> 
-                                <label for="check-conta-{{id}}"></label>
-                            </div>
-                        </td>
-                        <td name="selecionado" style="display:none;" id="conta-selecionada-{{id}}">0</td>
-                        <td name="id" style="display: none">{{id}}</td>
-                        <td name="nome">{{nome}}</td>
-                        <td name="dataFundacao">{{dataFundacao}}</td>
-                        <td name="valorSaldoInicial">{{valorSaldoInicial}}</td>
+<div class="panel panel-danger">
+    <div class="panel-heading">
+        <h3 class="panel-title">Contas</h3>
+    </div>
+    <div class="panel-body">                
+        <table id="tab-contas" class="table table-striped">
+            <tr>
+                <th>
+                    <div class="checkbox checkbox-danger">                            
+                        <input class="styled" id="check-conta" type="checkbox" onclick="contaController.checkInList()"> 
+                        <label for="check-conta"></label>
+                    </div>                        
+                </th>
+                <th style="display:none;">selecionado</th>
+                <th style="display:none;">id</th>                    
+                <th>Nome</th>                    
+                <th>Data Fundação</th>
+                <th>Saldo Inicial</th>                    
+            </tr>
+            {{#contas}}
+            <tr name="contas">
+                <td>                            
+                    <div class="checkbox checkbox-danger">                                                            
+                        <input class="styled" id="check-conta-{{id}}" type="checkbox" onclick="contaController.checkInList({{id}})"> 
+                        <label for="check-conta-{{id}}"></label>
+                    </div>
+                </td>
+                <td name="selecionado" style="display:none;" id="conta-selecionada-{{id}}">0</td>
+                <td name="id" style="display: none">{{id}}</td>
+                <td name="nome">{{nome}}</td>
+                <td name="dataFundacao">{{dataFundacao}}</td>
+                <td name="valorSaldoInicial">{{valorSaldoInicial}}</td>
 
 
-                    </tr>      
-                    {{/contas}}
-                </table>                                
-                <div class="panel-footer">
-                    <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                        <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-danger" onclick="contaController.loadContaCadastro()">Novo</button>
-                        </div>
-                        <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-danger" onclick="contaController.loadContaEdicao()">Editar</button>
-                        </div>
-                        <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-danger" onclick="contaController.delete()">Excluir</button>
-                        </div>
-                    </div>                                    
-                </div>                
-            </div>            
-            <div class="row">  
-                <div class="col-xs-12">
-                    <ul class="pagination">
-                        <li>
-                            <a href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li>
-                            <a href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div> 
-        </div>        
-    </body>
-</html>
+            </tr>      
+            {{/contas}}
+        </table>                                 
+    </div>                        
+</div>        
