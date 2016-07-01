@@ -1,4 +1,4 @@
-<div class="panel panel-danger">
+<!--<div class="panel panel-danger">
     <div class="panel-heading">
         <h3 class="panel-title">Contas</h3>
     </div>
@@ -30,10 +30,47 @@
                 <td name="nome">{{nome}}</td>
                 <td name="dataFundacao">{{dataFundacao}}</td>
                 <td name="valorSaldoInicial">{{valorSaldoInicial}}</td>
-
-
             </tr>      
             {{/contas}}
         </table>                                 
     </div>                        
 </div>        
+-->
+<ul class="collection" id="ul-list-contas">
+    <li class="collection-item">
+        <div class="li-conta-lista-header row">
+            <div class="col s1">
+                <input id="check-conta" type="checkbox" class="filled-in" onclick="contaController.checkInList()"/>
+                <label for="check-conta"></label>
+            </div>            
+            <div class="col s7 titulo-conta-lista">
+                Nome
+            </div>
+            <div class="col s4 titulo-conta-lista">
+                Saldo Inicial
+            </div>
+        </div>
+    </li>
+    {{#contas}}
+    <li class="collection-item">
+        <div class="li-conta-lista row">
+            <div class="col s1">
+                <input id="check-conta-{{id}}" type="checkbox" class="filled-in" onclick="contaController.checkInList({{id}})"/>
+                <label for="check-conta-{{id}}"></label>
+            </div>                        
+            <div name="id" class="invisible">{{id}}</div>
+            <div name="selecionado" id="conta-selecionada-{{id}}" class="invisible">0</div>            
+            <div name="nome" class="col s7">{{nome}}</div>
+            <div name="dataFundacao" class="invisible">{{dataFundacao}}</div>
+            <div name="valorSaldoInicial" class="col s4">{{valorSaldoInicial}}</div>
+        </div>
+    </li>
+    {{/contas}}
+</ul>
+<ul id='dropdown-contaLista' class='dropdown-content'>
+    <li onclick="contaController.loadContaCadastro()"><a href="#!">Nova</a></li>
+    <li class="divider"></li>
+    <li onclick="contaController.loadContaEdicao()"><a href="#!">Alterar</a></li>
+    <li class="divider"></li>
+    <li onclick="contaController.delete()"><a href="#!">Excluir</a></li>
+</ul>

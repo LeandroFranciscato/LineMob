@@ -4,20 +4,36 @@ var mainController = {
     TEMPLATE_MAIN: "",
     OBJECT_TO_BIND: "#scroller",
     SITUACAO_MENU_ESQUERDO: 0,
-    render: function (cb) {        
+    render: function (cb) {
         $("#wrapper").css("top", "56px");
         $("#header").css("display", "block");
-        $("#menu-esquerdo").css("display", "block");        
-        
+        $("#menu-esquerdo").css("display", "block");
+
         Mustache.parse(this.TEMPLATE_MAIN);
         var html = Mustache.render(this.TEMPLATE_MAIN);
-        $(this.OBJECT_TO_BIND).html(html);           
-        
-        loaded();        
-        this.bindEvents();        
-        if (this.SITUACAO_MENU_ESQUERDO === 1){
+        $(this.OBJECT_TO_BIND).html(html);
+
+        loaded();
+        this.bindEvents();
+        if (this.SITUACAO_MENU_ESQUERDO === 1) {
             this.menuEsquerdo();
-        }     
+        }
+
+        $("#icon-right-nav").attr("data-activates", "dropdown-inicio");
+        $("#text-icon-right-nav").html("&#xE5D4;");
+        $(".dropdown-button").dropdown({
+            belowOrigin: true
+        });
+
+        $(".titulo-center-nav").html("LINEMOB");
+
+        $("#icon-left-nav").unbind();
+        $(document).unbind("backbutton");
+        $("#icon-left-nav").on("click", function () {            
+            mainController.menuEsquerdo();
+        });
+        $("#text-icon-left-nav").html("&#xE5D2;");
+
         if (cb) {
             cb();
         }

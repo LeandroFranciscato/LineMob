@@ -12,15 +12,14 @@ var contaController = {
         }
 
         if (!final) {
-            final = 3;
+            final = 20;
         }
 
         var conta = new Conta();
         daoUtil.getByRange(conta, "nome", inicial, final, function (results) {
             var data = {};
             data.contas = results;
-            contaController.render("lista", data, function () {
-                contaController.mostraBotaoVoltarLista();
+            contaController.render("lista", data, function () {                
                 if (cb) {
                     cb();
                 }
@@ -28,12 +27,10 @@ var contaController = {
         });
     },
     loadContaCadastro: function () {
-        contaController.render("cadastro", null, function () {
-            contaController.mostraBotaoVoltarCadastro();
-        });
+        contaController.render("cadastro");
     },
     loadContaEdicao: function () {
-        var contas = tableToJSON('#tab-contas');
+        var contas = tableToJSON("#ul-list-contas", "li", "div");
         var conta = {};
         var qtdeSelecionados = 0;
 
@@ -60,8 +57,7 @@ var contaController = {
             contaController.render("cadastro", conta);
         } else if (qtdeSelecionados > 1) {
             contaController.render("edicao", conta);
-        }
-        contaController.mostraBotaoVoltarCadastro();
+        }        
     },
     render: function (operacao, data, cb) {
         var html;
@@ -77,12 +73,59 @@ var contaController = {
             html = Mustache.render(this.TEMPLATE_CONTA_EDICAO, data);
         }
 
-        mainController.render();
         $(contaController.OBJECT_TO_BIND).html(html);
         if (mainController.SITUACAO_MENU_ESQUERDO === 1) {
             mainController.menuEsquerdo();
         }
-        loaded();               
+        loaded();
+
+        if (operacao === "lista") {
+            $("#icon-right-nav").attr("data-activates", "dropdown-contaLista");
+            $("#text-icon-right-nav").html("&#xE5D4;");
+            $(".dropdown-button").dropdown({
+                belowOrigin: true
+            });
+
+            $(".titulo-center-nav").html("CONTAS");
+
+            $("#icon-left-nav").unbind();
+            $(document).unbind("backbutton");
+            $("#icon-left-nav").on("click", function () {
+                mainController.render();
+            });
+            $("#text-icon-left-nav").html("&#xE5C4;");
+        } else if (operacao === "cadastro") {
+            $("#icon-right-nav").attr("data-activates", "");
+            $("#text-icon-right-nav").html("&#xE876;");
+            $(".dropdown-button").dropdown({
+                belowOrigin: true
+            });
+
+            $(".titulo-center-nav").html("NOVA CONTA");
+            
+            $("#icon-left-nav").unbind();
+            $(document).unbind("backbutton");
+            $("#icon-left-nav").on("click", function () {
+                contaController.loadLista();
+            });
+            $("#text-icon-left-nav").html("&#xE5C4;");
+        } else if (operacao === "edicao") {
+            $("#icon-right-nav").attr("data-activates", "");
+            $("#text-icon-right-nav").html("&#xE876;");
+            $(".dropdown-button").dropdown({
+                belowOrigin: true
+            });
+            
+            $(".titulo-center-nav").html("EDIÇÃO DE CONTA(S)");
+            
+            $("#icon-left-nav").unbind();
+            $(document).unbind("backbutton");
+            $("#icon-left-nav").on("click", function () {
+                contaController.loadLista();
+            });
+            $("#text-icon-left-nav").html("&#xE5C4;");                        
+        }
+
         if (cb) {
             cb();
         }
@@ -90,7 +133,7 @@ var contaController = {
     checkInList: function (idConta) {
 
         if (!idConta) {
-            var contas = tableToJSON("#tab-contas");
+            var contas = tableToJSON("#ul-list-contas", "li", "div");
             for (var i = 0; i <= contas.length; i++) {
                 if (contas[i]) {
                     var checkedAll = $('#check-conta').prop("checked");
@@ -144,7 +187,7 @@ var contaController = {
         alertUtil.confirm("Deseja realmente deletar?", "Deletando...", buttons, function (btn) {
 
             if (btn == 2) {
-                var contas = tableToJSON('#tab-contas');
+                var contas = tableToJSON("#ul-list-contas", "li", "div");
                 for (var i = 0; i <= contas.length; i++) {
 
                     if (contas[i] && contas[i].selecionado == 1) {

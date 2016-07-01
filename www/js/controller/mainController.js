@@ -18,12 +18,22 @@ var mainController = {
         if (this.SITUACAO_MENU_ESQUERDO === 1) {
             this.menuEsquerdo();
         }
-        
-        $("#icon-right-nav").attr("data-activates","dropdown-inicio");
+
+        $("#icon-right-nav").attr("data-activates", "dropdown-inicio");
+        $("#text-icon-right-nav").html("&#xE5D4;");
         $(".dropdown-button").dropdown({
-            belowOrigin:true
+            belowOrigin: true
         });
-        
+
+        $(".titulo-center-nav").html("LINEMOB");
+
+        $("#icon-left-nav").unbind();
+        $(document).unbind("backbutton");
+        $("#icon-left-nav").on("click", function () {            
+            mainController.menuEsquerdo();
+        });
+        $("#text-icon-left-nav").html("&#xE5D2;");
+
         if (cb) {
             cb();
         }
