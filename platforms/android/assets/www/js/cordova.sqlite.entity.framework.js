@@ -157,7 +157,7 @@ var dbUtil = {
     initialize: function (cb) {
         if (!this.DATABASE) {
             this.DATABASE = window.sqlitePlugin.openDatabase({name: this.NOME_DATABASE, location: this.LOCALIZACAO_DATABASE},
-                    function (tx) {                        
+                    function (tx) {
                         if (cb) {
                             cb(tx);
                         }
@@ -172,6 +172,13 @@ var dbUtil = {
                 cb();
             }
         }
+    },
+    dropDatabase: function (callback) {
+        window.sqlitePlugin.deleteDatabase({name: this.NOME_DATABASE, location: this.LOCALIZACAO_DATABASE}, function () {
+            if (callback) {
+                callback();
+            }
+        });
     },
     executeSql: function (sql, parametros, cb) {
         this.initialize(function () {

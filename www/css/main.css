@@ -122,3 +122,7 @@ body {
     position: initial;
     display: block;
 }
+
+.invisible{
+    display:none;
+}

@@ -2,15 +2,22 @@
 
 var mainController = {
     TEMPLATE_MAIN: "",
+    OBJECT_TO_BIND: "#scroller",
     SITUACAO_MENU_ESQUERDO: 0,
-    render: function (cb) {
-        var html = Mustache.render(this.TEMPLATE_MAIN);
-        $("#wrapper").css("top", "50px");
+    render: function (cb) {        
+        $("#wrapper").css("top", "56px");
         $("#header").css("display", "block");
-        $("#menu-esquerdo").css("display", "block");
-        $("#scroller").html("");        
-        loaded();
-        this.bindEvents();
+        $("#menu-esquerdo").css("display", "block");        
+        
+        Mustache.parse(this.TEMPLATE_MAIN);
+        var html = Mustache.render(this.TEMPLATE_MAIN);
+        $(this.OBJECT_TO_BIND).html(html);           
+        
+        loaded();        
+        this.bindEvents();        
+        if (this.SITUACAO_MENU_ESQUERDO === 1){
+            this.menuEsquerdo();
+        }     
         if (cb) {
             cb();
         }

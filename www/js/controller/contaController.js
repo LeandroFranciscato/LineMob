@@ -12,7 +12,7 @@ var contaController = {
         }
 
         if (!final) {
-            final = 3;
+            final = 20;
         }
 
         var conta = new Conta();
@@ -33,7 +33,7 @@ var contaController = {
         });
     },
     loadContaEdicao: function () {
-        var contas = tableToJSON('#tab-contas');
+        var contas = tableToJSON("#ul-list-contas","li","div");
         var conta = {};
         var qtdeSelecionados = 0;
 
@@ -76,13 +76,18 @@ var contaController = {
             Mustache.parse(this.TEMPLATE_CONTA_EDICAO);
             html = Mustache.render(this.TEMPLATE_CONTA_EDICAO, data);
         }
-
-        mainController.render();
+        
         $(contaController.OBJECT_TO_BIND).html(html);
         if (mainController.SITUACAO_MENU_ESQUERDO === 1) {
             mainController.menuEsquerdo();
         }
-        loaded();               
+        loaded();
+
+        $("#icon-right-nav").attr("data-activates", "dropdown-contaLista");
+        $(".dropdown-button").dropdown({
+            belowOrigin: true
+        });
+
         if (cb) {
             cb();
         }
@@ -90,7 +95,7 @@ var contaController = {
     checkInList: function (idConta) {
 
         if (!idConta) {
-            var contas = tableToJSON("#tab-contas");
+            var contas = tableToJSON("#ul-list-contas","li","div");
             for (var i = 0; i <= contas.length; i++) {
                 if (contas[i]) {
                     var checkedAll = $('#check-conta').prop("checked");
@@ -144,7 +149,7 @@ var contaController = {
         alertUtil.confirm("Deseja realmente deletar?", "Deletando...", buttons, function (btn) {
 
             if (btn == 2) {
-                var contas = tableToJSON('#tab-contas');
+                var contas = tableToJSON("#ul-list-contas","li","div");
                 for (var i = 0; i <= contas.length; i++) {
 
                     if (contas[i] && contas[i].selecionado == 1) {

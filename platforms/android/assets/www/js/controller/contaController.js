@@ -82,7 +82,7 @@ var contaController = {
         if (mainController.SITUACAO_MENU_ESQUERDO === 1) {
             mainController.menuEsquerdo();
         }
-        loaded();
+        loaded();               
         if (cb) {
             cb();
         }

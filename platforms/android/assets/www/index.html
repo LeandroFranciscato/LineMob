@@ -9,7 +9,8 @@
         <!--STYLE-->        
         <link href="css/main.css" rel="stylesheet" type="text/css"/>
         <link href="css/login.css" rel="stylesheet" type="text/css"/>
-        <link href="materialize/css/materialize.min.css" rel="stylesheet" type="text/css"/>        
+        <link href="materialize/css/materialize.css" rel="stylesheet" type="text/css"/>        
+        <link href="materialize/css/materialize.icons.css" rel="stylesheet" type="text/css"/>
 
         <!--UTIL-->
         <script type="text/javascript" src="js/util/logUtil.js"></script>
@@ -29,7 +30,7 @@
         <script type="text/javascript" src="js/jquery.event.swipe.js"></script>  
         <script type="text/javascript" src="js/iscroll.js"></script>                            
         <script type="text/javascript" src="js/tableToJSON.js"></script>
-        <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+        <script type="text/javascript" src="materialize/js/materialize.js"></script>
 
         <!--MODEL -->
         <script src="js/cordova.sqlite.entity.framework.js" type="text/javascript"></script>
@@ -56,25 +57,26 @@
                 <img id="img-menu-esquerdo" src="img/logo.png">
             </div>
             <div id="links"> 
-                <div class="card-panel">
-                    <ul id="ul-links">
-                        <li><blockquote onclick="mainController.render()">Início</blockquote></li>                           
-                        <li><blockquote onclick="contaController.loadLista()">Contas</blockquote></li>
-                    </ul>
-                </div>
+                
+                    <div class="collection">
+                        <a class="collection-item" onclick="mainController.render()">Início<span class="badge"><i class="material-icons">&#xE88A;</i></span></a>
+                        <a class="collection-item" onclick="contaController.loadLista()">Contas<span class="badge"><i class="material-icons">&#xE84F;</i></span></a>
+                        <a class="collection-item" onclick="loginController.logout()">Sair<span class="badge"><i class="material-icons">&#xE879;</i></span></a>
+                    </div>
+                
             </div>
         </div>
 
         <nav id="header">
             <div id="barra-topo" class="nav-wrapper">
                 <ul>
-                    <li><i class="material-icons">&#xE8EE;</i></li>
-                    <li>teste1</li>
-                    <li>teste2</li>
+                    <li class="icon-left-nav" onclick="mainController.menuEsquerdo()"><i class="material-icons">&#xE5D2;</i></li>
+                    <li class="titulo-center-nav center">LINEMOB</li>
+                    <li class="options-left-nav right dropdown-button" data-activates="dropdown-menu"><i class="material-icons">&#xE5D4;</i></li>                    
                 </ul>
             </div>
         </nav>
-        
+
         <div id="wrapper">
             <div id="scroller"></div>
         </div>
