@@ -18,14 +18,16 @@ var mainController = {
         if (this.SITUACAO_MENU_ESQUERDO === 1) {
             this.menuEsquerdo();
         }
-
+        
+        $("#icon-right-nav").removeClass("active");
         $("#icon-right-nav").attr("data-activates", "dropdown-inicio");
         $("#text-icon-right-nav").html("&#xE5D4;");
         $(".dropdown-button").dropdown({
             belowOrigin: true
         });
-
-        $(".titulo-center-nav").html("LINEMOB");
+        
+        $("#titulo-center-nav").html("LINEMOB");
+        $("#icon-aux-titulo-center-nav").html("");
 
         $("#icon-left-nav").unbind();
         $(document).unbind("backbutton");

@@ -58,22 +58,32 @@
                 <img id="img-menu-esquerdo" src="img/logo.png">
             </div>
             <div id="links"> 
-                
-                    <div class="collection">
-                        <a class="collection-item" onclick="mainController.render()">Início<span class="badge"><i class="material-icons">&#xE88A;</i></span></a>
-                        <a class="collection-item" onclick="contaController.loadLista()">Contas<span class="badge"><i class="material-icons">&#xE84F;</i></span></a>
-                        <a class="collection-item" onclick="loginController.logout()">Sair<span class="badge"><i class="material-icons">&#xE879;</i></span></a>
-                    </div>
-                
+                <div class="collection">
+                    <a class="collection-item" onclick="mainController.render()">Início<span class="badge"><i class="material-icons">&#xE88A;</i></span></a>
+                    <a class="collection-item" onclick="contaController.loadLista()">Contas<span class="badge"><i class="material-icons">&#xE84F;</i></span></a>
+                    <a class="collection-item" onclick="loginController.logout()">Sair<span class="badge"><i class="material-icons">&#xE879;</i></span></a>
+                </div>
             </div>
         </div>
 
         <nav id="header">
             <div id="barra-topo" class="nav-wrapper">
                 <ul>
-                    <li id="icon-left-nav" class="icon-left-nav"><i id="text-icon-left-nav" class="material-icons">&#xE5D2;</i></li>
-                    <li id="titulo-center-nav" class="titulo-center-nav center">LINEMOB</li>
-                    <li id="icon-right-nav" class="options-left-nav right dropdown-button" data-activates="dropdown-menu"><i id="text-icon-right-nav" class="material-icons">&#xE5D4;</i></li>
+                    <li id="icon-left-nav" class="icon-left-nav">
+                        <i id="text-icon-left-nav" class="material-icons">&#xE5D2;</i>
+                    </li>
+
+                    <li id="titulo-center-nav" class="titulo-center-nav center">
+                        LINEMOB
+                    </li>
+
+                    <li>
+                        <i id="icon-aux-titulo-center-nav" class="material-icons"></i>                       
+                    </li>
+
+                    <li id="icon-right-nav" class="options-left-nav right dropdown-button" data-activates="dropdown-menu">
+                        <i id="text-icon-right-nav" class="material-icons">&#xE5D4;</i>
+                    </li>
                 </ul>
             </div>
         </nav>
