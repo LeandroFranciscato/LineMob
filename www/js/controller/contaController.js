@@ -26,6 +26,14 @@ var contaController = {
             });
         });
     },
+    loadSearchedList: function (searchText) {
+        var conta = new Conta();
+        daoUtil.getByLIke(conta, searchText, "nome", function (res) {
+            var data = {};
+            data.contas = res;
+            contaController.render("lista",data);
+        });
+    },
     loadContaCadastro: function () {
         contaController.render("cadastro");
     },
@@ -83,7 +91,7 @@ var contaController = {
 
         if (operacao === "lista") {
             $("#icon-right-nav").removeClass("active");
-            $("#icon-right-nav").attr("data-activates", "dropdown-contaLista");            
+            $("#icon-right-nav").attr("data-activates", "dropdown-contaLista");
             $("#text-icon-right-nav").html("&#xE5D4;");
             $("#text-icon-right-nav").unbind("click");
             $(".dropdown-button").dropdown({
@@ -93,15 +101,27 @@ var contaController = {
             $(".titulo-center-nav").html("CONTAS");
             $("#icon-aux-titulo-center-nav").html("");
 
-            $("#icon-left-nav").unbind();
-            $(document).unbind("backbutton");
+            $("#icon-left-nav").unbind("click");
             $("#icon-left-nav").on("click", function () {
                 mainController.render();
             });
+
+            $(document).unbind("backbutton");
             $(document).on("backbutton", function () {
-                mainController.render();
+                if ($(".search-field").css("display") === "block") {
+                    mainController.closeSearchField();
+                } else {
+                    mainController.render();
+                }
             });
+
             $("#text-icon-left-nav").html("&#xE5C4;");
+
+            $("#text-icon-search-nav").html("&#xE8B6;");
+            $("#input-search").unbind("keyup");
+            $("#input-search").on("keyup", function () {
+                contaController.loadSearchedList($("#input-search").val());
+            });
         } else if (operacao === "cadastro") {
             $("#icon-right-nav").removeAttr("data-activates");
             $("#text-icon-right-nav").html("&#xE876;");
@@ -125,6 +145,7 @@ var contaController = {
                 contaController.loadLista();
             });
             $("#text-icon-left-nav").html("&#xE5C4;");
+            $("#text-icon-search-nav").html("");
             $("#nome").focus();
         } else if (operacao === "edicao") {
             $("#icon-right-nav").removeAttr("data-activates");
@@ -148,6 +169,7 @@ var contaController = {
                 contaController.loadLista();
             });
             $("#text-icon-left-nav").html("&#xE5C4;");
+            $("#text-icon-search-nav").html("");
             $("#nome").focus();
         } else if (operacao === "multiplaEdicao") {
             $("#icon-right-nav").removeAttr("data-activates");
@@ -171,10 +193,11 @@ var contaController = {
                 contaController.loadLista();
             });
             $("#text-icon-left-nav").html("&#xE5C4;");
+            $("#text-icon-search-nav").html("");
             $('select').material_select();
             $("#select-campo").focus();
         }
-                
+
         if (cb) {
             cb();
         }
@@ -220,22 +243,26 @@ var contaController = {
         if (data.id) {
             data.id = data.id.replace("-", "");
             conta.id = data.id;
-            daoUtil.update(conta, function (rowsAffected) {
-                if (rowsAffected === 1) {
-                    alertUtil.confirm("Conta Alterada com sucesso!");
-                    contaController.loadLista();
-                } else {
-                    alertUtil.confirm("Problemas ao alterar Conta...");
-                }
+            this.validaObrigatoriedadeCampos(conta, function () {
+                daoUtil.update(conta, function (rowsAffected) {
+                    if (rowsAffected === 1) {
+                        alertUtil.confirm("Conta Alterada com sucesso!");
+                        contaController.loadLista();
+                    } else {
+                        alertUtil.confirm("Problemas ao alterar Conta...");
+                    }
+                });
             });
         } else {
-            daoUtil.insert(conta, function (rowsAffected) {
-                if (rowsAffected === 1) {
-                    alertUtil.confirm("Conta cadastrada com sucesso!");
-                    contaController.loadLista();
-                } else {
-                    alertUtil.confirm("Problemas ao inserir Conta...");
-                }
+            this.validaObrigatoriedadeCampos(conta, function () {
+                daoUtil.insert(conta, function (rowsAffected) {
+                    if (rowsAffected === 1) {
+                        alertUtil.confirm("Conta cadastrada com sucesso!");
+                        contaController.loadLista();
+                    } else {
+                        alertUtil.confirm("Problemas ao inserir Conta...");
+                    }
+                });
             });
         }
     },
@@ -270,6 +297,11 @@ var contaController = {
         var campo = $("#valor-campo").prop("name");
         var valorCampo = $("#valor-campo").val();
 
+        if (!valorCampo) {
+            alertUtil.confirm("Campo deve ser preenchido.");
+            return;
+        }
+
         for (var i = 0; i < ids.length; i++) {
             if (ids[i]) {
 
@@ -295,13 +327,26 @@ var contaController = {
             $("#valor-campo").prop("name", "nome");
             $("#valor-campo").prop("type", "text");
         } else if (campo === "dataFundacao") {
-            $("#prompt-campo").html("Data Saldo Início");
+            $("#prompt-campo").html("Data Início Saldo");
             $("#valor-campo").prop("name", "dataFundacao");
             $("#valor-campo").prop("type", "date");
         } else if (campo === "valorSaldoInicial") {
-            $("#prompt-campo").html("Saldo Inicial");
+            $("#prompt-campo").html("Valor Saldo Inicial");
             $("#valor-campo").prop("name", "valorSaldoInicial");
             $("#valor-campo").prop("type", "number");
+        }
+    },
+    validaObrigatoriedadeCampos: function (conta, callbackSucess) {
+        if (!conta.nome) {
+            alertUtil.confirm("Nome deve ser informado.");
+        } else if (!conta.dataFundacao) {
+            alertUtil.confirm("Data início do saldo deve ser informado.");
+        } else if (!conta.valorSaldoInicial) {
+            alertUtil.confirm("Valor do saldo inicial deve ser informado.");
+        } else {
+            if (callbackSucess) {
+                callbackSucess();
+            }
         }
     }
 }; 

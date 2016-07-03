@@ -19,11 +19,19 @@ var contaController = {
         daoUtil.getByRange(conta, "nome", inicial, final, function (results) {
             var data = {};
             data.contas = results;
-            contaController.render("lista", data, function () {                
+            contaController.render("lista", data, function () {
                 if (cb) {
                     cb();
                 }
             });
+        });
+    },
+    loadSearchedList: function (searchText) {
+        var conta = new Conta();
+        daoUtil.getByLIke(conta, searchText, "nome", function (res) {
+            var data = {};
+            data.contas = res;
+            contaController.render("lista", data);
         });
     },
     loadContaCadastro: function () {
@@ -31,7 +39,7 @@ var contaController = {
     },
     loadContaEdicao: function () {
         var contas = tableToJSON("#ul-list-contas", "li", "div");
-        var conta = {};
+        var conta = new Conta();
         var qtdeSelecionados = 0;
 
         for (var i = 0; i <= contas.length; i++) {
@@ -43,10 +51,6 @@ var contaController = {
                 } else {
                     conta.id += contas[i].id + "-";
                 }
-
-                conta.nome = contas[i].nome;
-                conta.dataFundacao = contas[i].dataFundacao;
-                conta.valorSaldoInicial = contas[i].valorSaldoInicial;
             }
         }
 
@@ -54,10 +58,13 @@ var contaController = {
             alertUtil.confirm("Selecione ao menos um (1) registro para editar.", " Editando...");
             return;
         } else if (qtdeSelecionados === 1) {
-            contaController.render("cadastro", conta);
+            conta.id = conta.id.replace("-", "");
+            daoUtil.getById(conta, function (res) {
+                contaController.render("edicao", res);
+            });
         } else if (qtdeSelecionados > 1) {
-            contaController.render("edicao", conta);
-        }        
+            contaController.render("multiplaEdicao", conta);
+        }
     },
     render: function (operacao, data, cb) {
         var html;
@@ -66,9 +73,12 @@ var contaController = {
             html = Mustache.render(this.TEMPLATE_CONTA_LISTA, data);
         } else if (operacao === "cadastro") {
             Mustache.parse(this.TEMPLATE_CONTA_CADASTRO);
-            data = (data) ? data : {};
+            data = {};
             html = Mustache.render(this.TEMPLATE_CONTA_CADASTRO, data);
         } else if (operacao === "edicao") {
+            Mustache.parse(this.TEMPLATE_CONTA_CADASTRO);
+            html = Mustache.render(this.TEMPLATE_CONTA_CADASTRO, data);
+        } else if (operacao === "multiplaEdicao") {
             Mustache.parse(this.TEMPLATE_CONTA_EDICAO);
             html = Mustache.render(this.TEMPLATE_CONTA_EDICAO, data);
         }
@@ -80,50 +90,112 @@ var contaController = {
         loaded();
 
         if (operacao === "lista") {
+            $("#icon-right-nav").removeClass("active");
             $("#icon-right-nav").attr("data-activates", "dropdown-contaLista");
             $("#text-icon-right-nav").html("&#xE5D4;");
+            $("#text-icon-right-nav").unbind("click");
             $(".dropdown-button").dropdown({
                 belowOrigin: true
             });
 
             $(".titulo-center-nav").html("CONTAS");
+            $("#icon-aux-titulo-center-nav").html("");
 
-            $("#icon-left-nav").unbind();
-            $(document).unbind("backbutton");
+            $("#icon-left-nav").unbind("click");
             $("#icon-left-nav").on("click", function () {
                 mainController.render();
             });
+
+            $(document).unbind("backbutton");
+            $(document).on("backbutton", function () {
+                if ($(".search-field").css("display") === "block") {
+                    mainController.closeSearchField();
+                } else {
+                    mainController.render();
+                }
+            });
+
             $("#text-icon-left-nav").html("&#xE5C4;");
+
+            $("#text-icon-search-nav").html("&#xE8B6;");
+            $("#input-search").unbind("keyup");
+            $("#input-search").on("keyup", function () {
+                contaController.loadSearchedList($("#input-search").val());
+            });
         } else if (operacao === "cadastro") {
-            $("#icon-right-nav").attr("data-activates", "");
+            $("#icon-right-nav").removeAttr("data-activates");
             $("#text-icon-right-nav").html("&#xE876;");
+            $("#text-icon-right-nav").on("click", function () {
+                contaController.insert();
+            });
+
             $(".dropdown-button").dropdown({
                 belowOrigin: true
             });
 
-            $(".titulo-center-nav").html("NOVA CONTA");
-            
+            $(".titulo-center-nav").html("CONTA");
+            $("#icon-aux-titulo-center-nav").html("&#xE148;");
+
             $("#icon-left-nav").unbind();
             $(document).unbind("backbutton");
             $("#icon-left-nav").on("click", function () {
+                contaController.loadLista();
+            });
+            $(document).on("backbutton", function () {
                 contaController.loadLista();
             });
             $("#text-icon-left-nav").html("&#xE5C4;");
+            $("#text-icon-search-nav").html("");
+            $("#nome").focus();
         } else if (operacao === "edicao") {
-            $("#icon-right-nav").attr("data-activates", "");
+            $("#icon-right-nav").removeAttr("data-activates");
             $("#text-icon-right-nav").html("&#xE876;");
+            $("#text-icon-right-nav").on("click", function () {
+                contaController.insert();
+            });
             $(".dropdown-button").dropdown({
                 belowOrigin: true
             });
-            
-            $(".titulo-center-nav").html("EDIÇÃO DE CONTA(S)");
-            
+
+            $(".titulo-center-nav").html("CONTA");
+            $("#icon-aux-titulo-center-nav").html("&#xE3C9;");
+
             $("#icon-left-nav").unbind();
             $(document).unbind("backbutton");
             $("#icon-left-nav").on("click", function () {
                 contaController.loadLista();
             });
-            $("#text-icon-left-nav").html("&#xE5C4;");                        
+            $(document).on("backbutton", function () {
+                contaController.loadLista();
+            });
+            $("#text-icon-left-nav").html("&#xE5C4;");
+            $("#text-icon-search-nav").html("");
+            $("#nome").focus();
+        } else if (operacao === "multiplaEdicao") {
+            $("#icon-right-nav").removeAttr("data-activates");
+            $("#text-icon-right-nav").html("&#xE876;");
+            $("#text-icon-right-nav").on("click", function () {
+                contaController.updateMultiplaEscolha();
+            });
+            $(".dropdown-button").dropdown({
+                belowOrigin: true
+            });
+
+            $(".titulo-center-nav").html("CONTAS");
+            $("#icon-aux-titulo-center-nav").html("&#xE3C9;");
+
+            $("#icon-left-nav").unbind();
+            $(document).unbind("backbutton");
+            $("#icon-left-nav").on("click", function () {
+                contaController.loadLista();
+            });
+            $(document).on("backbutton", function () {
+                contaController.loadLista();
+            });
+            $("#text-icon-left-nav").html("&#xE5C4;");
+            $("#text-icon-search-nav").html("");
+            $('select').material_select();
+            $("#select-campo").focus();
         }
 
         if (cb) {
@@ -134,9 +206,16 @@ var contaController = {
 
         if (!idConta) {
             var contas = tableToJSON("#ul-list-contas", "li", "div");
+
+            var checkedAll = $('#check-conta').prop("checked");
+            if (checkedAll && checkedAll === true) {
+                $('#check-conta').prop("checked", false);
+            } else {
+                $('#check-conta').prop("checked", true);
+            }
+
             for (var i = 0; i <= contas.length; i++) {
                 if (contas[i]) {
-                    var checkedAll = $('#check-conta').prop("checked");
                     $('#check-conta-' + contas[i].id).prop("checked", checkedAll);
                     this.checkInList(contas[i].id);
                 }
@@ -145,9 +224,11 @@ var contaController = {
 
         var checked = $('#check-conta-' + idConta).prop("checked");
         if (checked && checked === true) {
-            checked = 1;
-        } else {
+            $('#check-conta-' + idConta).prop("checked", false);
             checked = 0;
+        } else {
+            $('#check-conta-' + idConta).prop("checked", true);
+            checked = 1;
         }
         $('#conta-selecionada-' + idConta).html(checked);
     },
@@ -162,22 +243,26 @@ var contaController = {
         if (data.id) {
             data.id = data.id.replace("-", "");
             conta.id = data.id;
-            daoUtil.update(conta, function (rowsAffected) {
-                if (rowsAffected === 1) {
-                    alertUtil.confirm("Conta Alterada com sucesso!");
-                    contaController.loadLista();
-                } else {
-                    alertUtil.confirm("Problemas ao alterar Conta...");
-                }
+            this.validaObrigatoriedadeCampos(conta, function () {
+                daoUtil.update(conta, function (rowsAffected) {
+                    if (rowsAffected === 1) {
+                        alertUtil.confirm("Conta Alterada com sucesso!");
+                        contaController.loadLista();
+                    } else {
+                        alertUtil.confirm("Problemas ao alterar Conta...");
+                    }
+                });
             });
         } else {
-            daoUtil.insert(conta, function (rowsAffected) {
-                if (rowsAffected === 1) {
-                    alertUtil.confirm("Conta cadastrada com sucesso!");
-                    contaController.loadLista();
-                } else {
-                    alertUtil.confirm("Problemas ao inserir Conta...");
-                }
+            this.validaObrigatoriedadeCampos(conta, function () {
+                daoUtil.insert(conta, function (rowsAffected) {
+                    if (rowsAffected === 1) {
+                        alertUtil.confirm("Conta cadastrada com sucesso!");
+                        contaController.loadLista();
+                    } else {
+                        alertUtil.confirm("Problemas ao inserir Conta...");
+                    }
+                });
             });
         }
     },
@@ -212,6 +297,11 @@ var contaController = {
         var campo = $("#valor-campo").prop("name");
         var valorCampo = $("#valor-campo").val();
 
+        if (!valorCampo) {
+            alertUtil.confirm("Campo deve ser preenchido.");
+            return;
+        }
+
         for (var i = 0; i < ids.length; i++) {
             if (ids[i]) {
 
@@ -237,41 +327,26 @@ var contaController = {
             $("#valor-campo").prop("name", "nome");
             $("#valor-campo").prop("type", "text");
         } else if (campo === "dataFundacao") {
-            $("#prompt-campo").html("Data Saldo Início");
+            $("#prompt-campo").html("Data Início Saldo");
             $("#valor-campo").prop("name", "dataFundacao");
             $("#valor-campo").prop("type", "date");
         } else if (campo === "valorSaldoInicial") {
-            $("#prompt-campo").html("Saldo Inicial");
+            $("#prompt-campo").html("Valor Saldo Inicial");
             $("#valor-campo").prop("name", "valorSaldoInicial");
             $("#valor-campo").prop("type", "number");
         }
     },
-    mostraBotaoVoltar: function () {
-        $("#icone-menu").css("display", "none");
-        $("#icone-voltar").css("display", "initial");
-        $("#icone-voltar").unbind();
-        $(document).unbind("backbutton");
-    },
-    mostraBotaoVoltarCadastro: function () {
-        this.mostraBotaoVoltar();
-        $("#icone-voltar").click(function () {
-            contaController.loadLista();
-        });
-        $(document).bind("backbutton", function (evt) {
-            contaController.loadLista();
-        });
-    },
-    mostraBotaoVoltarLista: function () {
-        this.mostraBotaoVoltar();
-        $("#icone-voltar").click(function () {
-            mainController.render(function () {
-                mainController.mostraBotaoMenu();
-            });
-        });
-        $(document).bind("backbutton", function (evt) {
-            mainController.render(function () {
-                mainController.mostraBotaoMenu();
-            });
-        });
+    validaObrigatoriedadeCampos: function (conta, callbackSucess) {
+        if (!conta.nome) {
+            alertUtil.confirm("Nome deve ser informado.");
+        } else if (!conta.dataFundacao) {
+            alertUtil.confirm("Data início do saldo deve ser informado.");
+        } else if (!conta.valorSaldoInicial) {
+            alertUtil.confirm("Valor do saldo inicial deve ser informado.");
+        } else {
+            if (callbackSucess) {
+                callbackSucess();
+            }
+        }
     }
 }; 

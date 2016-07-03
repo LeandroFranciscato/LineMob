@@ -83,6 +83,7 @@ body {
 
 .options-left-nav{
     margin-right: 20px;
+    margin-left: 10px;
 }
 
 .menu-esquerdo{
@@ -124,5 +125,15 @@ body {
 }
 
 .invisible{
+    display:none;
+}
+
+.search-field {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    width: 100%;        
+    padding: 0;    
     display:none;
 }

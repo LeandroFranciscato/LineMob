@@ -70,22 +70,35 @@
             <div id="barra-topo" class="nav-wrapper">
                 <ul>
                     <li id="icon-left-nav" class="icon-left-nav">
-                        <i id="text-icon-left-nav" class="material-icons">&#xE5D2;</i>
+                        <i id="text-icon-left-nav" class="material-icons"></i>
                     </li>
 
-                    <li id="titulo-center-nav" class="titulo-center-nav center">
-                        LINEMOB
-                    </li>
+                    <li id="titulo-center-nav" class="titulo-center-nav center"></li>
 
                     <li>
                         <i id="icon-aux-titulo-center-nav" class="material-icons"></i>                       
                     </li>
 
                     <li id="icon-right-nav" class="options-left-nav right dropdown-button" data-activates="dropdown-menu">
-                        <i id="text-icon-right-nav" class="material-icons">&#xE5D4;</i>
+                        <i id="text-icon-right-nav" class="material-icons"></i>
+                    </li>
+
+                    <li id="icon-search-nav" class="right" onclick="mainController.openSearchField();">
+                        <i id="text-icon-search-nav" class="material-icons"></i>
                     </li>
                 </ul>
             </div>
+        </nav>
+
+        <nav class="search-field">
+            <form>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix" onclick="mainController.closeSearchField();">&#xE5C4;</i>
+                        <input id="input-search" type="text" class="validate" placeholder="Pesquisar...">
+                    </div>
+                </div>
+            </form>
         </nav>
 
         <div id="wrapper">

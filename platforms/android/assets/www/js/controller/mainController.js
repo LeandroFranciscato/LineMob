@@ -19,20 +19,23 @@ var mainController = {
             this.menuEsquerdo();
         }
 
+        $("#icon-right-nav").removeClass("active");
         $("#icon-right-nav").attr("data-activates", "dropdown-inicio");
         $("#text-icon-right-nav").html("&#xE5D4;");
         $(".dropdown-button").dropdown({
             belowOrigin: true
         });
 
-        $(".titulo-center-nav").html("LINEMOB");
+        $("#titulo-center-nav").html("LINEMOB");
+        $("#icon-aux-titulo-center-nav").html("");
 
         $("#icon-left-nav").unbind();
         $(document).unbind("backbutton");
-        $("#icon-left-nav").on("click", function () {            
+        $("#icon-left-nav").on("click", function () {
             mainController.menuEsquerdo();
         });
         $("#text-icon-left-nav").html("&#xE5D2;");
+        $("#text-icon-search-nav").html("");
 
         if (cb) {
             cb();
@@ -85,5 +88,12 @@ var mainController = {
         $("#icone-menu").css("display", "initial");
         $("#icone-voltar").css("display", "none");
         $(document).unbind("backbutton");
+    },
+    openSearchField: function () {
+        $(".search-field").css("display", "block");
+        $("#input-search").focus();                
+    },
+    closeSearchField: function () {
+        $(".search-field").css("display", "none");
     }
 };
