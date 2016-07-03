@@ -90,11 +90,16 @@ var mainController = {
         $(document).unbind("backbutton");
     },
     openSearchField: function () {
-        $(".search-field").css("display", "block");        
-        $("#input-search").focus();                
+        $(".search-field").css("display", "block");
+        $("#input-search").focus();
     },
     closeSearchField: function () {
         $(".search-field").css("display", "none");
+        this.cleanSearchField();
+    },
+    cleanSearchField: function () {
         $("#input-search").val("");
+        $("#input-search").focus();
+        $("#input-search").trigger("keyup");
     }
 };

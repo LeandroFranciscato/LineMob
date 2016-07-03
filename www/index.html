@@ -93,9 +93,14 @@
         <nav class="search-field">
             <form>
                 <div class="row">
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix" onclick="mainController.closeSearchField();">&#xE5C4;</i>
-                        <input id="input-search" type="text" class="validate" placeholder="Pesquisar...">
+                    <div class="col s1" onclick="mainController.closeSearchField();">
+                        <i class="material-icons prefix">&#xE5C4;</i>
+                    </div>
+                    <div class="input-field col s9">                        
+                        <input id="input-search" type="text" class="validate" placeholder="Pesquisar...">                                                
+                    </div>                    
+                    <div class="col s2" onclick="mainController.cleanSearchField();">
+                        <i class="material-icons prefix right">&#xE5CD;</i>
                     </div>
                 </div>
             </form>
@@ -103,6 +108,6 @@
 
         <div id="wrapper">
             <div id="scroller"></div>
-        </div>
+        </div>                
     </body>
 </html>
