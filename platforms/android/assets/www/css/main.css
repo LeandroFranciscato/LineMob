@@ -30,6 +30,11 @@ body {
     display: none;
 }
 
+#footer{    
+    margin-bottom: 0px;
+    color: #e53935;      
+}
+
 #wrapper {
     position: absolute;
     z-index: 1;

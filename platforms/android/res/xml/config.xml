@@ -20,7 +20,7 @@
     <author email="leandro_franciscato@hotmail.com" href="http://facebook.com/leandro.franciscato">
         Leandro Franciscato Team
     </author>
-    <content original-src="index.html" src="http://10.0.0.102:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />

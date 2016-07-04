@@ -2,7 +2,7 @@ function tableToJSON(tagMain, tagItem, tagField) {
     var table = $(tagMain);
     var tr = $(table).find(tagItem);
 
-    data = [];
+    var data = [];
 
     if (tr) {
         for (var i_tr = 1; i_tr < tr.length; i_tr++) {

@@ -4,11 +4,14 @@ var Entity = function (tableName) {
     this.id = "";
     this.tableName = tableName;
 
-    this.getFields = function (cb) {
+    this.getFields = function (cb, showId) {
         var fields = [];
         var values = [];
         for (var key in this) {
-            if (key != undefined && typeof this[key] !== 'function' && key !== "tableName" && key !== "id") {
+            if (key != undefined && typeof this[key] !== 'function' && key !== "tableName") {
+                if (key == "id" && !showId) {
+                    continue;
+                }
                 fields.push(key);
                 values.push("'" + this[key] + "'");
             }
@@ -130,7 +133,6 @@ var daoUtil = {
     getByLIke: function (entity, likeText, orderbyColumn, cb) {
         entity.getFields(function (fields, values) {
             var sql;
-
             for (var i = 0; i < fields.length; i++) {
 
                 if (sql) {
@@ -141,7 +143,6 @@ var daoUtil = {
 
                 sql += " select * from " + entity.tableName + " where " + fields[i] + " like '%" + likeText + "%'";
             }
-
             sql += ") order by " + orderbyColumn;
 
             dbUtil.executeSql(sql, [], function (res) {
@@ -151,7 +152,7 @@ var daoUtil = {
                     }
                 });
             });
-        });
+        }, true);
     },
     sucessGets: function (entity, res, cb) {
         if (res && res.rows && res.rows.item) {

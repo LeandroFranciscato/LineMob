@@ -12,7 +12,7 @@ var contaController = {
         }
 
         if (!final) {
-            final = 20;
+            final = 10;
         }
 
         var conta = new Conta();
@@ -31,7 +31,7 @@ var contaController = {
         daoUtil.getByLIke(conta, searchText, "nome", function (res) {
             var data = {};
             data.contas = res;
-            contaController.render("lista", data);
+            contaController.render("lista-search", data);
         });
     },
     loadContaCadastro: function () {
@@ -68,7 +68,7 @@ var contaController = {
     },
     render: function (operacao, data, cb) {
         var html;
-        if (operacao === "lista") {
+        if (operacao === "lista" || operacao === "lista-search") {
             Mustache.parse(this.TEMPLATE_CONTA_LISTA);
             html = Mustache.render(this.TEMPLATE_CONTA_LISTA, data);
         } else if (operacao === "cadastro") {
@@ -89,7 +89,7 @@ var contaController = {
         }
         loaded();
 
-        if (operacao === "lista") {
+        if (operacao === "lista" || operacao === "lista-search") {
             $("#icon-right-nav").removeClass("active");
             $("#icon-right-nav").attr("data-activates", "dropdown-contaLista");
             $("#text-icon-right-nav").html("&#xE5D4;");
@@ -105,7 +105,6 @@ var contaController = {
             $("#icon-left-nav").on("click", function () {
                 mainController.render();
             });
-
             $(document).unbind("backbutton");
             $(document).on("backbutton", function () {
                 if ($(".search-field").css("display") === "block") {
@@ -114,14 +113,45 @@ var contaController = {
                     mainController.render();
                 }
             });
-
             $("#text-icon-left-nav").html("&#xE5C4;");
 
             $("#text-icon-search-nav").html("&#xE8B6;");
+            $("#icon-back-search-field").unbind("click");
+            $("#icon-back-search-field").on("click", function () {
+                mainController.closeSearchField();
+            });
+            $("#icon-clean-search-field").unbind("click");
+            $("#icon-clean-search-field").on("click", function () {
+                mainController.cleanSearchField();
+                contaController.loadLista();
+            });
             $("#input-search").unbind("keyup");
             $("#input-search").on("keyup", function () {
-                contaController.loadSearchedList($("#input-search").val());
+                var textField = $("#input-search").val();
+                if (textField) {
+                    contaController.loadSearchedList(textField);
+                } else {
+                    contaController.loadLista();
+                }
             });
+
+            if (operacao === "lista") {
+                if (data.contas.length) {
+                    var entity = data.contas[0];
+                    daoUtil.getCount(entity, function (qtde) {
+                        if (qtde > data.contas.length) {
+                            $("#footer").css("display", "block");
+                            $("#text-footer").html("Carregar mais " + (qtde - data.contas.length) + "...");
+                            $("#footer").unbind("click");
+                            $("#footer").on("click", function () {
+                                contaController.loadLista(0, data.contas.length + 10, function () {
+                                    myScroll.scrollTo(0, myScroll.maxScrollY, 0);
+                                });
+                            });
+                        }
+                    });
+                }
+            }
         } else if (operacao === "cadastro") {
             $("#icon-right-nav").removeAttr("data-activates");
             $("#text-icon-right-nav").html("&#xE876;");
