@@ -92,7 +92,7 @@ var contaController = {
         if (operacao === "lista" || operacao === "lista-search") {
             $("#text-icon-right-nav").html("");
 
-            $("#btn-float").css("display", "block");            
+            $("#btn-float").css("display", "block");
             $("#btn-float-add").unbind("click");
             $("#btn-float-edit").unbind("click");
             $("#btn-float-remove").unbind("click");
@@ -178,7 +178,7 @@ var contaController = {
                 belowOrigin: true
             });
 
-            $("#btn-float").css("display", "none");           
+            $("#btn-float").css("display", "none");
 
             $(".titulo-center-nav").html("CONTA");
             $("#icon-aux-titulo-center-nav").html("&#xE145;");
@@ -321,11 +321,23 @@ var contaController = {
     },
     delete: function () {
 
+        var contas = tableToJSON("#ul-list-contas", "li", "div");
+        var qtSelecionadas = 0;
+        for (var i = 0; i <= contas.length; i++) {
+            if (contas[i] && contas[i].selecionado == 1) {
+                qtSelecionadas += 1;
+            }
+        }
+
+        if (qtSelecionadas === 0) {
+            alertUtil.confirm("Selecione algum registro para deletar!");
+            return;
+        }
+
         var buttons = ["Não", "Sim"];
-        alertUtil.confirm("Deseja realmente deletar?", "Deletando...", buttons, function (btn) {
+        alertUtil.confirm("Deseja realmente deletar " + qtSelecionadas + " registro(s)?", "Deletando...", buttons, function (btn) {
 
             if (btn == 2) {
-                var contas = tableToJSON("#ul-list-contas", "li", "div");
                 for (var i = 0; i <= contas.length; i++) {
 
                     if (contas[i] && contas[i].selecionado == 1) {
@@ -402,7 +414,7 @@ var contaController = {
             }
         }
     },
-    closeSearchField: function() {
+    closeSearchField: function () {
         mainController.closeSearchField();
         this.loadLista();
     }
