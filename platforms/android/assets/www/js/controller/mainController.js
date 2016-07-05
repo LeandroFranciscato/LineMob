@@ -25,6 +25,7 @@ var mainController = {
         $(".dropdown-button").dropdown({
             belowOrigin: true
         });
+        $("#btn-float").css("display","none");
 
         $("#titulo-center-nav").html("LINEMOB");
         $("#icon-aux-titulo-center-nav").html("");

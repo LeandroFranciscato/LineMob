@@ -90,13 +90,28 @@ var contaController = {
         loaded();
 
         if (operacao === "lista" || operacao === "lista-search") {
-            $("#icon-right-nav").removeClass("active");
-            $("#icon-right-nav").attr("data-activates", "dropdown-contaLista");
-            $("#text-icon-right-nav").html("&#xE5D4;");
-            $("#text-icon-right-nav").unbind("click");
-            $(".dropdown-button").dropdown({
-                belowOrigin: true
+            $("#text-icon-right-nav").html("");
+
+            $("#btn-float").css("display", "block");            
+            $("#btn-float-add").unbind("click");
+            $("#btn-float-edit").unbind("click");
+            $("#btn-float-remove").unbind("click");
+            $("#btn-float-add").on("click", function () {
+                $("#btn-float").removeClass("active");
+                mainController.closeSearchField();
+                contaController.loadContaCadastro();
             });
+            $("#btn-float-edit").on("click", function () {
+                $("#btn-float").removeClass("active");
+                mainController.closeSearchField();
+                contaController.loadContaEdicao();
+            });
+            $("#btn-float-remove").on("click", function () {
+                $("#btn-float").removeClass("active");
+                mainController.closeSearchField();
+                contaController.delete();
+            });
+
 
             $(".titulo-center-nav").html("CONTAS");
             $("#icon-aux-titulo-center-nav").html("");
@@ -159,6 +174,8 @@ var contaController = {
                 contaController.insert();
             });
 
+            $("#btn-float").css("display", "none");
+
             $(".dropdown-button").dropdown({
                 belowOrigin: true
             });
@@ -187,6 +204,8 @@ var contaController = {
                 belowOrigin: true
             });
 
+            $("#btn-float").css("display", "none");
+
             $(".titulo-center-nav").html("CONTA");
             $("#icon-aux-titulo-center-nav").html("&#xE3C9;");
 
@@ -210,6 +229,8 @@ var contaController = {
             $(".dropdown-button").dropdown({
                 belowOrigin: true
             });
+
+            $("#btn-float").css("display", "none");
 
             $(".titulo-center-nav").html("CONTAS");
             $("#icon-aux-titulo-center-nav").html("&#xE3C9;");

@@ -22,9 +22,11 @@ var mainController = {
         $("#icon-right-nav").removeClass("active");
         $("#icon-right-nav").attr("data-activates", "dropdown-inicio");
         $("#text-icon-right-nav").html("&#xE5D4;");
+        $("#text-icon-right-nav").unbind("click");
         $(".dropdown-button").dropdown({
             belowOrigin: true
         });
+        $("#btn-float").css("display", "none");
 
         $("#titulo-center-nav").html("LINEMOB");
         $("#icon-aux-titulo-center-nav").html("");
@@ -96,9 +98,10 @@ var mainController = {
     },
     closeSearchField: function () {
         $(".search-field").css("display", "none");
+        $("#input-search").val("");        
     },
     cleanSearchField: function () {
         $("#input-search").val("");
-        $("#input-search").focus();        
+        $("#input-search").focus();
     }
 };

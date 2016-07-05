@@ -90,13 +90,28 @@ var contaController = {
         loaded();
 
         if (operacao === "lista" || operacao === "lista-search") {
-            $("#icon-right-nav").removeClass("active");
-            $("#icon-right-nav").attr("data-activates", "dropdown-contaLista");
-            $("#text-icon-right-nav").html("&#xE5D4;");
-            $("#text-icon-right-nav").unbind("click");
-            $(".dropdown-button").dropdown({
-                belowOrigin: true
+            $("#text-icon-right-nav").html("");
+
+            $("#btn-float").css("display", "block");            
+            $("#btn-float-add").unbind("click");
+            $("#btn-float-edit").unbind("click");
+            $("#btn-float-remove").unbind("click");
+            $("#btn-float-add").on("click", function () {
+                closeFABMenu($("#btn-float"));
+                mainController.closeSearchField();
+                contaController.loadContaCadastro();
             });
+            $("#btn-float-edit").on("click", function () {
+                closeFABMenu($("#btn-float"));
+                mainController.closeSearchField();
+                contaController.loadContaEdicao();
+            });
+            $("#btn-float-remove").on("click", function () {
+                closeFABMenu($("#btn-float"));
+                mainController.closeSearchField();
+                contaController.delete();
+            });
+
 
             $(".titulo-center-nav").html("CONTAS");
             $("#icon-aux-titulo-center-nav").html("");
@@ -108,7 +123,7 @@ var contaController = {
             $(document).unbind("backbutton");
             $(document).on("backbutton", function () {
                 if ($(".search-field").css("display") === "block") {
-                    mainController.closeSearchField();
+                    contaController.closeSearchField();
                 } else {
                     mainController.render();
                 }
@@ -118,7 +133,7 @@ var contaController = {
             $("#text-icon-search-nav").html("&#xE8B6;");
             $("#icon-back-search-field").unbind("click");
             $("#icon-back-search-field").on("click", function () {
-                mainController.closeSearchField();
+                contaController.closeSearchField();
             });
             $("#icon-clean-search-field").unbind("click");
             $("#icon-clean-search-field").on("click", function () {
@@ -155,16 +170,18 @@ var contaController = {
         } else if (operacao === "cadastro") {
             $("#icon-right-nav").removeAttr("data-activates");
             $("#text-icon-right-nav").html("&#xE876;");
+            $("#text-icon-right-nav").unbind("click");
             $("#text-icon-right-nav").on("click", function () {
                 contaController.insert();
             });
-
             $(".dropdown-button").dropdown({
                 belowOrigin: true
             });
 
+            $("#btn-float").css("display", "none");           
+
             $(".titulo-center-nav").html("CONTA");
-            $("#icon-aux-titulo-center-nav").html("&#xE148;");
+            $("#icon-aux-titulo-center-nav").html("&#xE145;");
 
             $("#icon-left-nav").unbind();
             $(document).unbind("backbutton");
@@ -180,12 +197,15 @@ var contaController = {
         } else if (operacao === "edicao") {
             $("#icon-right-nav").removeAttr("data-activates");
             $("#text-icon-right-nav").html("&#xE876;");
+            $("#text-icon-right-nav").unbind("click");
             $("#text-icon-right-nav").on("click", function () {
                 contaController.insert();
             });
             $(".dropdown-button").dropdown({
                 belowOrigin: true
             });
+
+            $("#btn-float").css("display", "none");
 
             $(".titulo-center-nav").html("CONTA");
             $("#icon-aux-titulo-center-nav").html("&#xE3C9;");
@@ -204,12 +224,15 @@ var contaController = {
         } else if (operacao === "multiplaEdicao") {
             $("#icon-right-nav").removeAttr("data-activates");
             $("#text-icon-right-nav").html("&#xE876;");
+            $("#text-icon-right-nav").unbind("click");
             $("#text-icon-right-nav").on("click", function () {
                 contaController.updateMultiplaEscolha();
             });
             $(".dropdown-button").dropdown({
                 belowOrigin: true
             });
+
+            $("#btn-float").css("display", "none");
 
             $(".titulo-center-nav").html("CONTAS");
             $("#icon-aux-titulo-center-nav").html("&#xE3C9;");
@@ -378,5 +401,9 @@ var contaController = {
                 callbackSucess();
             }
         }
+    },
+    closeSearchField: function() {
+        mainController.closeSearchField();
+        this.loadLista();
     }
 }; 
