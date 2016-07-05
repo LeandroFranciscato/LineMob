@@ -13,7 +13,7 @@ var mainController = {
         var html = Mustache.render(this.TEMPLATE_MAIN);
         $(this.OBJECT_TO_BIND).html(html);
 
-        loaded();
+        loadScroll();
         this.bindEvents();
         if (this.SITUACAO_MENU_ESQUERDO === 1) {
             this.menuEsquerdo();
@@ -90,18 +90,5 @@ var mainController = {
         $("#icone-menu").css("display", "initial");
         $("#icone-voltar").css("display", "none");
         $(document).unbind("backbutton");
-    },
-    openSearchField: function () {
-        $(".search-field").css("display", "block");
-        $("#input-search").focus();
-        $("#input-search").trigger("keyup");
-    },
-    closeSearchField: function () {
-        $(".search-field").css("display", "none");
-        $("#input-search").val("");        
-    },
-    cleanSearchField: function () {
-        $("#input-search").val("");
-        $("#input-search").focus();
     }
 };

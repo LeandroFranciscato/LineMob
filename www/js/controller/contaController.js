@@ -1,37 +1,42 @@
-/* global Mustache, logUtil, mainController, alertUtil, daoUtil */
+/* global Mustache, logUtil, mainController, alertUtil, daoUtil, Controller, iconUtil */
 
 var contaController = {
     TEMPLATE_CONTA_CADASTRO: "",
     TEMPLATE_CONTA_LISTA: "",
     TEMPLATE_CONTA_EDICAO: "",
     OBJECT_TO_BIND: "#scroller",
-    loadLista: function (inicial, final, cb) {
+    loadLista: function (cb) {
 
-        if (!inicial) {
-            inicial = 0;
-        }
-
-        if (!final) {
-            final = 10;
-        }
-
-        var conta = new Conta();
-        daoUtil.getByRange(conta, "nome", inicial, final, function (results) {
-            var data = {};
-            data.contas = results;
-            contaController.render("lista", data, function () {
-                if (cb) {
-                    cb();
+        Controller.loadList({
+            entity: new Conta(),            
+            orderBy: "nome",
+            template: this.TEMPLATE_CONTA_LISTA,
+            floatButton: {
+                display: "block",
+                callbackAdd: function () {
+                    contaController.loadContaCadastro();
+                },
+                callbackEdit: function () {
+                    contaController.loadContaEdicao();
+                },
+                callbackRemove: function () {
+                    contaController.delete();
                 }
-            });
-        });
-    },
-    loadSearchedList: function (searchText) {
-        var conta = new Conta();
-        daoUtil.getByLIke(conta, searchText, "nome", function (res) {
-            var data = {};
-            data.contas = res;
-            contaController.render("lista-search", data);
+            },
+            navCenter: {
+                title: "CONTAS",
+                icon: ""
+            },
+            navLeft: {
+                icon: iconUtil.back,
+                callbackClick: function () {
+                    mainController.render();
+                }
+            }
+        }, function () {
+            if (cb) {
+                cb();
+            }
         });
     },
     loadContaCadastro: function () {
@@ -87,7 +92,7 @@ var contaController = {
         if (mainController.SITUACAO_MENU_ESQUERDO === 1) {
             mainController.menuEsquerdo();
         }
-        loaded();
+        loadScroll();
 
         if (operacao === "lista" || operacao === "lista-search") {
             $("#text-icon-right-nav").html("");
@@ -151,15 +156,15 @@ var contaController = {
             });
 
             if (operacao === "lista") {
-                if (data.contas.length) {
-                    var entity = data.contas[0];
+                if (data.conta.length) {
+                    var entity = data.conta[0];
                     daoUtil.getCount(entity, function (qtde) {
-                        if (qtde > data.contas.length) {
+                        if (qtde > data.conta.length) {
                             $("#footer").css("display", "block");
-                            $("#text-footer").html("Carregar mais " + (qtde - data.contas.length) + "...");
+                            $("#text-footer").html("Carregar mais " + (qtde - data.conta.length) + "...");
                             $("#footer").unbind("click");
                             $("#footer").on("click", function () {
-                                contaController.loadLista(0, data.contas.length + 10, function () {
+                                contaController.loadLista(0, data.conta.length + 10, function () {
                                     myScroll.scrollTo(0, myScroll.maxScrollY, 0);
                                 });
                             });
