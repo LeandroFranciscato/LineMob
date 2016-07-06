@@ -13,7 +13,7 @@ var mainController = {
         var html = Mustache.render(this.TEMPLATE_MAIN);
         $(this.OBJECT_TO_BIND).html(html);
 
-        loaded();
+        loadScroll();
         this.bindEvents();
         if (this.SITUACAO_MENU_ESQUERDO === 1) {
             this.menuEsquerdo();
@@ -22,10 +22,11 @@ var mainController = {
         $("#icon-right-nav").removeClass("active");
         $("#icon-right-nav").attr("data-activates", "dropdown-inicio");
         $("#text-icon-right-nav").html("&#xE5D4;");
+        $("#text-icon-right-nav").unbind("click");
         $(".dropdown-button").dropdown({
             belowOrigin: true
         });
-        $("#btn-float").css("display","none");
+        $("#btn-float").css("display", "none");
 
         $("#titulo-center-nav").html("LINEMOB");
         $("#icon-aux-titulo-center-nav").html("");
@@ -89,17 +90,5 @@ var mainController = {
         $("#icone-menu").css("display", "initial");
         $("#icone-voltar").css("display", "none");
         $(document).unbind("backbutton");
-    },
-    openSearchField: function () {
-        $(".search-field").css("display", "block");
-        $("#input-search").focus();
-        $("#input-search").trigger("keyup");
-    },
-    closeSearchField: function () {
-        $(".search-field").css("display", "none");
-    },
-    cleanSearchField: function () {
-        $("#input-search").val("");
-        $("#input-search").focus();        
     }
 };

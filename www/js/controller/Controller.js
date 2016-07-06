@@ -169,12 +169,16 @@ var Controller = {
         $("#icon-back-search-field").on("click", function () {
             Controller.closeSearchField();
             currentOptions.paginator = "1";
+            currentOptions.inicial = undefined;
+            currentOptions.final = undefined;
             Controller.loadList(currentOptions);
         });
 
         $("#icon-clean-search-field").on("click", function () {
-            Controller.cleanSearchField();            
+            Controller.cleanSearchField();
             currentOptions.paginator = "1";
+            currentOptions.inicial = undefined;
+            currentOptions.final = undefined;
             Controller.loadList(currentOptions);
         });
 
@@ -183,14 +187,16 @@ var Controller = {
             if (textField) {
                 currentOptions.paginator = "0";
                 Controller.loadSearchedList(currentOptions, textField);
-            } else {                
+            } else {
                 currentOptions.paginator = "1";
+                currentOptions.inicial = undefined;
+                currentOptions.final = undefined;
                 Controller.loadList(currentOptions);
             }
         });
     },
     setPaginator: function (data, currentOptions) {
-        if (this.options.paginator === "1"){
+        if (this.options.paginator === "1") {
             var dataArray = data[this.options.entity.tableName];
             if (dataArray.length) {
                 var entity = dataArray[0];

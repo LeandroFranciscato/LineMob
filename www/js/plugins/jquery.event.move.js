@@ -579,7 +579,7 @@
 			    l = props.length;
 			
 			while (l--) {
-				if (jQuery.event.props.indexOf(props[l]) === -1) {
+				if (jQuery.event && jQuery.event.props && jQuery.event.props.indexOf(props[l]) === -1) {
 					jQuery.event.props.push(props[l]);
 				}
 			}

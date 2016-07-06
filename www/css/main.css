@@ -76,19 +76,18 @@ body {
     background-color: #e53935;           
 }
 
-.icon-left-nav{
+.icon-left-nav,.icon-back-search-field{
     margin-left: 10px;
+}
+.icon-search-nav,.icon-clean-search-field{
+    margin-right: 10px;
+    
 }
 
 .titulo-center-nav{
     font-size: x-large;
     font-weight: bold;    
     margin-left: 20px; 
-}
-
-.options-left-nav{
-    margin-right: 20px;
-    margin-left: 10px;
 }
 
 .menu-esquerdo{

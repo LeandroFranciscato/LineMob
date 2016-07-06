@@ -1,37 +1,42 @@
-/* global Mustache, logUtil, mainController, alertUtil, daoUtil */
+/* global Mustache, logUtil, mainController, alertUtil, daoUtil, Controller, iconUtil */
 
 var contaController = {
     TEMPLATE_CONTA_CADASTRO: "",
     TEMPLATE_CONTA_LISTA: "",
     TEMPLATE_CONTA_EDICAO: "",
     OBJECT_TO_BIND: "#scroller",
-    loadLista: function (inicial, final, cb) {
+    loadLista: function (cb) {
 
-        if (!inicial) {
-            inicial = 0;
-        }
-
-        if (!final) {
-            final = 10;
-        }
-
-        var conta = new Conta();
-        daoUtil.getByRange(conta, "nome", inicial, final, function (results) {
-            var data = {};
-            data.contas = results;
-            contaController.render("lista", data, function () {
-                if (cb) {
-                    cb();
+        Controller.loadList({
+            entity: new Conta(),            
+            orderBy: "nome",
+            template: this.TEMPLATE_CONTA_LISTA,
+            floatButton: {
+                display: "block",
+                callbackAdd: function () {
+                    contaController.loadContaCadastro();
+                },
+                callbackEdit: function () {
+                    contaController.loadContaEdicao();
+                },
+                callbackRemove: function () {
+                    contaController.delete();
                 }
-            });
-        });
-    },
-    loadSearchedList: function (searchText) {
-        var conta = new Conta();
-        daoUtil.getByLIke(conta, searchText, "nome", function (res) {
-            var data = {};
-            data.contas = res;
-            contaController.render("lista-search", data);
+            },
+            navCenter: {
+                title: "CONTAS",
+                icon: ""
+            },
+            navLeft: {
+                icon: iconUtil.back,
+                callbackClick: function () {
+                    mainController.render();
+                }
+            }
+        }, function () {
+            if (cb) {
+                cb();
+            }
         });
     },
     loadContaCadastro: function () {
@@ -87,27 +92,27 @@ var contaController = {
         if (mainController.SITUACAO_MENU_ESQUERDO === 1) {
             mainController.menuEsquerdo();
         }
-        loaded();
+        loadScroll();
 
         if (operacao === "lista" || operacao === "lista-search") {
             $("#text-icon-right-nav").html("");
 
-            $("#btn-float").css("display", "block");            
+            $("#btn-float").css("display", "block");
             $("#btn-float-add").unbind("click");
             $("#btn-float-edit").unbind("click");
             $("#btn-float-remove").unbind("click");
             $("#btn-float-add").on("click", function () {
-                $("#btn-float").removeClass("active");
+                closeFABMenu($("#btn-float"));
                 mainController.closeSearchField();
                 contaController.loadContaCadastro();
             });
             $("#btn-float-edit").on("click", function () {
-                $("#btn-float").removeClass("active");
+                closeFABMenu($("#btn-float"));
                 mainController.closeSearchField();
                 contaController.loadContaEdicao();
             });
             $("#btn-float-remove").on("click", function () {
-                $("#btn-float").removeClass("active");
+                closeFABMenu($("#btn-float"));
                 mainController.closeSearchField();
                 contaController.delete();
             });
@@ -123,7 +128,7 @@ var contaController = {
             $(document).unbind("backbutton");
             $(document).on("backbutton", function () {
                 if ($(".search-field").css("display") === "block") {
-                    mainController.closeSearchField();
+                    contaController.closeSearchField();
                 } else {
                     mainController.render();
                 }
@@ -133,7 +138,7 @@ var contaController = {
             $("#text-icon-search-nav").html("&#xE8B6;");
             $("#icon-back-search-field").unbind("click");
             $("#icon-back-search-field").on("click", function () {
-                mainController.closeSearchField();
+                contaController.closeSearchField();
             });
             $("#icon-clean-search-field").unbind("click");
             $("#icon-clean-search-field").on("click", function () {
@@ -151,15 +156,15 @@ var contaController = {
             });
 
             if (operacao === "lista") {
-                if (data.contas.length) {
-                    var entity = data.contas[0];
+                if (data.conta.length) {
+                    var entity = data.conta[0];
                     daoUtil.getCount(entity, function (qtde) {
-                        if (qtde > data.contas.length) {
+                        if (qtde > data.conta.length) {
                             $("#footer").css("display", "block");
-                            $("#text-footer").html("Carregar mais " + (qtde - data.contas.length) + "...");
+                            $("#text-footer").html("Carregar mais " + (qtde - data.conta.length) + "...");
                             $("#footer").unbind("click");
                             $("#footer").on("click", function () {
-                                contaController.loadLista(0, data.contas.length + 10, function () {
+                                contaController.loadLista(0, data.conta.length + 10, function () {
                                     myScroll.scrollTo(0, myScroll.maxScrollY, 0);
                                 });
                             });
@@ -170,18 +175,18 @@ var contaController = {
         } else if (operacao === "cadastro") {
             $("#icon-right-nav").removeAttr("data-activates");
             $("#text-icon-right-nav").html("&#xE876;");
+            $("#text-icon-right-nav").unbind("click");
             $("#text-icon-right-nav").on("click", function () {
                 contaController.insert();
             });
-
-            $("#btn-float").css("display", "none");
-
             $(".dropdown-button").dropdown({
                 belowOrigin: true
             });
 
+            $("#btn-float").css("display", "none");
+
             $(".titulo-center-nav").html("CONTA");
-            $("#icon-aux-titulo-center-nav").html("&#xE148;");
+            $("#icon-aux-titulo-center-nav").html("&#xE145;");
 
             $("#icon-left-nav").unbind();
             $(document).unbind("backbutton");
@@ -197,6 +202,7 @@ var contaController = {
         } else if (operacao === "edicao") {
             $("#icon-right-nav").removeAttr("data-activates");
             $("#text-icon-right-nav").html("&#xE876;");
+            $("#text-icon-right-nav").unbind("click");
             $("#text-icon-right-nav").on("click", function () {
                 contaController.insert();
             });
@@ -223,6 +229,7 @@ var contaController = {
         } else if (operacao === "multiplaEdicao") {
             $("#icon-right-nav").removeAttr("data-activates");
             $("#text-icon-right-nav").html("&#xE876;");
+            $("#text-icon-right-nav").unbind("click");
             $("#text-icon-right-nav").on("click", function () {
                 contaController.updateMultiplaEscolha();
             });
@@ -319,11 +326,23 @@ var contaController = {
     },
     delete: function () {
 
+        var contas = tableToJSON("#ul-list-contas", "li", "div");
+        var qtSelecionadas = 0;
+        for (var i = 0; i <= contas.length; i++) {
+            if (contas[i] && contas[i].selecionado == 1) {
+                qtSelecionadas += 1;
+            }
+        }
+
+        if (qtSelecionadas === 0) {
+            alertUtil.confirm("Selecione algum registro para deletar!");
+            return;
+        }
+
         var buttons = ["Não", "Sim"];
-        alertUtil.confirm("Deseja realmente deletar?", "Deletando...", buttons, function (btn) {
+        alertUtil.confirm("Deseja realmente deletar " + qtSelecionadas + " registro(s)?", "Deletando...", buttons, function (btn) {
 
             if (btn == 2) {
-                var contas = tableToJSON("#ul-list-contas", "li", "div");
                 for (var i = 0; i <= contas.length; i++) {
 
                     if (contas[i] && contas[i].selecionado == 1) {
@@ -399,5 +418,9 @@ var contaController = {
                 callbackSucess();
             }
         }
+    },
+    closeSearchField: function () {
+        mainController.closeSearchField();
+        this.loadLista();
     }
 }; 

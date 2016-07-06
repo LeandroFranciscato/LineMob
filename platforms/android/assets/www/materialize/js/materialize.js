@@ -3717,7 +3717,7 @@ $(document).ready(function(){
     }
   };
 
-  var closeFABMenu = function (btn) {
+  closeFABMenu = function (btn) {
     $this = btn;
     // Get direction option
     var horizontal = $this.hasClass('horizontal');

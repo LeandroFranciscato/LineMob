@@ -91,7 +91,12 @@ var daoUtil = {
         });
     },
     getAll: function (entity, orderByColumn, cb) {
-        var sql = "select * from " + entity.tableName + " order by " + orderByColumn;
+        var sql = "select * from " + entity.tableName;
+
+        if (orderByColumn) {
+            sql += " order by " + orderByColumn;
+        }
+
         dbUtil.executeSql(sql, [], function (res) {
             daoUtil.sucessGets(entity, res, function (retorno) {
                 if (cb) {
@@ -111,7 +116,14 @@ var daoUtil = {
         });
     },
     getByRange: function (entity, orderByColumn, start, end, cb) {
-        var sql = "select * from " + entity.tableName + " order by " + orderByColumn + " limit ?, ?";
+        var sql = "select * from " + entity.tableName
+
+        if (orderByColumn) {
+            sql += " order by " + orderByColumn;
+        }
+
+        sql += " limit ?, ?";
+
         dbUtil.executeSql(sql, [start, end], function (res) {
             daoUtil.sucessGets(entity, res, function (retorno) {
                 if (cb) {
@@ -143,7 +155,11 @@ var daoUtil = {
 
                 sql += " select * from " + entity.tableName + " where " + fields[i] + " like '%" + likeText + "%'";
             }
-            sql += ") order by " + orderbyColumn;
+            sql += ")";
+
+            if (orderbyColumn) {
+                sql += " order by " + orderbyColumn;
+            }
 
             dbUtil.executeSql(sql, [], function (res) {
                 daoUtil.sucessGets(entity, res, function (retorno) {
