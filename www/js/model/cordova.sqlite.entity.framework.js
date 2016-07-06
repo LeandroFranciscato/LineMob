@@ -116,7 +116,7 @@ var daoUtil = {
         });
     },
     getByRange: function (entity, orderByColumn, start, end, cb) {
-        var sql = "select * from " + entity.tableName
+        var sql = "select * from " + entity.tableName;
 
         if (orderByColumn) {
             sql += " order by " + orderByColumn;

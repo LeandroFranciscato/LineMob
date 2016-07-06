@@ -116,7 +116,7 @@ var daoUtil = {
         });
     },
     getByRange: function (entity, orderByColumn, start, end, cb) {
-        var sql = "select * from " + entity.tableName
+        var sql = "select * from " + entity.tableName;
 
         if (orderByColumn) {
             sql += " order by " + orderByColumn;
@@ -240,28 +240,5 @@ var dbUtil = {
                         });
             });
         });
-    }
-};
-
-var alertUtil = {
-    confirm: function (mensagem, titulo, buttons, cb) {
-
-        if (!titulo) {
-            titulo = "";
-        }
-
-        if (!buttons) {
-            buttons = [];
-            buttons.push("OK");
-        }
-        navigator.notification.confirm(
-                mensagem,
-                function (btnEscolhido) {
-                    if (cb) {
-                        cb(btnEscolhido);
-                    }
-                },
-                titulo,
-                buttons);
     }
 };

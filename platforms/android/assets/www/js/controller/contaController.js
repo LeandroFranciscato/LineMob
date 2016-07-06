@@ -4,13 +4,22 @@ var contaController = {
     TEMPLATE_CONTA_CADASTRO: "",
     TEMPLATE_CONTA_LISTA: "",
     TEMPLATE_CONTA_EDICAO: "",
-    OBJECT_TO_BIND: "#scroller",
     loadLista: function (cb) {
 
         Controller.loadList({
-            entity: new Conta(),            
+            entity: new Conta(),
             orderBy: "nome",
             template: this.TEMPLATE_CONTA_LISTA,
+            navLeft: {
+                icon: iconUtil.back,
+                callbackClick: function () {
+                    mainController.render();
+                }
+            },
+            navCenter: {
+                title: "CONTAS",
+                icon: ""
+            },
             floatButton: {
                 display: "block",
                 callbackAdd: function () {
@@ -22,16 +31,6 @@ var contaController = {
                 callbackRemove: function () {
                     contaController.delete();
                 }
-            },
-            navCenter: {
-                title: "CONTAS",
-                icon: ""
-            },
-            navLeft: {
-                icon: iconUtil.back,
-                callbackClick: function () {
-                    mainController.render();
-                }
             }
         }, function () {
             if (cb) {
@@ -39,8 +38,25 @@ var contaController = {
             }
         });
     },
-    loadContaCadastro: function () {
-        contaController.render("cadastro");
+    loadContaCadastro: function (cb) {
+        Controller.loadCadastro({
+            entity: new Conta(),
+            template: this.TEMPLATE_CONTA_CADASTRO,
+            navLeft: {
+                icon: iconUtil.back,
+                callbackClick: function () {
+                    contaController.loadLista();
+                }
+            },
+            navCenter: {
+                title: "CONTA",
+                icon: iconUtil.add
+            },            
+        }, function () {
+            if (cb) {
+                cb();
+            }
+        });
     },
     loadContaEdicao: function () {
         var contas = tableToJSON("#ul-list-contas", "li", "div");
@@ -69,195 +85,6 @@ var contaController = {
             });
         } else if (qtdeSelecionados > 1) {
             contaController.render("multiplaEdicao", conta);
-        }
-    },
-    render: function (operacao, data, cb) {
-        var html;
-        if (operacao === "lista" || operacao === "lista-search") {
-            Mustache.parse(this.TEMPLATE_CONTA_LISTA);
-            html = Mustache.render(this.TEMPLATE_CONTA_LISTA, data);
-        } else if (operacao === "cadastro") {
-            Mustache.parse(this.TEMPLATE_CONTA_CADASTRO);
-            data = {};
-            html = Mustache.render(this.TEMPLATE_CONTA_CADASTRO, data);
-        } else if (operacao === "edicao") {
-            Mustache.parse(this.TEMPLATE_CONTA_CADASTRO);
-            html = Mustache.render(this.TEMPLATE_CONTA_CADASTRO, data);
-        } else if (operacao === "multiplaEdicao") {
-            Mustache.parse(this.TEMPLATE_CONTA_EDICAO);
-            html = Mustache.render(this.TEMPLATE_CONTA_EDICAO, data);
-        }
-
-        $(contaController.OBJECT_TO_BIND).html(html);
-        if (mainController.SITUACAO_MENU_ESQUERDO === 1) {
-            mainController.menuEsquerdo();
-        }
-        loadScroll();
-
-        if (operacao === "lista" || operacao === "lista-search") {
-            $("#text-icon-right-nav").html("");
-
-            $("#btn-float").css("display", "block");
-            $("#btn-float-add").unbind("click");
-            $("#btn-float-edit").unbind("click");
-            $("#btn-float-remove").unbind("click");
-            $("#btn-float-add").on("click", function () {
-                closeFABMenu($("#btn-float"));
-                mainController.closeSearchField();
-                contaController.loadContaCadastro();
-            });
-            $("#btn-float-edit").on("click", function () {
-                closeFABMenu($("#btn-float"));
-                mainController.closeSearchField();
-                contaController.loadContaEdicao();
-            });
-            $("#btn-float-remove").on("click", function () {
-                closeFABMenu($("#btn-float"));
-                mainController.closeSearchField();
-                contaController.delete();
-            });
-
-
-            $(".titulo-center-nav").html("CONTAS");
-            $("#icon-aux-titulo-center-nav").html("");
-
-            $("#icon-left-nav").unbind("click");
-            $("#icon-left-nav").on("click", function () {
-                mainController.render();
-            });
-            $(document).unbind("backbutton");
-            $(document).on("backbutton", function () {
-                if ($(".search-field").css("display") === "block") {
-                    contaController.closeSearchField();
-                } else {
-                    mainController.render();
-                }
-            });
-            $("#text-icon-left-nav").html("&#xE5C4;");
-
-            $("#text-icon-search-nav").html("&#xE8B6;");
-            $("#icon-back-search-field").unbind("click");
-            $("#icon-back-search-field").on("click", function () {
-                contaController.closeSearchField();
-            });
-            $("#icon-clean-search-field").unbind("click");
-            $("#icon-clean-search-field").on("click", function () {
-                mainController.cleanSearchField();
-                contaController.loadLista();
-            });
-            $("#input-search").unbind("keyup");
-            $("#input-search").on("keyup", function () {
-                var textField = $("#input-search").val();
-                if (textField) {
-                    contaController.loadSearchedList(textField);
-                } else {
-                    contaController.loadLista();
-                }
-            });
-
-            if (operacao === "lista") {
-                if (data.conta.length) {
-                    var entity = data.conta[0];
-                    daoUtil.getCount(entity, function (qtde) {
-                        if (qtde > data.conta.length) {
-                            $("#footer").css("display", "block");
-                            $("#text-footer").html("Carregar mais " + (qtde - data.conta.length) + "...");
-                            $("#footer").unbind("click");
-                            $("#footer").on("click", function () {
-                                contaController.loadLista(0, data.conta.length + 10, function () {
-                                    myScroll.scrollTo(0, myScroll.maxScrollY, 0);
-                                });
-                            });
-                        }
-                    });
-                }
-            }
-        } else if (operacao === "cadastro") {
-            $("#icon-right-nav").removeAttr("data-activates");
-            $("#text-icon-right-nav").html("&#xE876;");
-            $("#text-icon-right-nav").unbind("click");
-            $("#text-icon-right-nav").on("click", function () {
-                contaController.insert();
-            });
-            $(".dropdown-button").dropdown({
-                belowOrigin: true
-            });
-
-            $("#btn-float").css("display", "none");
-
-            $(".titulo-center-nav").html("CONTA");
-            $("#icon-aux-titulo-center-nav").html("&#xE145;");
-
-            $("#icon-left-nav").unbind();
-            $(document).unbind("backbutton");
-            $("#icon-left-nav").on("click", function () {
-                contaController.loadLista();
-            });
-            $(document).on("backbutton", function () {
-                contaController.loadLista();
-            });
-            $("#text-icon-left-nav").html("&#xE5C4;");
-            $("#text-icon-search-nav").html("");
-            $("#nome").focus();
-        } else if (operacao === "edicao") {
-            $("#icon-right-nav").removeAttr("data-activates");
-            $("#text-icon-right-nav").html("&#xE876;");
-            $("#text-icon-right-nav").unbind("click");
-            $("#text-icon-right-nav").on("click", function () {
-                contaController.insert();
-            });
-            $(".dropdown-button").dropdown({
-                belowOrigin: true
-            });
-
-            $("#btn-float").css("display", "none");
-
-            $(".titulo-center-nav").html("CONTA");
-            $("#icon-aux-titulo-center-nav").html("&#xE3C9;");
-
-            $("#icon-left-nav").unbind();
-            $(document).unbind("backbutton");
-            $("#icon-left-nav").on("click", function () {
-                contaController.loadLista();
-            });
-            $(document).on("backbutton", function () {
-                contaController.loadLista();
-            });
-            $("#text-icon-left-nav").html("&#xE5C4;");
-            $("#text-icon-search-nav").html("");
-            $("#nome").focus();
-        } else if (operacao === "multiplaEdicao") {
-            $("#icon-right-nav").removeAttr("data-activates");
-            $("#text-icon-right-nav").html("&#xE876;");
-            $("#text-icon-right-nav").unbind("click");
-            $("#text-icon-right-nav").on("click", function () {
-                contaController.updateMultiplaEscolha();
-            });
-            $(".dropdown-button").dropdown({
-                belowOrigin: true
-            });
-
-            $("#btn-float").css("display", "none");
-
-            $(".titulo-center-nav").html("CONTAS");
-            $("#icon-aux-titulo-center-nav").html("&#xE3C9;");
-
-            $("#icon-left-nav").unbind();
-            $(document).unbind("backbutton");
-            $("#icon-left-nav").on("click", function () {
-                contaController.loadLista();
-            });
-            $(document).on("backbutton", function () {
-                contaController.loadLista();
-            });
-            $("#text-icon-left-nav").html("&#xE5C4;");
-            $("#text-icon-search-nav").html("");
-            $('select').material_select();
-            $("#select-campo").focus();
-        }
-
-        if (cb) {
-            cb();
         }
     },
     checkInList: function (idConta) {
@@ -301,7 +128,7 @@ var contaController = {
         if (data.id) {
             data.id = data.id.replace("-", "");
             conta.id = data.id;
-            this.validaObrigatoriedadeCampos(conta, function () {
+            this.validaFormulario(conta, function () {
                 daoUtil.update(conta, function (rowsAffected) {
                     if (rowsAffected === 1) {
                         alertUtil.confirm("Conta Alterada com sucesso!");
@@ -312,7 +139,7 @@ var contaController = {
                 });
             });
         } else {
-            this.validaObrigatoriedadeCampos(conta, function () {
+            this.validaFormulario(conta, function () {
                 daoUtil.insert(conta, function (rowsAffected) {
                     if (rowsAffected === 1) {
                         alertUtil.confirm("Conta cadastrada com sucesso!");
@@ -406,7 +233,7 @@ var contaController = {
             $("#valor-campo").prop("type", "number");
         }
     },
-    validaObrigatoriedadeCampos: function (conta, callbackSucess) {
+    validaFormulario: function (conta, callbackSucess) {
         if (!conta.nome) {
             alertUtil.confirm("Nome deve ser informado.");
         } else if (!conta.dataFundacao) {

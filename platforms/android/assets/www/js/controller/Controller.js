@@ -10,13 +10,12 @@ var Controller = {
             final: 10,
             orderBy: undefined,
             template: "",
-            floatButton: {},
-            navCenter: {},
             navLeft: {},
-            paginator: "1"
+            navCenter: {},
+            floatButton: {},
+            paginator: true
         };
         this.setOptions(this.options, options);
-
         daoUtil.getByRange(this.options.entity,
                 this.options.orderBy,
                 this.options.inicial,
@@ -38,13 +37,12 @@ var Controller = {
             final: 10,
             orderBy: undefined,
             template: "",
-            floatButton: {},
             navCenter: {},
             navLeft: {},
-            paginator: "0"
+            floatButton: {},
+            paginator: false
         };
         this.setOptions(this.options, options);
-
         daoUtil.getByLIke(this.options.entity, searchText, this.options.orderBy, function (res) {
             var data = {};
             data.conta = res;
@@ -55,6 +53,33 @@ var Controller = {
             });
         });
     },
+    loadCadastro: function (options, cb) {
+        this.options = {
+            entity: new Entity(),
+            template: "",
+            navLeft: {},
+            navCenter: {},
+            navRight: {
+                display: "block",
+                iconName: iconUtil.check,
+                callbackClick: function () {
+                    Controller.insert();
+                }
+            },
+            navSearch: {
+                display: "none"
+            },
+            floatButton: {
+                display: "none"
+            }
+        };
+        this.setOptions(this.options, options);
+        this.render(this.options, {}, function () {
+            if (cb) {
+                cb();
+            }
+        });
+    },
     render: function (options, data, cb) {
         this.options = {
             entity: new Entity(),
@@ -63,8 +88,21 @@ var Controller = {
             orderBy: undefined,
             template: "",
             objectToBind: this.SCROLLER,
-            rightNavIcon: {
-                iconName: ""
+            navLeft: {
+                icon: iconUtil.menu,
+                callbackClick: function () {}
+            },
+            navCenter: {
+                title: "LINEMOB",
+                icon: ""
+            },
+            navRight: {
+                display: "none",
+                iconName: "",
+                callbackClick: function () {}
+            },
+            navSearch: {
+                display: "block"
             },
             floatButton: {
                 display: "none",
@@ -72,15 +110,7 @@ var Controller = {
                 callbackEdit: function () {},
                 callbackRemove: function () {}
             },
-            navCenter: {
-                title: "LINEMOB",
-                icon: ""
-            },
-            navLeft: {
-                icon: iconUtil.menu,
-                callbackClick: function () {}
-            },
-            paginator: "1"
+            paginator: true
         };
         this.setOptions(this.options, options);
 
@@ -92,11 +122,9 @@ var Controller = {
         this.setFloatButton();
         this.setCenterNav();
         this.setLeftNav();
-
         var currentOptions = Controller.options;
         this.setSearchNav(currentOptions);
         this.setPaginator(data, currentOptions);
-
         if (cb) {
             cb();
         }
@@ -113,11 +141,17 @@ var Controller = {
         }
     },
     setRightIcon: function () {
-        $("#text-icon-right-nav").html(this.options.rightNavIcon.iconName);
+        $("#icon-right-nav").css("display", this.options.navRight.display);
+        if (this.options.navRight.display === "block") {
+            $("#text-icon-right-nav").html(this.options.navRight.iconName);
+            $("#icon-right-nav").unbind("click");
+            $("#icon-right-nav").on("click", function () {
+                Controller.options.navRight.callbackClick();
+            });
+        }
     },
     setFloatButton: function () {
         $("#btn-float").css("display", this.options.floatButton.display);
-
         if (this.options.floatButton.display !== "none") {
             $("#btn-float-add").unbind("click");
             $("#btn-float-edit").unbind("click");
@@ -131,7 +165,6 @@ var Controller = {
                 closeFABMenu($("#btn-float"));
                 Controller.closeSearchField();
                 Controller.options.floatButton.callbackEdit();
-
             });
             $("#btn-float-remove").on("click", function () {
                 closeFABMenu($("#btn-float"));
@@ -160,39 +193,44 @@ var Controller = {
         $("#text-icon-left-nav").html(this.options.navLeft.icon);
     },
     setSearchNav: function (currentOptions) {
-        $("#text-icon-search-nav").html(iconUtil.search);
-
-        $("#icon-back-search-field").unbind("click");
-        $("#icon-clean-search-field").unbind("click");
-        $("#input-search").unbind("keyup");
-
-        $("#icon-back-search-field").on("click", function () {
-            Controller.closeSearchField();
-            currentOptions.paginator = "1";
-            Controller.loadList(currentOptions);
-        });
-
-        $("#icon-clean-search-field").on("click", function () {
-            Controller.cleanSearchField();            
-            currentOptions.paginator = "1";
-            Controller.loadList(currentOptions);
-        });
-
-        $("#input-search").on("keyup", function () {
-            var textField = $("#input-search").val();
-            if (textField) {
-                currentOptions.paginator = "0";
-                Controller.loadSearchedList(currentOptions, textField);
-            } else {                
-                currentOptions.paginator = "1";
+        $("#text-icon-search-nav").css("display", this.options.navSearch.display);
+        if (this.options.navSearch.display === "block") {
+            $("#text-icon-search-nav").html(iconUtil.search);
+            $("#icon-back-search-field").unbind("click");
+            $("#icon-clean-search-field").unbind("click");
+            $("#input-search").unbind("keyup");
+            $("#icon-back-search-field").on("click", function () {
+                Controller.closeSearchField();
+                currentOptions.paginator = true;
+                currentOptions.inicial = undefined;
+                currentOptions.final = undefined;
                 Controller.loadList(currentOptions);
-            }
-        });
+            });
+            $("#icon-clean-search-field").on("click", function () {
+                Controller.cleanSearchField();
+                currentOptions.paginator = true;
+                currentOptions.inicial = undefined;
+                currentOptions.final = undefined;
+                Controller.loadList(currentOptions);
+            });
+            $("#input-search").on("keyup", function () {
+                var textField = $("#input-search").val();
+                if (textField) {
+                    currentOptions.paginator = false;
+                    Controller.loadSearchedList(currentOptions, textField);
+                } else {
+                    currentOptions.paginator = true;
+                    currentOptions.inicial = undefined;
+                    currentOptions.final = undefined;
+                    Controller.loadList(currentOptions);
+                }
+            });
+        }
     },
     setPaginator: function (data, currentOptions) {
-        if (this.options.paginator === "1"){
+        if (this.options.paginator) {
             var dataArray = data[this.options.entity.tableName];
-            if (dataArray.length) {
+            if (dataArray && dataArray.length) {
                 var entity = dataArray[0];
                 daoUtil.getCount(entity, function (qtde) {
                     if (qtde > dataArray.length) {
@@ -226,9 +264,40 @@ var Controller = {
     },
     setOptions: function (defaultOptions, newOptions) {
         for (var i in defaultOptions) {
-            if (newOptions[i]) {
+            if (newOptions[i] != undefined) {
                 defaultOptions[i] = newOptions[i];
             }
+        }
+    },
+    insert: function () {
+        var data = $("#form-cadastro").serializeObject();
+        var entity = new this.options.entity;
+
+
+        if (data.id) {
+            data.id = data.id.replace("-", "");
+            conta.id = data.id;
+            this.validaFormulario(conta, function () {
+                daoUtil.update(conta, function (rowsAffected) {
+                    if (rowsAffected === 1) {
+                        alertUtil.confirm("Conta Alterada com sucesso!");
+                        contaController.loadLista();
+                    } else {
+                        alertUtil.confirm("Problemas ao alterar Conta...");
+                    }
+                });
+            });
+        } else {
+            this.validaFormulario(conta, function () {
+                daoUtil.insert(conta, function (rowsAffected) {
+                    if (rowsAffected === 1) {
+                        alertUtil.confirm("Conta cadastrada com sucesso!");
+                        contaController.loadLista();
+                    } else {
+                        alertUtil.confirm("Problemas ao inserir Conta...");
+                    }
+                });
+            });
         }
     }
 };

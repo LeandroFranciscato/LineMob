@@ -79,11 +79,10 @@ body {
 .icon-left-nav,.icon-back-search-field{
     margin-left: 10px;
 }
-.icon-search-nav,.icon-clean-search-field{
+.icon-search-nav,.icon-clean-search-field,.icon-right-nav{
     margin-right: 10px;
     
 }
-
 .titulo-center-nav{
     font-size: x-large;
     font-weight: bold;    
