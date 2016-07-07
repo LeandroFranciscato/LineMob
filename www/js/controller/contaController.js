@@ -4,10 +4,10 @@ var contaController = {
     TEMPLATE_CONTA_CADASTRO: "",
     TEMPLATE_CONTA_LISTA: "",
     TEMPLATE_CONTA_EDICAO: "",
-    loadLista: function (cb) {
+    loadList: function (cb) {
 
         Controller.loadList({
-            controllerOrigin: contaController,
+            controllerOrigin: this,
             entity: new Conta(),
             orderBy: "nome",
             template: this.TEMPLATE_CONTA_LISTA,
@@ -24,13 +24,7 @@ var contaController = {
             floatButton: {
                 display: "block",
                 callbackAdd: function () {
-                    contaController.loadContaCadastro();
-                },
-                callbackEdit: function () {
-                    contaController.loadContaEdicao();
-                },
-                callbackRemove: function () {
-                    contaController.delete();
+                    contaController.loadNewOrSingleEdit();
                 }
             }
         }, function () {
@@ -39,153 +33,24 @@ var contaController = {
             }
         });
     },
-    loadContaCadastro: function (cb) {
-        Controller.loadCadastro({
+    loadNewOrSingleEdit: function (data, cb) {
+        Controller.loadNewOrSingleEdit({
             controllerOrigin: contaController,
             entity: new Conta(),
             template: this.TEMPLATE_CONTA_CADASTRO,
             navLeft: {
                 icon: iconUtil.back,
                 callbackClick: function () {
-                    contaController.loadLista();
+                    contaController.loadList();
                 }
             },
             navCenter: {
                 title: "CONTA",
                 icon: iconUtil.add
-            },            
-        }, function () {
+            }
+        }, data, function () {
             if (cb) {
                 cb();
-            }
-        });
-    },
-    loadContaEdicao: function () {
-        var contas = tableToJSON("#ul-list-contas", "li", "div");
-        var conta = new Conta();
-        var qtdeSelecionados = 0;
-
-        for (var i = 0; i <= contas.length; i++) {
-            if (contas[i] && contas[i].selecionado == 1) {
-                qtdeSelecionados++;
-
-                if (!conta.id || conta.id == undefined) {
-                    conta.id = contas[i].id + "-";
-                } else {
-                    conta.id += contas[i].id + "-";
-                }
-            }
-        }
-
-        if (qtdeSelecionados === 0) {
-            alertUtil.confirm("Selecione ao menos um (1) registro para editar.", " Editando...");
-            return;
-        } else if (qtdeSelecionados === 1) {
-            conta.id = conta.id.replace("-", "");
-            daoUtil.getById(conta, function (res) {
-                contaController.render("edicao", res);
-            });
-        } else if (qtdeSelecionados > 1) {
-            contaController.render("multiplaEdicao", conta);
-        }
-    },
-    checkInList: function (idConta) {
-
-        if (!idConta) {
-            var contas = tableToJSON("#ul-list-contas", "li", "div");
-
-            var checkedAll = $('#check-conta').prop("checked");
-            if (checkedAll && checkedAll === true) {
-                $('#check-conta').prop("checked", false);
-            } else {
-                $('#check-conta').prop("checked", true);
-            }
-
-            for (var i = 0; i <= contas.length; i++) {
-                if (contas[i]) {
-                    $('#check-conta-' + contas[i].id).prop("checked", checkedAll);
-                    this.checkInList(contas[i].id);
-                }
-            }
-        }
-
-        var checked = $('#check-conta-' + idConta).prop("checked");
-        if (checked && checked === true) {
-            $('#check-conta-' + idConta).prop("checked", false);
-            checked = 0;
-        } else {
-            $('#check-conta-' + idConta).prop("checked", true);
-            checked = 1;
-        }
-        $('#conta-selecionada-' + idConta).html(checked);
-    },
-    insert: function () {
-        var data = $("#form-cadastro-conta").serializeObject();
-
-        var conta = new Conta();
-        conta.nome = data.nome;
-        conta.dataFundacao = data.dataFundacao;
-        conta.valorSaldoInicial = data.valorSaldoInicial;
-
-        if (data.id) {
-            data.id = data.id.replace("-", "");
-            conta.id = data.id;
-            this.validaFormulario(conta, function () {
-                daoUtil.update(conta, function (rowsAffected) {
-                    if (rowsAffected === 1) {
-                        alertUtil.confirm("Conta Alterada com sucesso!");
-                        contaController.loadLista();
-                    } else {
-                        alertUtil.confirm("Problemas ao alterar Conta...");
-                    }
-                });
-            });
-        } else {
-            this.validaFormulario(conta, function () {
-                daoUtil.insert(conta, function (rowsAffected) {
-                    if (rowsAffected === 1) {
-                        alertUtil.confirm("Conta cadastrada com sucesso!");
-                        contaController.loadLista();
-                    } else {
-                        alertUtil.confirm("Problemas ao inserir Conta...");
-                    }
-                });
-            });
-        }
-    },
-    delete: function () {
-
-        var contas = tableToJSON("#ul-list-contas", "li", "div");
-        var qtSelecionadas = 0;
-        for (var i = 0; i <= contas.length; i++) {
-            if (contas[i] && contas[i].selecionado == 1) {
-                qtSelecionadas += 1;
-            }
-        }
-
-        if (qtSelecionadas === 0) {
-            alertUtil.confirm("Selecione algum registro para deletar!");
-            return;
-        }
-
-        var buttons = ["Não", "Sim"];
-        alertUtil.confirm("Deseja realmente deletar " + qtSelecionadas + " registro(s)?", "Deletando...", buttons, function (btn) {
-
-            if (btn == 2) {
-                for (var i = 0; i <= contas.length; i++) {
-
-                    if (contas[i] && contas[i].selecionado == 1) {
-                        var conta = new Conta();
-                        conta.id = contas[i].id;
-                        daoUtil.delete(conta, function (res) {
-                            if (res != 1) {
-                                alertUtil.confirm("Erro ao deletar conta: " + conta, id);
-                            }
-                        });
-                    }
-                }
-                alertUtil.confirm("Deletado com Sucesso!");
-                contaController.loadLista();
             }
         });
     },
@@ -216,7 +81,7 @@ var contaController = {
             }
         }
         alertUtil.confirm("Contas atualizadas com sucesso!");
-        contaController.loadLista();
+        contaController.loadList();
     },
     selecionaCampoEdicaoMultipla: function () {
         var campo = $("#select-campo").val();
@@ -250,6 +115,6 @@ var contaController = {
     },
     closeSearchField: function () {
         mainController.closeSearchField();
-        this.loadLista();
+        this.loadList();
     }
 }; 

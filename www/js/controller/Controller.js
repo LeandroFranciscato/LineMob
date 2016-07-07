@@ -55,7 +55,7 @@ var Controller = {
             });
         });
     },
-    loadCadastro: function (options, cb) {
+    loadNewOrSingleEdit: function (options, data, cb) {
         this.options = {
             controllerOrigin: Controller,
             entity: new Entity(),
@@ -77,11 +77,47 @@ var Controller = {
             }
         };
         this.setOptions(this.options, options);
-        this.render(this.options, {}, function () {
+
+        if (data) {
+            this.options.navCenter.icon = iconUtil.edit;
+        }
+
+        this.render(this.options, data, function () {
             if (cb) {
                 cb();
             }
         });
+    },
+    preLoadEdit: function (cb) {
+        var itens = tableToJSON("#ul-list", "li", "div");
+        var entity = this.options.entity;
+        var qtdeSelecionados = 0;
+
+        for (var i = 0; i <= itens.length; i++) {
+            if (itens[i] && itens[i].selecionado == 1) {
+                qtdeSelecionados++;
+
+                if (!entity.id || entity.id == undefined) {
+                    entity.id = itens[i].id + "-";
+                } else {
+                    entity.id += itens[i].id + "-";
+                }
+            }
+        }
+
+        if (qtdeSelecionados === 0) {
+            alertUtil.confirm("Selecione ao menos um (1) registro para editar.", " Editando...");
+            return;
+        }
+
+        if (qtdeSelecionados === 1) {
+            entity.id = entity.id.replace("-", "");
+            daoUtil.getById(entity, function (res) {
+                Controller.options.controllerOrigin.loadNewOrSingleEdit(res);
+            });
+        } else if (qtdeSelecionados > 1) {
+            contaController.render("multiplaEdicao", entity);
+        }
     },
     render: function (options, data, cb) {
         this.options = {
@@ -110,9 +146,7 @@ var Controller = {
             },
             floatButton: {
                 display: "none",
-                callbackAdd: function () {},
-                callbackEdit: function () {},
-                callbackRemove: function () {}
+                callbackAdd: function () {}
             },
             paginator: true
         };
@@ -168,12 +202,12 @@ var Controller = {
             $("#btn-float-edit").on("click", function () {
                 closeFABMenu($("#btn-float"));
                 Controller.closeSearchField();
-                Controller.options.floatButton.callbackEdit();
+                Controller.preLoadEdit();
             });
             $("#btn-float-remove").on("click", function () {
                 closeFABMenu($("#btn-float"));
                 Controller.closeSearchField();
-                Controller.options.floatButton.callbackRemove();
+                Controller.delete();
             });
         }
     },
@@ -205,17 +239,11 @@ var Controller = {
             $("#input-search").unbind("keyup");
             $("#icon-back-search-field").on("click", function () {
                 Controller.closeSearchField();
-                currentOptions.paginator = true;
-                currentOptions.inicial = undefined;
-                currentOptions.final = undefined;
-                Controller.loadList(currentOptions);
+                Controller.options.controllerOrigin.loadList();
             });
             $("#icon-clean-search-field").on("click", function () {
                 Controller.cleanSearchField();
-                currentOptions.paginator = true;
-                currentOptions.inicial = undefined;
-                currentOptions.final = undefined;
-                Controller.loadList(currentOptions);
+                Controller.options.controllerOrigin.loadList();
             });
             $("#input-search").on("keyup", function () {
                 var textField = $("#input-search").val();
@@ -223,10 +251,7 @@ var Controller = {
                     currentOptions.paginator = false;
                     Controller.loadSearchedList(currentOptions, textField);
                 } else {
-                    currentOptions.paginator = true;
-                    currentOptions.inicial = undefined;
-                    currentOptions.final = undefined;
-                    Controller.loadList(currentOptions);
+                    Controller.options.controllerOrigin.loadList();
                 }
             });
         }
@@ -275,16 +300,16 @@ var Controller = {
     },
     insert: function () {
         var data = $("#form-cadastro").serializeObject();
-        var entity = new Entity();       
+        var entity = new Entity();
         entity.tableName = this.options.entity.tableName;
         Object.setPrototypeOf(data, entity);
-                        
-        if (data.id) {                        
+
+        if (data.id) {
             this.options.controllerOrigin.validaFormulario(data, function () {
                 daoUtil.update(data, function (rowsAffected) {
                     if (rowsAffected === 1) {
                         alertUtil.confirm("Alterado com sucesso!");
-                        Controller.options.controllerOrigin.loadLista();
+                        Controller.options.controllerOrigin.loadList();
                     } else {
                         alertUtil.confirm("Problemas ao alterar ...");
                     }
@@ -295,12 +320,77 @@ var Controller = {
                 daoUtil.insert(data, function (rowsAffected) {
                     if (rowsAffected === 1) {
                         alertUtil.confirm("Conta cadastrada com sucesso!");
-                        Controller.options.controllerOrigin.loadLista();
+                        Controller.options.controllerOrigin.loadList();
                     } else {
                         alertUtil.confirm("Problemas ao inserir Conta...");
                     }
                 });
             });
         }
+    },
+    delete: function () {
+        var itens = tableToJSON("#ul-list", "li", "div");
+        var qtSelecionadas = 0;
+        for (var i = 0; i <= itens.length; i++) {
+            if (itens[i] && itens[i].selecionado == 1) {
+                qtSelecionadas += 1;
+            }
+        }
+
+        if (qtSelecionadas === 0) {
+            alertUtil.confirm("Selecione algum registro para deletar!");
+            return;
+        }
+
+        var buttons = ["Não", "Sim"];
+        alertUtil.confirm("Deseja realmente deletar " + qtSelecionadas + " registro(s)?", "Deletando...", buttons, function (btn) {
+
+            if (btn == 2) {
+                for (var i = 0; i <= itens.length; i++) {
+
+                    if (itens[i] && itens[i].selecionado == 1) {
+                        var item = Controller.options.entity;
+                        item.id = itens[i].id;
+                        daoUtil.delete(item, function (res) {
+                            if (res != 1) {
+                                alertUtil.confirm("Erro ao deletar ", item.id);
+                            }
+                        });
+                    }
+                }
+                alertUtil.confirm("Deletado com Sucesso!");
+                Controller.options.controllerOrigin.loadList();
+            }
+        });
+    },
+    checkInList: function (id) {
+
+        if (!id) {
+            var itens = tableToJSON("#ul-list", "li", "div");
+
+            var checkedAll = $('#check-all').prop("checked");
+            if (checkedAll && checkedAll === true) {
+                $('#check-all').prop("checked", false);
+            } else {
+                $('#check-all').prop("checked", true);
+            }
+
+            for (var i = 0; i <= itens.length; i++) {
+                if (itens[i]) {
+                    $('#check-' + itens[i].id).prop("checked", checkedAll);
+                    this.checkInList(itens[i].id);
+                }
+            }
+        }
+
+        var checked = $('#check-' + id).prop("checked");
+        if (checked && checked === true) {
+            $('#check-' + id).prop("checked", false);
+            checked = 0;
+        } else {
+            $('#check-' + id).prop("checked", true);
+            checked = 1;
+        }
+        $('#selecionado-' + id).html(checked);
     }
 };

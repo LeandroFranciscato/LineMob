@@ -7,6 +7,7 @@ var contaController = {
     loadLista: function (cb) {
 
         Controller.loadList({
+            controllerOrigin: contaController,
             entity: new Conta(),
             orderBy: "nome",
             template: this.TEMPLATE_CONTA_LISTA,
@@ -40,6 +41,7 @@ var contaController = {
     },
     loadContaCadastro: function (cb) {
         Controller.loadCadastro({
+            controllerOrigin: contaController,
             entity: new Conta(),
             template: this.TEMPLATE_CONTA_CADASTRO,
             navLeft: {

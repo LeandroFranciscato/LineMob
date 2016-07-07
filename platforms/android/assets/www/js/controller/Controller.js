@@ -1,10 +1,11 @@
-/* global daoUtil, mainController, Mustache, iconUtil, myScroll */
+/* global daoUtil, mainController, Mustache, iconUtil, myScroll, alertUtil */
 var Controller = {
     SCROLLER: "#scroller",
     options: "",
     loadList: function (options, cb) {
 
         this.options = {
+            controllerOrigin: Controller,
             entity: new Entity(),
             inicial: 0,
             final: 10,
@@ -32,6 +33,7 @@ var Controller = {
     },
     loadSearchedList: function (options, searchText, cb) {
         this.options = {
+            controllerOrigin: Controller,
             entity: new Entity(),
             inicial: 0,
             final: 10,
@@ -55,6 +57,7 @@ var Controller = {
     },
     loadCadastro: function (options, cb) {
         this.options = {
+            controllerOrigin: Controller,
             entity: new Entity(),
             template: "",
             navLeft: {},
@@ -82,6 +85,7 @@ var Controller = {
     },
     render: function (options, data, cb) {
         this.options = {
+            controllerOrigin: Controller,
             entity: new Entity(),
             inicial: 0,
             final: 10,
@@ -271,28 +275,27 @@ var Controller = {
     },
     insert: function () {
         var data = $("#form-cadastro").serializeObject();
-        var entity = new this.options.entity;
-
-
-        if (data.id) {
-            data.id = data.id.replace("-", "");
-            conta.id = data.id;
-            this.validaFormulario(conta, function () {
-                daoUtil.update(conta, function (rowsAffected) {
+        var entity = new Entity();       
+        entity.tableName = this.options.entity.tableName;
+        Object.setPrototypeOf(data, entity);
+                        
+        if (data.id) {                        
+            this.options.controllerOrigin.validaFormulario(data, function () {
+                daoUtil.update(data, function (rowsAffected) {
                     if (rowsAffected === 1) {
-                        alertUtil.confirm("Conta Alterada com sucesso!");
-                        contaController.loadLista();
+                        alertUtil.confirm("Alterado com sucesso!");
+                        Controller.options.controllerOrigin.loadLista();
                     } else {
-                        alertUtil.confirm("Problemas ao alterar Conta...");
+                        alertUtil.confirm("Problemas ao alterar ...");
                     }
                 });
             });
         } else {
-            this.validaFormulario(conta, function () {
-                daoUtil.insert(conta, function (rowsAffected) {
+            this.options.controllerOrigin.validaFormulario(data, function () {
+                daoUtil.insert(data, function (rowsAffected) {
                     if (rowsAffected === 1) {
                         alertUtil.confirm("Conta cadastrada com sucesso!");
-                        contaController.loadLista();
+                        Controller.options.controllerOrigin.loadLista();
                     } else {
                         alertUtil.confirm("Problemas ao inserir Conta...");
                     }

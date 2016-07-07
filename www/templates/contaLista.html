@@ -1,9 +1,9 @@
-<ul class="collection" id="ul-list-contas">
-    <li class="collection-item" onclick="contaController.checkInList()">
+<ul class="collection" id="ul-list">
+    <li class="collection-item" onclick="Controller.checkInList()">
         <div class="li-conta-lista-header row">
             <div class="col s1">
-                <input id="check-conta" type="checkbox" class="filled-in"/>
-                <label for="check-conta"></label>
+                <input id="check-all" type="checkbox" class="filled-in"/>
+                <label for="check-all"></label>
             </div>            
             <div class="col s7 titulo-conta-lista">
                 Nome
@@ -14,14 +14,14 @@
         </div>
     </li>
     {{#conta}}
-    <li class="collection-item" onclick="contaController.checkInList({{id}})">
+    <li class="collection-item" onclick="Controller.checkInList({{id}})">
         <div class="li-conta-lista row">
             <div class="col s1">
-                <input id="check-conta-{{id}}" type="checkbox" class="filled-in"/>
-                <label for="check-conta-{{id}}"></label>
+                <input id="check-{{id}}" type="checkbox" class="filled-in"/>
+                <label for="check-{{id}}"></label>
             </div>                        
             <div name="id" class="invisible">{{id}}</div>
-            <div name="selecionado" id="conta-selecionada-{{id}}" class="invisible">0</div>            
+            <div name="selecionado" id="selecionado-{{id}}" class="invisible">0</div>            
             <div class="col s7">{{nome}}</div>            
             <div class="col s4">{{valorSaldoInicial}}</div>
         </div>
