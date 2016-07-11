@@ -14,7 +14,7 @@ var Controller = {
             navLeft: {},
             navCenter: {},
             floatButton: {},
-            paginator: true           
+            paginator: true
         };
         this.setOptions(this.options, options);
         daoUtil.getByRange(this.options.entity,
@@ -109,7 +109,7 @@ var Controller = {
                 display: "none"
             }
         };
-        this.setOptions(this.options, options);       
+        this.setOptions(this.options, options);
         this.render(this.options, data, function () {
             if (cb) {
                 cb();
@@ -182,19 +182,18 @@ var Controller = {
 
         /*front-end controllers*/
         this.renderHtml(data, this.options.template, this.options.objectToBind);
+        this.setMaterializeJs();
         loadScroll();
         this.hideLeftMenu();
         this.setRightIcon();
         this.setFloatButton();
+        this.setTapHoldAction();
         this.setCenterNav();
         this.setLeftNav();
         var currentOptions = Controller.options;
         this.setSearchNav(currentOptions);
         this.setPaginator(data, currentOptions);
-        
-        //
-        $('select').material_select();
-        
+
         if (cb) {
             cb();
         }
@@ -204,6 +203,9 @@ var Controller = {
         data = (data) ? data : {};
         var htmlParsed = Mustache.render(template, data);
         $(objectToBind).html(htmlParsed);
+    },
+    setMaterializeJs: function () {
+        $('select').material_select();
     },
     hideLeftMenu: function () {
         if (mainController.SITUACAO_MENU_ESQUERDO === 1) {
@@ -242,6 +244,28 @@ var Controller = {
                 Controller.delete();
             });
         }
+    },
+    setTapHoldAction: function () {
+        $(".li-lista").on("taphold", {duration: 400}, function () {
+            // Uncheck all
+            $('#check-all').prop("checked", true);
+            Controller.checkInList();
+
+            //close searchbar
+            Controller.closeSearchField();
+
+            // check item
+            var fields = $(this).find("div");
+            for (var i = 0; i < fields.length; i++) {
+                if ($(fields[i]).attr("name") === "id") {
+                    var id = $(fields[i]).html();
+                }
+            }            
+            Controller.checkInList(id);
+            
+            //open edit Template
+            Controller.preLoadEdit();
+        });
     },
     setCenterNav: function () {
         $(".titulo-center-nav").html(this.options.navCenter.title);

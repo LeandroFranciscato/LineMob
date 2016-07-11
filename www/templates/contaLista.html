@@ -1,21 +1,21 @@
 <ul class="collection" id="ul-list">
     <li class="collection-item" onclick="Controller.checkInList()">
-        <div class="li-conta-lista-header row">
+        <div class="li-lista-header row">
             <div class="col s1">
                 <input id="check-all" type="checkbox" class="filled-in"/>
                 <label for="check-all"></label>
             </div>            
-            <div class="col s7 titulo-conta-lista">
+            <div class="col s7 titulo-lista">
                 Nome
             </div>
-            <div class="col s4 titulo-conta-lista">
+            <div class="col s4 titulo-lista">
                 Saldo Inicial
             </div>
         </div>
     </li>
     {{#conta}}
     <li class="collection-item" onclick="Controller.checkInList({{id}})">
-        <div class="li-conta-lista row">
+        <div class="li-lista row">
             <div class="col s1">
                 <input id="check-{{id}}" type="checkbox" class="filled-in"/>
                 <label for="check-{{id}}"></label>
