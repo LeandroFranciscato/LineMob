@@ -10,8 +10,7 @@
         <link href="css/main.css" rel="stylesheet" type="text/css"/>
         <link href="css/login.css" rel="stylesheet" type="text/css"/>
         <link href="materialize/css/materialize.css" rel="stylesheet" type="text/css"/>        
-        <link href="materialize/css/materialize.icons.css" rel="stylesheet" type="text/css"/>
-        <link href="css/conta.css" rel="stylesheet" type="text/css"/>
+        <link href="materialize/css/materialize.icons.css" rel="stylesheet" type="text/css"/>        
 
         <!--UTIL-->
         <script src="js/util/logUtil.js" type="text/javascript"></script>
@@ -25,6 +24,7 @@
         <script src="js/plugins/iscroll.js" type="text/javascript"></script>
         <script src="js/plugins/jquery.serializeObject.min.js" type="text/javascript"></script>        
         <script src="js/plugins/tableToJSON.js" type="text/javascript"></script>
+        <script src="js/plugins/taphold.js" type="text/javascript"></script>
         <script src="js/plugins/mustache.min.js" type="text/javascript"></script>
         <script src="materialize/js/materialize.js" type="text/javascript"></script>
         <script src="cordova.js" type="text/javascript"></script>        
@@ -41,9 +41,17 @@
 
         <!--CONTROLLER-->
         <script src="js/controller/Controller.js" type="text/javascript"></script>
-        <script src="js/controller/mainController.js" type="text/javascript"></script>
-        <script src="js/controller/contaController.js" type="text/javascript"></script>
+        <script src="js/controller/mainController.js" type="text/javascript"></script>        
         <script src="js/controller/loginController.js" type="text/javascript"></script>
+        <script src="js/controller/pessoaController.js" type="text/javascript"></script>
+        <script src="js/controller/contaController.js" type="text/javascript"></script>
+
+        <!-- INTERNACIONALIZAÇÃO -->
+        <script src="js/plugins/i18next/i18next-jquery.0.0.14.min.js" type="text/javascript"></script>
+        <script src="js/plugins/i18next/i18next.2.0.22.min.js" type="text/javascript"></script>
+        <script src="js/plugins/i18next/i18nextBrowserLanguageDetector.min.js" type="text/javascript"></script>
+        <script src="js/plugins/i18next/i18nextXHRBackend.min.js" type="text/javascript"></script>
+        <script src="js/plugins/i18next/i18next.ini.js" type="text/javascript"></script>
 
         <script type="text/javascript">
             function loadScroll() {
@@ -54,7 +62,7 @@
             }, false);
         </script>
     </head>
-    <body>               
+    <body>                             
         <!-- LEFT-MENU -->
         <div id="menu-esquerdo" class="menu-esquerdo">
             <div id="div-img-menu-esquerdo">
@@ -62,9 +70,10 @@
             </div>
             <div id="links"> 
                 <div class="collection">
-                    <a class="collection-item" onclick="mainController.render()">Início<span class="badge"><i class="material-icons">&#xE88A;</i></span></a>
-                    <a class="collection-item" onclick="contaController.loadList()">Contas<span class="badge"><i class="material-icons">&#xE84F;</i></span></a>
-                    <a class="collection-item" onclick="loginController.logout()">Sair<span class="badge"><i class="material-icons">&#xE879;</i></span></a>
+                    <a class="collection-item" onclick="mainController.render()">Início<span class="badge"><i class="material-icons"><script>iconUtil.draw(iconUtil.home);</script></i></span></a>
+                    <a class="collection-item" onclick="contaController.loadList()">Contas<span class="badge"><i class="material-icons"><script>iconUtil.draw(iconUtil.bank);</script></i></span></a>
+                    <a class="collection-item" onclick="pessoaController.loadList()">Pessoas<span class="badge"><i class="material-icons"><script>iconUtil.draw(iconUtil.people);</script></i></span></a>
+                    <a class="collection-item" onclick="loginController.logout()">Sair<span class="badge"><i class="material-icons"><script>iconUtil.draw(iconUtil.exit);</script></i></span></a>
                 </div>
             </div>
         </div>
@@ -82,11 +91,11 @@
                     <li>
                         <i id="icon-aux-titulo-center-nav" class="material-icons"></i>                       
                     </li>
-                    
+
                     <li id="icon-right-nav" class="icon-right-nav right" >
                         <i id="text-icon-right-nav" class="material-icons"></i>
                     </li>
-                    
+
                     <li id="icon-search-nav" class="icon-search-nav right" onclick="Controller.openSearchField();">
                         <i id="text-icon-search-nav" class="material-icons"></i>
                     </li>
@@ -98,16 +107,18 @@
         <nav class="search-field">            
             <ul>
                 <li id="icon-back-search-field" class="icon-back-search-field">
-                    <i class="material-icons prefix">&#xE5C4;</i>
+                    <i class="material-icons prefix"><script>iconUtil.draw(iconUtil.back);</script></i>
                 </li>
                 <li class="input-field">                        
                     <input id="input-search" type="text" class="validate" placeholder="Pesquisar...">                                                
                 </li>                    
                 <li id="icon-clean-search-field" class="icon-clean-search-field right">
-                    <i class="material-icons prefix">&#xE5CD;</i>
+                    <i class="material-icons prefix"><script>iconUtil.draw(iconUtil.close);</script></i>
                 </li>                
             </ul>            
         </nav>
+
+        <div> teste</div>
 
         <!-- CONTENT -->
         <div id="wrapper">
@@ -117,12 +128,12 @@
         <!-- FLOAT-BUTTON -->
         <div id="btn-float" class="fixed-action-btn click-to-toggle invisible">
             <a class="btn-floating btn-large red">
-                <i class="material-icons">&#xE5D2;</i>
+                <i class="material-icons"><script>iconUtil.draw(iconUtil.menu);</script></i>
             </a>
             <ul>
-                <li id="btn-float-add"><a class="btn-floating green darken-3"><i class="material-icons">&#xE145;</i></a></li>
-                <li id="btn-float-edit"><a class="btn-floating yellow darken-3"><i class="material-icons">&#xE3C9;</i></a></li>
-                <li id="btn-float-remove"><a class="btn-floating"><i class="material-icons">&#xE5CD;</i></a></li>      
+                <li id="btn-float-add"><a class="btn-floating green darken-3"><i class="material-icons"><script>iconUtil.draw(iconUtil.add);</script></i></a></li>
+                <li id="btn-float-edit"><a class="btn-floating yellow darken-3"><i class="material-icons"><script>iconUtil.draw(iconUtil.edit);</script></i></a></li>
+                <li id="btn-float-remove"><a class="btn-floating"><i class="material-icons"><script>iconUtil.draw(iconUtil.close);</script></i></a></li>      
             </ul>
         </div>
     </body>

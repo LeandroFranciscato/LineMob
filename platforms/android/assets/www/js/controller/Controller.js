@@ -47,7 +47,7 @@ var Controller = {
         this.setOptions(this.options, options);
         daoUtil.getByLIke(this.options.entity, searchText, this.options.orderBy, function (res) {
             var data = {};
-            data.conta = res;
+            data[Controller.options.entity.tableName] = res;
             Controller.render(Controller.options, data, function () {
                 if (cb) {
                     cb();
@@ -109,7 +109,7 @@ var Controller = {
                 display: "none"
             }
         };
-        this.setOptions(this.options, options);       
+        this.setOptions(this.options, options);
         this.render(this.options, data, function () {
             if (cb) {
                 cb();
@@ -182,19 +182,18 @@ var Controller = {
 
         /*front-end controllers*/
         this.renderHtml(data, this.options.template, this.options.objectToBind);
+        this.setMaterializeJs();
         loadScroll();
         this.hideLeftMenu();
         this.setRightIcon();
         this.setFloatButton();
+        this.setTapHoldAction();
         this.setCenterNav();
         this.setLeftNav();
         var currentOptions = Controller.options;
         this.setSearchNav(currentOptions);
         this.setPaginator(data, currentOptions);
-        
-        //
-        $('select').material_select();
-        
+
         if (cb) {
             cb();
         }
@@ -204,6 +203,9 @@ var Controller = {
         data = (data) ? data : {};
         var htmlParsed = Mustache.render(template, data);
         $(objectToBind).html(htmlParsed);
+    },
+    setMaterializeJs: function () {
+        $('select').material_select();
     },
     hideLeftMenu: function () {
         if (mainController.SITUACAO_MENU_ESQUERDO === 1) {
@@ -242,6 +244,29 @@ var Controller = {
                 Controller.delete();
             });
         }
+    },
+    setTapHoldAction: function () {
+        $(".li-lista").unbind("taphold");
+        $(".li-lista").on("taphold", {duration: 400}, function () {                                    
+            // Uncheck all
+            $('#check-all').prop("checked", true);
+            Controller.checkInList();
+
+            //close searchbar
+            Controller.closeSearchField();
+
+            // check item
+            var fields = $(this).find("div");
+            for (var i = 0; i < fields.length; i++) {
+                if ($(fields[i]).attr("name") === "id") {
+                    var id = $(fields[i]).html();
+                }
+            }            
+            Controller.checkInList(id);
+            
+            //open edit Template
+            Controller.preLoadEdit();
+        });
     },
     setCenterNav: function () {
         $(".titulo-center-nav").html(this.options.navCenter.title);
@@ -296,7 +321,7 @@ var Controller = {
                 daoUtil.getCount(entity, function (qtde) {
                     if (qtde > dataArray.length) {
                         $("#footer").css("display", "block");
-                        $("#text-footer").html("Carregar mais " + (qtde - data.conta.length) + "...");
+                        $("#text-footer").html("Carregar mais " + (qtde - dataArray.length) + "...");
                         $("#footer").unbind("click");
                         $("#footer").on("click", function () {
                             currentOptions.inicial = 0;
@@ -351,10 +376,10 @@ var Controller = {
             this.options.controllerOrigin.validaFormulario(data, function () {
                 daoUtil.insert(data, function (rowsAffected) {
                     if (rowsAffected === 1) {
-                        alertUtil.confirm("Conta cadastrada com sucesso!");
+                        alertUtil.confirm("Cadastrado com sucesso!");
                         Controller.options.controllerOrigin.loadList();
                     } else {
-                        alertUtil.confirm("Problemas ao inserir Conta...");
+                        alertUtil.confirm("Problemas ao inserir...");
                     }
                 });
             });

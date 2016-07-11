@@ -28,7 +28,7 @@ var mainController = {
         });
         $("#btn-float").css("display", "none");
 
-        $("#titulo-center-nav").html("LINEMOB");
+        $("#titulo-center-nav").html(i18next.t("app.name"));
         $("#icon-aux-titulo-center-nav").html("");
 
         $("#icon-left-nav").unbind();

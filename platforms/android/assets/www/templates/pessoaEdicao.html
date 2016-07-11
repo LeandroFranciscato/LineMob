@@ -1,0 +1,23 @@
+<div class="card-panel">
+    <form id="form-cadastro">
+
+        <input type="text" class="invisible" id="id" name="id" value="{{id}}">
+
+        <div class="row">
+            <div class="input-field col s12">
+                <select id="select-campo" onchange="pessoaController.selecionaCampoEdicaoMultipla()">
+                    <option value="nome" selected>Nome</option>
+                    <option value="apelido">Apelido</option>                    
+                </select>
+                <label>Selecione o campo para edição</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s12">
+                <input type="text" id="valor-campo" name="nome">
+                <label id="prompt-campo" for="valor-campo" class="active">Nome</label>
+            </div>
+        </div>
+    </form>
+</div>

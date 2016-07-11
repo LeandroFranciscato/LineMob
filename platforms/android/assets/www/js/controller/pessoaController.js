@@ -1,6 +1,6 @@
 /* global Mustache, logUtil, mainController, alertUtil, daoUtil, Controller, iconUtil */
 
-var contaController = {
+var pessoaController = {
     TEMPLATE_CADASTRO: "",
     TEMPLATE_LISTA: "",
     TEMPLATE_EDICAO: "",
@@ -8,7 +8,7 @@ var contaController = {
 
         Controller.loadList({
             controllerOrigin: this,
-            entity: new Conta(),
+            entity: new Pessoa(),
             orderBy: "nome",
             template: this.TEMPLATE_LISTA,
             navLeft: {
@@ -18,13 +18,13 @@ var contaController = {
                 }
             },
             navCenter: {
-                title: "CONTAS",
+                title: "PESSOAS",
                 icon: ""
             },
             floatButton: {
                 display: "block",
                 callbackAdd: function () {
-                    contaController.loadNewOrSingleEdit();
+                    pessoaController.loadNewOrSingleEdit();
                 }
             }
         }, function () {
@@ -35,17 +35,17 @@ var contaController = {
     },
     loadNewOrSingleEdit: function (data, cb) {
         Controller.loadNewOrSingleEdit({
-            controllerOrigin: contaController,
-            entity: new Conta(),
+            controllerOrigin: pessoaController,
+            entity: new Pessoa(),
             template: this.TEMPLATE_CADASTRO,
             navLeft: {
                 icon: iconUtil.back,
                 callbackClick: function () {
-                    contaController.loadList();
+                    pessoaController.loadList();
                 }
             },
             navCenter: {
-                title: "CONTA",
+                title: "PESSOA",
                 icon: iconUtil.add
             }
         }, data, function () {
@@ -56,17 +56,17 @@ var contaController = {
     },
     loadMultipleEdit: function (data, cb) {
         Controller.loadMultipleEdit({
-            controllerOrigin: contaController,
-            entity: new Conta(),
+            controllerOrigin: pessoaController,
+            entity: new Pessoa(),
             template: this.TEMPLATE_EDICAO,
             navLeft: {
                 icon: iconUtil.back,
                 callbackClick: function () {
-                    contaController.loadList();
+                    pessoaController.loadList();
                 }
             },
             navCenter: {
-                title: "CONTAS",
+                title: "PESSOAS",
                 icon: iconUtil.edit
             }
         }, data, function () {
@@ -79,26 +79,20 @@ var contaController = {
         var campo = $("#select-campo").val();
 
         if (campo === "nome") {
-            $("#prompt-campo").html("Nome da Conta");
+            $("#prompt-campo").html("Nome da Pessoa");
             $("#valor-campo").prop("name", "nome");
             $("#valor-campo").prop("type", "text");
-        } else if (campo === "dataFundacao") {
-            $("#prompt-campo").html("Data Início Saldo");
-            $("#valor-campo").prop("name", "dataFundacao");
-            $("#valor-campo").prop("type", "date");
-        } else if (campo === "valorSaldoInicial") {
-            $("#prompt-campo").html("Valor Saldo Inicial");
-            $("#valor-campo").prop("name", "valorSaldoInicial");
-            $("#valor-campo").prop("type", "number");
+        } else if (campo === "apelido") {
+            $("#prompt-campo").html("Apelido");
+            $("#valor-campo").prop("name", "apelido");
+            $("#valor-campo").prop("type", "text");
         }
     },
-    validaFormulario: function (conta, callbackSucess) {
-        if (!conta.nome) {
+    validaFormulario: function (pessoa, callbackSucess) {
+        if (!pessoa.nome) {
             alertUtil.confirm("Nome deve ser informado.");
-        } else if (!conta.dataFundacao) {
-            alertUtil.confirm("Data início do saldo deve ser informado.");
-        } else if (!conta.valorSaldoInicial) {
-            alertUtil.confirm("Valor do saldo inicial deve ser informado.");
+        } else if (!pessoa.apelido) {
+            alertUtil.confirm("Apelido deve ser informado.");
         } else {
             if (callbackSucess) {
                 callbackSucess();

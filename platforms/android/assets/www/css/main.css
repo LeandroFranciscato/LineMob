@@ -140,3 +140,14 @@ body {
     padding: 0;    
     display:none;
 }
+
+.li-lista, .li-lista-header{
+    margin-bottom: 0 !important;
+    margin-top: 10px !important;
+}
+
+.titulo-lista{
+    font-weight: 900;
+    color: #e53935;
+}
+
