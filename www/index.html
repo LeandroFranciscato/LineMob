@@ -41,9 +41,10 @@
 
         <!--CONTROLLER-->
         <script src="js/controller/Controller.js" type="text/javascript"></script>
-        <script src="js/controller/mainController.js" type="text/javascript"></script>
-        <script src="js/controller/contaController.js" type="text/javascript"></script>
+        <script src="js/controller/mainController.js" type="text/javascript"></script>        
         <script src="js/controller/loginController.js" type="text/javascript"></script>
+        <script src="js/controller/pessoaController.js" type="text/javascript"></script>
+        <script src="js/controller/contaController.js" type="text/javascript"></script>
 
         <script type="text/javascript">
             function loadScroll() {
@@ -64,6 +65,7 @@
                 <div class="collection">
                     <a class="collection-item" onclick="mainController.render()">Início<span class="badge"><i class="material-icons">&#xE88A;</i></span></a>
                     <a class="collection-item" onclick="contaController.loadList()">Contas<span class="badge"><i class="material-icons">&#xE84F;</i></span></a>
+                    <a class="collection-item" onclick="pessoaController.loadList()">Pessoas<span class="badge"><i class="material-icons">&#xE7FB;</i></span></a>
                     <a class="collection-item" onclick="loginController.logout()">Sair<span class="badge"><i class="material-icons">&#xE879;</i></span></a>
                 </div>
             </div>
@@ -82,11 +84,11 @@
                     <li>
                         <i id="icon-aux-titulo-center-nav" class="material-icons"></i>                       
                     </li>
-                    
+
                     <li id="icon-right-nav" class="icon-right-nav right" >
                         <i id="text-icon-right-nav" class="material-icons"></i>
                     </li>
-                    
+
                     <li id="icon-search-nav" class="icon-search-nav right" onclick="Controller.openSearchField();">
                         <i id="text-icon-search-nav" class="material-icons"></i>
                     </li>

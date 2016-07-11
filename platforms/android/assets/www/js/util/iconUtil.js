@@ -3,5 +3,6 @@ var iconUtil = {
     menu: "&#xE5D2;",
     search: "&#xE8B6;",
     add: "&#xE145;",
-    check: "&#xE876;"
+    check: "&#xE876;",
+    edit: "&#xE254;"
 };

@@ -1,16 +1,16 @@
 /* global Mustache, logUtil, mainController, alertUtil, daoUtil, Controller, iconUtil */
 
 var contaController = {
-    TEMPLATE_CONTA_CADASTRO: "",
-    TEMPLATE_CONTA_LISTA: "",
-    TEMPLATE_CONTA_EDICAO: "",
+    TEMPLATE_CADASTRO: "",
+    TEMPLATE_LISTA: "",
+    TEMPLATE_EDICAO: "",
     loadList: function (cb) {
 
         Controller.loadList({
             controllerOrigin: this,
             entity: new Conta(),
             orderBy: "nome",
-            template: this.TEMPLATE_CONTA_LISTA,
+            template: this.TEMPLATE_LISTA,
             navLeft: {
                 icon: iconUtil.back,
                 callbackClick: function () {
@@ -37,7 +37,7 @@ var contaController = {
         Controller.loadNewOrSingleEdit({
             controllerOrigin: contaController,
             entity: new Conta(),
-            template: this.TEMPLATE_CONTA_CADASTRO,
+            template: this.TEMPLATE_CADASTRO,
             navLeft: {
                 icon: iconUtil.back,
                 callbackClick: function () {
@@ -54,34 +54,26 @@ var contaController = {
             }
         });
     },
-    updateMultiplaEscolha: function () {
-        var ids = $("#id-conta").val();
-        ids = ids.split("-");
-
-        var campo = $("#valor-campo").prop("name");
-        var valorCampo = $("#valor-campo").val();
-
-        if (!valorCampo) {
-            alertUtil.confirm("Campo deve ser preenchido.");
-            return;
-        }
-
-        for (var i = 0; i < ids.length; i++) {
-            if (ids[i]) {
-
-                var conta = new Conta();
-                conta.id = ids[i];
-                conta[campo] = valorCampo;
-
-                daoUtil.updateDinamicColumn(conta, campo, function (rowsAffected) {
-                    if (rowsAffected != 1) {
-                        alertUtil.confirm("Erro ao atualizar CONTA, id: " + conta.id);
-                    }
-                });
+    loadMultipleEdit: function (data, cb) {
+        Controller.loadMultipleEdit({
+            controllerOrigin: contaController,
+            entity: new Conta(),
+            template: this.TEMPLATE_EDICAO,
+            navLeft: {
+                icon: iconUtil.back,
+                callbackClick: function () {
+                    contaController.loadList();
+                }
+            },
+            navCenter: {
+                title: "CONTAS",
+                icon: iconUtil.edit
             }
-        }
-        alertUtil.confirm("Contas atualizadas com sucesso!");
-        contaController.loadList();
+        }, data, function () {
+            if (cb) {
+                cb();
+            }
+        });
     },
     selecionaCampoEdicaoMultipla: function () {
         var campo = $("#select-campo").val();
@@ -112,9 +104,5 @@ var contaController = {
                 callbackSucess();
             }
         }
-    },
-    closeSearchField: function () {
-        mainController.closeSearchField();
-        this.loadList();
     }
 }; 

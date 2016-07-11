@@ -1,4 +1,4 @@
-/* global dbUtil, logUtil, contaController, loginController, mainController, daoUtil */
+/* global dbUtil, logUtil, contaController, loginController, mainController, daoUtil, pessoaController */
 
 var app = {
     initialize: function () {
@@ -17,22 +17,53 @@ var app = {
         });
     },
     loadTemplates: function (cb) {
-        $.get('templates/contaCadastro.html', function (string) {
-            contaController.TEMPLATE_CONTA_CADASTRO = string;
-            $.get('templates/contaLista.html', function (string) {
-                contaController.TEMPLATE_CONTA_LISTA = string;
-                $.get('templates/contaEdicao.html', function (string) {
-                    contaController.TEMPLATE_CONTA_EDICAO = string;
-                    $.get('templates/login.html', function (string) {
-                        loginController.TEMPLATE_LOGIN = string;
-                        $.get('templates/inicio.html', function (string) {
-                            mainController.TEMPLATE_MAIN = string;
-                            if (cb) {
-                                cb();
-                            }
-                        })
-                    });
+        this.loadTemplateConta(function () {
+            app.loadTemplatePessoa(function () {
+                app.loadTemplateMain(function () {
+                    if (cb) {
+                        cb();
+                    }
                 });
+            });
+        });
+
+    },
+    loadTemplateConta: function (cb) {
+        $.get('templates/contaCadastro.html', function (string) {
+            contaController.TEMPLATE_CADASTRO = string;
+            $.get('templates/contaLista.html', function (string) {
+                contaController.TEMPLATE_LISTA = string;
+                $.get('templates/contaEdicao.html', function (string) {
+                    contaController.TEMPLATE_EDICAO = string;
+                    if (cb) {
+                        cb();
+                    }
+                });
+            });
+        });
+    },
+    loadTemplatePessoa: function (cb) {
+        $.get('templates/pessoaCadastro.html', function (string) {
+            pessoaController.TEMPLATE_CADASTRO = string;
+            $.get('templates/pessoaLista.html', function (string) {
+                pessoaController.TEMPLATE_LISTA = string;
+                $.get('templates/pessoaEdicao.html', function (string) {
+                    pessoaController.TEMPLATE_EDICAO = string;
+                    if (cb) {
+                        cb();
+                    }
+                });
+            });
+        });
+    },
+    loadTemplateMain: function (cb) {
+        $.get('templates/login.html', function (string) {
+            loginController.TEMPLATE_LOGIN = string;
+            $.get('templates/inicio.html', function (string) {
+                mainController.TEMPLATE_MAIN = string;
+                if (cb) {
+                    cb();
+                }
             });
         });
     },

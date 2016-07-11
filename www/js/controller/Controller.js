@@ -14,7 +14,7 @@ var Controller = {
             navLeft: {},
             navCenter: {},
             floatButton: {},
-            paginator: true
+            paginator: true           
         };
         this.setOptions(this.options, options);
         daoUtil.getByRange(this.options.entity,
@@ -47,7 +47,7 @@ var Controller = {
         this.setOptions(this.options, options);
         daoUtil.getByLIke(this.options.entity, searchText, this.options.orderBy, function (res) {
             var data = {};
-            data.conta = res;
+            data[Controller.options.entity.tableName] = res;
             Controller.render(Controller.options, data, function () {
                 if (cb) {
                     cb();
@@ -88,6 +88,34 @@ var Controller = {
             }
         });
     },
+    loadMultipleEdit: function (options, data, cb) {
+        this.options = {
+            controllerOrigin: Controller,
+            entity: new Entity(),
+            template: "",
+            navLeft: {},
+            navCenter: {},
+            navRight: {
+                display: "block",
+                iconName: iconUtil.check,
+                callbackClick: function () {
+                    Controller.updateMultiplaEscolha();
+                }
+            },
+            navSearch: {
+                display: "none"
+            },
+            floatButton: {
+                display: "none"
+            }
+        };
+        this.setOptions(this.options, options);       
+        this.render(this.options, data, function () {
+            if (cb) {
+                cb();
+            }
+        });
+    },
     preLoadEdit: function (cb) {
         var itens = tableToJSON("#ul-list", "li", "div");
         var entity = this.options.entity;
@@ -116,7 +144,7 @@ var Controller = {
                 Controller.options.controllerOrigin.loadNewOrSingleEdit(res);
             });
         } else if (qtdeSelecionados > 1) {
-            contaController.render("multiplaEdicao", entity);
+            this.options.controllerOrigin.loadMultipleEdit(entity);
         }
     },
     render: function (options, data, cb) {
@@ -163,6 +191,10 @@ var Controller = {
         var currentOptions = Controller.options;
         this.setSearchNav(currentOptions);
         this.setPaginator(data, currentOptions);
+        
+        //
+        $('select').material_select();
+        
         if (cb) {
             cb();
         }
@@ -264,7 +296,7 @@ var Controller = {
                 daoUtil.getCount(entity, function (qtde) {
                     if (qtde > dataArray.length) {
                         $("#footer").css("display", "block");
-                        $("#text-footer").html("Carregar mais " + (qtde - data.conta.length) + "...");
+                        $("#text-footer").html("Carregar mais " + (qtde - dataArray.length) + "...");
                         $("#footer").unbind("click");
                         $("#footer").on("click", function () {
                             currentOptions.inicial = 0;
@@ -319,10 +351,10 @@ var Controller = {
             this.options.controllerOrigin.validaFormulario(data, function () {
                 daoUtil.insert(data, function (rowsAffected) {
                     if (rowsAffected === 1) {
-                        alertUtil.confirm("Conta cadastrada com sucesso!");
+                        alertUtil.confirm("Cadastrado com sucesso!");
                         Controller.options.controllerOrigin.loadList();
                     } else {
-                        alertUtil.confirm("Problemas ao inserir Conta...");
+                        alertUtil.confirm("Problemas ao inserir...");
                     }
                 });
             });
@@ -362,6 +394,36 @@ var Controller = {
                 Controller.options.controllerOrigin.loadList();
             }
         });
+    },
+    updateMultiplaEscolha: function () {
+        var ids = $("#id").val();
+        ids = ids.split("-");
+
+        var campo = $("#valor-campo").prop("name");
+        var valorCampo = $("#valor-campo").val();
+
+        if (!valorCampo) {
+            alertUtil.confirm("Campo deve ser preenchido.");
+            return;
+        }
+
+        for (var i = 0; i < ids.length; i++) {
+            if (ids[i]) {
+
+                var entity = new Entity();
+                entity.tableName = this.options.entity.tableName;
+                entity.id = ids[i];
+                entity[campo] = valorCampo;
+
+                daoUtil.updateDinamicColumn(entity, campo, function (rowsAffected) {
+                    if (rowsAffected != 1) {
+                        alertUtil.confirm("Erro ao atualizar, id: " + entity.id);
+                    }
+                });
+            }
+        }
+        alertUtil.confirm("Atualizado com sucesso!");
+        this.options.controllerOrigin.loadList();
     },
     checkInList: function (id) {
 
