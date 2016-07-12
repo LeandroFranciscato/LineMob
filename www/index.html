@@ -57,6 +57,11 @@
             function loadScroll() {
                 myScroll = new IScroll('#wrapper', {preventDefault: false});
             }
+
+            function loadScrollLeftMenu() {
+                myScrollLeftMenu = new IScroll('#menu-esquerdo', {preventDefault: false});
+            }
+
             document.addEventListener('touchmove', function (e) {
                 e.preventDefault();
             }, false);
@@ -65,15 +70,17 @@
     <body>                             
         <!-- LEFT-MENU -->
         <div id="menu-esquerdo" class="menu-esquerdo">
-            <div id="div-img-menu-esquerdo">
-                <img id="img-menu-esquerdo" src="img/logo.png">
-            </div>
-            <div id="links"> 
-                <div class="collection">
-                    <a class="collection-item" onclick="mainController.render()">Início<span class="badge"><i class="material-icons"><script>iconUtil.draw(iconUtil.home);</script></i></span></a>
-                    <a class="collection-item" onclick="contaController.loadList()">Contas<span class="badge"><i class="material-icons"><script>iconUtil.draw(iconUtil.bank);</script></i></span></a>
-                    <a class="collection-item" onclick="pessoaController.loadList()">Pessoas<span class="badge"><i class="material-icons"><script>iconUtil.draw(iconUtil.people);</script></i></span></a>
-                    <a class="collection-item" onclick="loginController.logout()">Sair<span class="badge"><i class="material-icons"><script>iconUtil.draw(iconUtil.exit);</script></i></span></a>
+            <div id="scroller-left-menu">
+                <div id="div-img-menu-esquerdo">
+                    <img id="img-menu-esquerdo" src="img/logo.png">
+                </div>                
+                <div id="links"> 
+                    <div class="collection">
+                        <a class="collection-item" onclick="mainController.render()">Início<span class="badge"><i class="material-icons"><script>iconUtil.draw(iconUtil.home);</script></i></span></a>
+                        <a class="collection-item" onclick="contaController.loadList()">Contas<span class="badge"><i class="material-icons"><script>iconUtil.draw(iconUtil.bank);</script></i></span></a>
+                        <a class="collection-item" onclick="pessoaController.loadList()">Pessoas<span class="badge"><i class="material-icons"><script>iconUtil.draw(iconUtil.people);</script></i></span></a>
+                        <a class="collection-item" onclick="loginController.logout()">Sair<span class="badge"><i class="material-icons"><script>iconUtil.draw(iconUtil.exit);</script></i></span></a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -85,7 +92,7 @@
                     <li id="icon-left-nav" class="icon-left-nav">
                         <i id="text-icon-left-nav" class="material-icons"></i>
                     </li>
-                    
+
                     <li id="titulo-center-nav" class="titulo-center-nav center"></li>
 
                     <li>
@@ -118,7 +125,7 @@
             </ul>            
         </nav>
 
-        
+
 
         <!-- CONTENT -->
         <div id="wrapper">
@@ -136,7 +143,7 @@
                 <li id="btn-float-remove"><a class="btn-floating"><i class="material-icons"><script>iconUtil.draw(iconUtil.close);</script></i></a></li>      
             </ul>
         </div>
-        
-        
+
+
     </body>
 </html>

@@ -47,7 +47,8 @@ var pessoaController = {
             navCenter: {
                 title: "PESSOA",
                 icon: iconUtil.add
-            }
+            },
+            inputToFocus: "#nome"
         }, data, function () {
             if (cb) {
                 cb();

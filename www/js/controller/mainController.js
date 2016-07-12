@@ -14,6 +14,7 @@ var mainController = {
         $(this.OBJECT_TO_BIND).html(html);
 
         loadScroll();
+        loadScrollLeftMenu();
         this.bindEvents();
         if (this.SITUACAO_MENU_ESQUERDO === 1) {
             this.menuEsquerdo();

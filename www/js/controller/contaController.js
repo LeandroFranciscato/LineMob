@@ -47,7 +47,8 @@ var contaController = {
             navCenter: {
                 title: "CONTA",
                 icon: iconUtil.add
-            }
+            },
+            inputToFocus: "#nome"
         }, data, function () {
             if (cb) {
                 cb();
@@ -68,7 +69,7 @@ var contaController = {
             navCenter: {
                 title: "CONTAS",
                 icon: iconUtil.edit
-            }
+            }            
         }, data, function () {
             if (cb) {
                 cb();

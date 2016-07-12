@@ -74,7 +74,8 @@ var Controller = {
             },
             floatButton: {
                 display: "none"
-            }
+            },
+            inputToFocus: ""
         };
         this.setOptions(this.options, options);
 
@@ -107,7 +108,8 @@ var Controller = {
             },
             floatButton: {
                 display: "none"
-            }
+            },
+            inputToFocus: "#valor-campo"
         };
         this.setOptions(this.options, options);
         this.render(this.options, data, function () {
@@ -176,13 +178,15 @@ var Controller = {
                 display: "none",
                 callbackAdd: function () {}
             },
-            paginator: true
+            paginator: true,
+            inputToFocus: ""
         };
         this.setOptions(this.options, options);
 
         /*front-end controllers*/
         this.renderHtml(data, this.options.template, this.options.objectToBind);
         this.setMaterializeJs();
+        this.setFocus();
         loadScroll();
         this.hideLeftMenu();
         this.setRightIcon();
@@ -205,7 +209,10 @@ var Controller = {
         $(objectToBind).html(htmlParsed);
     },
     setMaterializeJs: function () {
-        $('select').material_select();
+        $('select').material_select();        
+    },
+    setFocus: function() {
+        $(this.options.inputToFocus).focus();
     },
     hideLeftMenu: function () {
         if (mainController.SITUACAO_MENU_ESQUERDO === 1) {
