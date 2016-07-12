@@ -31,7 +31,7 @@ body {
 }
 
 #footer{    
-    margin-bottom: 0px;
+    margin: 10px 0 0 0;   
     color: #e53935;      
 }
 
@@ -150,3 +150,4 @@ body {
     font-weight: 900;
     color: #e53935;
 }
+

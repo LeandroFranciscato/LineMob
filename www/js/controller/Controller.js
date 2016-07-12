@@ -246,7 +246,8 @@ var Controller = {
         }
     },
     setTapHoldAction: function () {
-        $(".li-lista").on("taphold", {duration: 400}, function () {
+        $(".li-lista").unbind("taphold");
+        $(".li-lista").on("taphold", {duration: 400}, function () {                                    
             // Uncheck all
             $('#check-all').prop("checked", true);
             Controller.checkInList();
@@ -319,6 +320,7 @@ var Controller = {
                 var entity = dataArray[0];
                 daoUtil.getCount(entity, function (qtde) {
                     if (qtde > dataArray.length) {
+                        $("#nav-pre-footer").css("display", "block");
                         $("#footer").css("display", "block");
                         $("#text-footer").html("Carregar mais " + (qtde - dataArray.length) + "...");
                         $("#footer").unbind("click");
@@ -329,6 +331,10 @@ var Controller = {
                                 myScroll.scrollTo(0, myScroll.maxScrollY, 0);
                             });
                         });
+                    }else{
+                        $("#nav-pre-footer").css("display", "none");
+                        loadScroll();
+                        myScroll.scrollTo(0, myScroll.maxScrollY, 0);
                     }
                 });
             }
