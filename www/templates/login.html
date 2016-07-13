@@ -1,5 +1,5 @@
 <div class="container row">    
-    <form class="form-signin col s12" data-id="formLogin">        
+    <form id="form-cadastro" class="form-signin col s12" data-id="formLogin">        
 
         <div class="row">
             <div class="col s12 center">
@@ -30,7 +30,10 @@
 
         <div class="row">
             <div class="col s12">
-                <button data-id="btnLogin" class="btn waves-effect waves-light" type="button">
+                <button data-id="btnLogin" 
+                        class="red darken-1 btn waves-effect waves-light" 
+                        type="button"
+                        onclick="loginController.insert();">
                     Entrar
                 </button>
             </div>

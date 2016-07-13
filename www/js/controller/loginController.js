@@ -1,59 +1,54 @@
-/* global logUtil, Mustache, contaController, alertUtil, mainController, daoUtil, Materialize, database_helper */
+/* global logUtil, Mustache, alertUtil, mainController, daoUtil, Materialize, database_helper, Controller, dbUtil */
 
 var loginController = {
     TEMPLATE_LOGIN: "",
-    OBJECT_TO_BIND: "#scroller",
+    loadList: function (cb) {
+        this.load(function () {
+            if (cb) {
+                cb();
+            }
+        });
+    },
     load: function (cb) {
         var usuario = new Usuario();
         daoUtil.getAll(usuario, "id", function (res) {
             if (res && res.length > 0) {
                 mainController.render();
             } else {
-                loginController.render();
+                $("#wrapper").css("top", "0px");
+                Controller.loadNewOrSingleEdit({
+                    controllerOrigin: loginController,
+                    entity: new Usuario(),
+                    template: loginController.TEMPLATE_LOGIN,
+                    inputToFocus: "#inputUsuario"
+                }, null, function () {
+                    if (cb) {
+                        cb();
+                    }
+                });
             }
         });
     },
-    render: function (cb) {
-        var html = Mustache.render(this.TEMPLATE_LOGIN);
-        $(this.OBJECT_TO_BIND).html(html);
-        $("#wrapper").css("top", "0px");
-        this.bindEvents();
-        loaded();
-        if (cb) {
-            cb();
-        }
-    },
-    bindEvents: function () {
-        $('[data-id=btnLogin]').click(loginController.getLogin);
-    },
-    getLogin: function () {
-        var dadosForm = $('[data-id=formLogin]').serializeObject();
-
-        var usuario = new Usuario();
-        usuario.usuario = dadosForm.usuario;
-        usuario.senha = dadosForm.senha;
-
+    validaFormulario: function (usuario, callbackSucess) {
         if (!usuario.usuario) {
-            alertUtil.confirm("Informe o Usuário!");
-            return;
+            alertUtil.confirm("Usuário deve ser informado.");
+        } else if (!usuario.senha) {
+            alertUtil.confirm("Senha deve ser informada.");
+        } else if (usuario.senha !== "L") { //WS no futuro
+            alertUtil.confirm("Usuário e/ou senha incorretos.");
+        } else {
+            if (callbackSucess) {
+                callbackSucess();
+            }
         }
-
-        if (!usuario.senha) {
-            alertUtil.confirm("Informe a Senha!");
-            return;
-        }
-
-        //Aqui teremos no futuro uma validação com o WS
-        if (usuario.senha !== "L") {
-            alertUtil.confirm("Usuário e Senha incorretos.");
-            return;
-        }
-
+    },
+    insert: function () {
         if ($('#checkBoxLembrar').prop('checked') === true) {
-            daoUtil.insert(usuario);
+            Controller.insert("Bem vindo " + $("#inputUsuario").val());
+        } else {
+            mainController.render();
         }
-        alertUtil.confirm("Bem vindo " + usuario.usuario);
-        mainController.render();
+
     },
     logout: function () {
         alertUtil.confirm(
@@ -61,7 +56,7 @@ var loginController = {
                 "Saindo...",
                 ["Não", "Sim"],
                 function (btnEscolhido) {
-                    if (btnEscolhido == 2){
+                    if (btnEscolhido == 2) {
                         dbUtil.dropDatabase(function () {
                             window.localStorage.removeItem("dataBaseCreated");
                             navigator.app.exitApp();

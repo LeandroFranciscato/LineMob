@@ -178,7 +178,7 @@ var Controller = {
                 display: "none",
                 callbackAdd: function () {}
             },
-            paginator: true,
+            paginator: false,
             inputToFocus: ""
         };
         this.setOptions(this.options, options);
@@ -209,9 +209,9 @@ var Controller = {
         $(objectToBind).html(htmlParsed);
     },
     setMaterializeJs: function () {
-        $('select').material_select();        
+        $('select').material_select();
     },
-    setFocus: function() {
+    setFocus: function () {
         $(this.options.inputToFocus).focus();
     },
     hideLeftMenu: function () {
@@ -254,7 +254,7 @@ var Controller = {
     },
     setTapHoldAction: function () {
         $(".li-lista").unbind("taphold");
-        $(".li-lista").on("taphold", {duration: 400}, function () {                                    
+        $(".li-lista").on("taphold", {duration: 400}, function () {
             // Uncheck all
             $('#check-all').prop("checked", true);
             Controller.checkInList();
@@ -268,9 +268,9 @@ var Controller = {
                 if ($(fields[i]).attr("name") === "id") {
                     var id = $(fields[i]).html();
                 }
-            }            
+            }
             Controller.checkInList(id);
-            
+
             //open edit Template
             Controller.preLoadEdit();
         });
@@ -289,7 +289,9 @@ var Controller = {
             if ($(".search-field").css("display") === "block") {
                 Controller.closeSearchField();
             } else {
-                Controller.options.navLeft.callbackClick();
+                if (Controller.options.navLeft.callbackClick) {
+                    Controller.options.navLeft.callbackClick();
+                }
             }
         });
         $("#text-icon-left-nav").html(this.options.navLeft.icon);
@@ -338,12 +340,16 @@ var Controller = {
                                 myScroll.scrollTo(0, myScroll.maxScrollY, 0);
                             });
                         });
-                    }else{
+                    } else {
                         $("#nav-pre-footer").css("display", "none");
                         loadScroll();
                         myScroll.scrollTo(0, myScroll.maxScrollY, 0);
                     }
                 });
+            } else {
+                $("#nav-pre-footer").css("display", "none");
+                loadScroll();
+                myScroll.scrollTo(0, myScroll.maxScrollY, 0);
             }
         }
     },
@@ -367,7 +373,10 @@ var Controller = {
             }
         }
     },
-    insert: function () {
+    insert: function (sucessMessage, errorMessage) {
+        sucessMessage = (!sucessMessage) ? "Alterado com sucesso!" : sucessMessage;
+        errorMessage = (!errorMessage) ? "Problemas ao alterar ..." : errorMessage;
+
         var data = $("#form-cadastro").serializeObject();
         var entity = new Entity();
         entity.tableName = this.options.entity.tableName;
@@ -377,10 +386,10 @@ var Controller = {
             this.options.controllerOrigin.validaFormulario(data, function () {
                 daoUtil.update(data, function (rowsAffected) {
                     if (rowsAffected === 1) {
-                        alertUtil.confirm("Alterado com sucesso!");
+                        alertUtil.confirm(sucessMessage);
                         Controller.options.controllerOrigin.loadList();
                     } else {
-                        alertUtil.confirm("Problemas ao alterar ...");
+                        alertUtil.confirm(errorMessage);
                     }
                 });
             });
@@ -388,10 +397,10 @@ var Controller = {
             this.options.controllerOrigin.validaFormulario(data, function () {
                 daoUtil.insert(data, function (rowsAffected) {
                     if (rowsAffected === 1) {
-                        alertUtil.confirm("Cadastrado com sucesso!");
+                        alertUtil.confirm(sucessMessage);
                         Controller.options.controllerOrigin.loadList();
                     } else {
-                        alertUtil.confirm("Problemas ao inserir...");
+                        alertUtil.confirm(errorMessage);
                     }
                 });
             });

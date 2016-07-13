@@ -1,48 +1,37 @@
-/* global Mustache, contaController */
+/* global Mustache, contaController, Controller, iconUtil, i18next */
 
 var mainController = {
     TEMPLATE_MAIN: "",
-    OBJECT_TO_BIND: "#scroller",
     SITUACAO_MENU_ESQUERDO: 0,
     render: function (cb) {
         $("#wrapper").css("top", "56px");
         $("#header").css("display", "block");
         $("#menu-esquerdo").css("display", "block");
 
-        Mustache.parse(this.TEMPLATE_MAIN);
-        var html = Mustache.render(this.TEMPLATE_MAIN);
-        $(this.OBJECT_TO_BIND).html(html);
-
-        loadScroll();
-        loadScrollLeftMenu();
-        this.bindEvents();
-        if (this.SITUACAO_MENU_ESQUERDO === 1) {
-            this.menuEsquerdo();
-        }
-
-        $("#icon-right-nav").removeClass("active");
-        $("#icon-right-nav").attr("data-activates", "dropdown-inicio");
-        $("#text-icon-right-nav").html("&#xE5D4;");
-        $("#text-icon-right-nav").unbind("click");
-        $(".dropdown-button").dropdown({
-            belowOrigin: true
+        Controller.render({
+            controllerOrigin: this,
+            entity: new Entity(),
+            template: this.TEMPLATE_MAIN,
+            navLeft: {
+                icon: iconUtil.menu,
+                callbackClick: function () {
+                    mainController.menuEsquerdo();
+                }
+            },
+            navCenter: {
+                title: i18next.t("app.name"),
+                icon: ""
+            },
+            navSearch: {
+                display: "none"
+            }
+        }, null, function () {
+            loadScrollLeftMenu();
+            mainController.bindEvents();
+            if (cb) {
+                cb();
+            }
         });
-        $("#btn-float").css("display", "none");
-
-        $("#titulo-center-nav").html(i18next.t("app.name"));
-        $("#icon-aux-titulo-center-nav").html("");
-
-        $("#icon-left-nav").unbind();
-        $(document).unbind("backbutton");
-        $("#icon-left-nav").on("click", function () {
-            mainController.menuEsquerdo();
-        });
-        $("#text-icon-left-nav").html("&#xE5D2;");
-        $("#text-icon-search-nav").html("");
-
-        if (cb) {
-            cb();
-        }
     },
     bindEvents: function () {
         $("body").on("swipeleft", function (e) {
@@ -86,10 +75,5 @@ var mainController = {
             }, 150);
             this.SITUACAO_MENU_ESQUERDO = 0;
         }
-    },
-    mostraBotaoMenu: function () {
-        $("#icone-menu").css("display", "initial");
-        $("#icone-voltar").css("display", "none");
-        $(document).unbind("backbutton");
     }
 };

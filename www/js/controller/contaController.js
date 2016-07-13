@@ -92,6 +92,7 @@ var contaController = {
             $("#valor-campo").prop("name", "valorSaldoInicial");
             $("#valor-campo").prop("type", "number");
         }
+        $("#prompt-campo").addClass("active");
     },
     validaFormulario: function (conta, callbackSucess) {
         if (!conta.nome) {
