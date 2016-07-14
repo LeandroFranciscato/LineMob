@@ -1,6 +1,16 @@
-/* global i18nextBrowserLanguageDetector, i18nextXHRBackend, i18next, i18nextJquery */
+/* global i18nextBrowserLanguageDetector, i18nextXHRBackend, i18next, i18nextJquery, i18Util */
 
-// Iniciando a lib
+i18nextInitialize = function () {
+    i18nextJquery.init(i18next, $);
+    $('[data-i18n]').localize();
+};
+
+i18nextSetLng = function (lng) {
+    i18next.changeLanguage(lng, function () {
+        i18nextInitialize();
+    });
+};
+
 i18next.use(i18nextBrowserLanguageDetector)
         .use(i18nextXHRBackend)
         .init({
@@ -11,31 +21,6 @@ i18next.use(i18nextBrowserLanguageDetector)
             , backend: {
                 "loadPath": "locales/{{lng}}/{{ns}}.json"
             }
-        },function (translation) {
-            i18nextJquery.init(i18next, $);
-            $('[data-i18n]').localize();
+        }, function (translation) {
+
         });
-/*
-// espanhol
-$('#btn-es').on('click', function () {
-    i18next.changeLanguage("es", function (err, t) {
-        i18nextJquery.init(i18next, $);
-        $('[data-i18n]').localize();
-    });
-});
-
-// inglês
-$('#btn-en').on('click', function () {
-    i18next.changeLanguage("en", function (err, t) {
-        i18nextJquery.init(i18next, $);
-        $('[data-i18n]').localize();
-    });
-});
-
-// português
-$('#btn-pt').on('click', function () {
-    i18next.changeLanguage("pt", function (err, t) {
-        i18nextJquery.init(i18next, $);
-        $('[data-i18n]').localize();
-    });
-});*/

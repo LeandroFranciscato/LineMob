@@ -1,4 +1,4 @@
-/* global logUtil, Mustache, alertUtil, mainController, daoUtil, Materialize, database_helper, Controller, dbUtil */
+/* global logUtil, Mustache, alertUtil, mainController, daoUtil, Materialize, database_helper, Controller, dbUtil, i18next */
 
 var loginController = {
     TEMPLATE_LOGIN: "",
@@ -31,11 +31,11 @@ var loginController = {
     },
     validaFormulario: function (usuario, callbackSucess) {
         if (!usuario.usuario) {
-            alertUtil.confirm("Usuário deve ser informado.");
+            alertUtil.confirm(i18next.t("login-controller.alert-usuario-req"));
         } else if (!usuario.senha) {
-            alertUtil.confirm("Senha deve ser informada.");
+            alertUtil.confirm(i18next.t("login-controller.alert-senha-req"));
         } else if (usuario.senha !== "L") { //WS no futuro
-            alertUtil.confirm("Usuário e/ou senha incorretos.");
+            alertUtil.confirm(i18next.t("login-controller.alert-login-fail"));
         } else {
             if (callbackSucess) {
                 callbackSucess();
@@ -44,17 +44,16 @@ var loginController = {
     },
     insert: function () {
         if ($('#checkBoxLembrar').prop('checked') === true) {
-            Controller.insert("Bem vindo " + $("#inputUsuario").val());
+            Controller.insert(i18next.t("login-controller.alert-welcome-pt1") + $("#inputUsuario").val());
         } else {
             mainController.render();
         }
-
     },
     logout: function () {
         alertUtil.confirm(
-                "Esta ação fará com que todos os dados locais sejam perdidos, deseja mesmo continuar?",
-                "Saindo...",
-                ["Não", "Sim"],
+                i18next.t("login-controller.body-alert-logout"),
+                i18next.t("login-controller.title-alert-logout"),
+                [i18next.t("generics.no"), i18next.t("generics.yes")],
                 function (btnEscolhido) {
                     if (btnEscolhido == 2) {
                         dbUtil.dropDatabase(function () {

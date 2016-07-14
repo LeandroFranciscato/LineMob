@@ -6,17 +6,17 @@
         <div class="row">
             <div class="input-field col s12">
                 <select id="select-campo" onchange="pessoaController.selecionaCampoEdicaoMultipla()">
-                    <option value="nome" selected>Nome</option>
-                    <option value="apelido">Apelido</option>                    
+                    <option value="nome" selected data-i18n="pessoa-controller.field-nome"></option>
+                    <option value="apelido" data-i18n="pessoa-controller.field-apelido"></option>                    
                 </select>
-                <label>Selecione o campo para edição</label>
+                <label data-i18n="generics.label-multedit"></label>
             </div>
         </div>
 
         <div class="row">
             <div class="input-field col s12">
                 <input type="text" id="valor-campo" name="nome">
-                <label id="prompt-campo" for="valor-campo" class="active">Nome</label>
+                <label id="prompt-campo" for="valor-campo" class="active" data-i18n="pessoa-controller.field-nome"></label>
             </div>
         </div>
     </form>

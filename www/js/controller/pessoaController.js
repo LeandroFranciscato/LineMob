@@ -1,4 +1,4 @@
-/* global Mustache, logUtil, mainController, alertUtil, daoUtil, Controller, iconUtil */
+/* global Mustache, logUtil, mainController, alertUtil, daoUtil, Controller, iconUtil, i18next */
 
 var pessoaController = {
     TEMPLATE_CADASTRO: "",
@@ -18,7 +18,7 @@ var pessoaController = {
                 }
             },
             navCenter: {
-                title: "PESSOAS",
+                title: i18next.t("pessoa-controller.plural"),
                 icon: ""
             },
             floatButton: {
@@ -45,7 +45,7 @@ var pessoaController = {
                 }
             },
             navCenter: {
-                title: "PESSOA",
+                title: i18next.t("pessoa-controller.singular"),
                 icon: iconUtil.add
             },
             inputToFocus: "#nome"
@@ -67,7 +67,7 @@ var pessoaController = {
                 }
             },
             navCenter: {
-                title: "PESSOAS",
+                title: i18next.t("pessoa-controller.singular"),
                 icon: iconUtil.edit
             }
         }, data, function () {
@@ -80,20 +80,20 @@ var pessoaController = {
         var campo = $("#select-campo").val();
 
         if (campo === "nome") {
-            $("#prompt-campo").html("Nome da Pessoa");
+            $("#prompt-campo").html(i18next.t("pessoa-controller.field-nome"));
             $("#valor-campo").prop("name", "nome");
             $("#valor-campo").prop("type", "text");
         } else if (campo === "apelido") {
-            $("#prompt-campo").html("Apelido");
+            $("#prompt-campo").html(i18next.t("pessoa-controller.field-apelido"));
             $("#valor-campo").prop("name", "apelido");
             $("#valor-campo").prop("type", "text");
         }
     },
     validaFormulario: function (pessoa, callbackSucess) {
         if (!pessoa.nome) {
-            alertUtil.confirm("Nome deve ser informado.");
+            alertUtil.confirm(i18next.t("pessoa-controller.alert-nome-req"));
         } else if (!pessoa.apelido) {
-            alertUtil.confirm("Apelido deve ser informado.");
+            alertUtil.confirm(i18next.t("pessoa-controller.alert-apelido-req"));
         } else {
             if (callbackSucess) {
                 callbackSucess();

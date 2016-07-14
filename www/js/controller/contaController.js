@@ -1,4 +1,4 @@
-/* global Mustache, logUtil, mainController, alertUtil, daoUtil, Controller, iconUtil */
+/* global Mustache, logUtil, mainController, alertUtil, daoUtil, Controller, iconUtil, i18next */
 
 var contaController = {
     TEMPLATE_CADASTRO: "",
@@ -18,7 +18,7 @@ var contaController = {
                 }
             },
             navCenter: {
-                title: "CONTAS",
+                title: i18next.t("conta-controller.plural"),
                 icon: ""
             },
             floatButton: {
@@ -45,7 +45,7 @@ var contaController = {
                 }
             },
             navCenter: {
-                title: "CONTA",
+                title: i18next.t("conta-controller.singular"),
                 icon: iconUtil.add
             },
             inputToFocus: "#nome"
@@ -67,7 +67,7 @@ var contaController = {
                 }
             },
             navCenter: {
-                title: "CONTAS",
+                title: i18next.t("conta-controller.singular"),
                 icon: iconUtil.edit
             }            
         }, data, function () {
@@ -80,15 +80,15 @@ var contaController = {
         var campo = $("#select-campo").val();
 
         if (campo === "nome") {
-            $("#prompt-campo").html("Nome da Conta");
+            $("#prompt-campo").html(i18next.t("conta-controller.field-nome"));
             $("#valor-campo").prop("name", "nome");
             $("#valor-campo").prop("type", "text");
         } else if (campo === "dataFundacao") {
-            $("#prompt-campo").html("Data Início Saldo");
+            $("#prompt-campo").html(i18next.t("conta-controller.field-dataFundacao"));
             $("#valor-campo").prop("name", "dataFundacao");
             $("#valor-campo").prop("type", "date");
         } else if (campo === "valorSaldoInicial") {
-            $("#prompt-campo").html("Valor Saldo Inicial");
+            $("#prompt-campo").html(i18next.t("conta-controller.field-valorSaldoInicial"));
             $("#valor-campo").prop("name", "valorSaldoInicial");
             $("#valor-campo").prop("type", "number");
         }
@@ -96,11 +96,11 @@ var contaController = {
     },
     validaFormulario: function (conta, callbackSucess) {
         if (!conta.nome) {
-            alertUtil.confirm("Nome deve ser informado.");
+            alertUtil.confirm(i18next.t("conta-controller.alert-nome-req"));
         } else if (!conta.dataFundacao) {
-            alertUtil.confirm("Data início do saldo deve ser informado.");
+            alertUtil.confirm(i18next.t("conta-controller.alert-dataFundacao-req"));
         } else if (!conta.valorSaldoInicial) {
-            alertUtil.confirm("Valor do saldo inicial deve ser informado.");
+            alertUtil.confirm(i18next.t("conta-controller.alert-valorSaldoInicial-req"));
         } else {
             if (callbackSucess) {
                 callbackSucess();

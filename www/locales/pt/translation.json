@@ -1,5 +1,73 @@
 {
     "app": {
-        "name": "LINEMOB-pt"
+        "name": "LINEMOB"
+    },
+    "left-menu": {
+        "home": "Início",
+        "bank-accounts": "Contas Bancarias",
+        "peoples": "Pessoas",
+        "config": "Opções",
+        "exit": "Sair"
+    },
+    "language-select": {
+        "label": "Idioma do App",
+        "en": "Inglês",
+        "pt": "Português",
+        "es": "Espanhol"
+    },
+    "alerts-crud": {
+        "title-editing": "Editando...",
+        "body-editing": "Selecione ao menos um (1) registro para editar.",
+        "title-deleting": "Deletando...",
+        "body-deleting": "Selecione algum registro para deletar.",
+        "body-confirm-deleting-pt1": "Deseja realmente deletar ",
+        "body-delete-success": "Deletado com sucesso!",
+        "body-edit-success": "Alterado com sucesso!",
+        "body-insert-success": "Cadastrado com sucesso!"
+    },
+    "config-controller": {
+        "plural": "OPÇÕES",
+        "alert-lng-req": "Idioma deve ser informado."
+    },
+    "conta-controller": {
+        "plural": "CONTAS",
+        "singular": "CONTA",
+        "alert-nome-req": "Nome deve ser informado.",
+        "alert-dataFundacao-req": "Data início do saldo deve ser informado.",
+        "alert-valorSaldoInicial-req": "Valor do saldo inicial deve ser informado.",        
+        "field-nome": "Nome da Conta",
+        "field-dataFundacao": "Data Fundação",
+        "field-valorSaldoInicial": "Valor Saldo Inicial"        
+    },    
+    "login-controller": {
+        "alert-usuario-req": "Usuário deve ser informado.",
+        "alert-senha-req": "Senha deve ser informada.",
+        "alert-login-fail": "Usuário e/ou senha incorretos.",
+        "alert-welcome-pt1": "Bem vindo ",
+        "body-alert-logout": "Esta ação fará com que todos os dados locais sejam perdidos, deseja mesmo continuar?",
+        "title-alert-logout": "Saindo...",
+        "placeholder-email": "exemplo@dominio.com",
+        "field-email": "E-mail",
+        "field-senha": "Senha",
+        "field-check": "Lembrar",
+        "btn-login": "Entrar"
+    },
+    "pessoa-controller": {
+        "plural": "PESSOAS",
+        "singular": "PESSOA",
+        "alert-nome-req": "Nome deve ser informado.",
+        "alert-apelido-req": "Apelido deve ser informado.",
+        "field-nome": "Nome",
+        "field-apelido": "Apelido"
+    },
+    "generics": {
+        "no": "Não",
+        "yes": "Sim",
+        "record-s-question": " registro(s)?",
+        "field-required": "Campo deve ser preenchido.",
+        "fail-crud-msg": "Problemas... Contate-nos... ",
+        "label-multedit": "Selecione o campo para Alteração.",
+        "paginator-text-pt1": "Carregar mais ",
+        "search": "Pesquisar..."
     }
 }

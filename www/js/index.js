@@ -1,4 +1,4 @@
-/* global dbUtil, logUtil, contaController, loginController, mainController, daoUtil, pessoaController */
+/* global dbUtil, logUtil, contaController, loginController, mainController, daoUtil, pessoaController, configController */
 
 var app = {
     initialize: function () {
@@ -59,11 +59,14 @@ var app = {
     loadTemplateMain: function (cb) {
         $.get('templates/login.html', function (string) {
             loginController.TEMPLATE_LOGIN = string;
-            $.get('templates/inicio.html', function (string) {
-                mainController.TEMPLATE_MAIN = string;
-                if (cb) {
-                    cb();
-                }
+            $.get('templates/config.html', function (string) {
+                configController.TEMPLATE_CONFIG = string;
+                $.get('templates/inicio.html', function (string) {
+                    mainController.TEMPLATE_MAIN = string;
+                    if (cb) {
+                        cb();
+                    }
+                });
             });
         });
     },
@@ -82,10 +85,13 @@ var app = {
                             daoUtil.initialize(pessoa, function () {
                                 var mov = new Movimento();
                                 daoUtil.initialize(mov, function () {
-                                    storage.setItem("dataBaseCreated", "1");
-                                    if (cb) {
-                                        cb();
-                                    }
+                                    var config = new Config();
+                                    daoUtil.initialize(config, function () {
+                                        storage.setItem("dataBaseCreated", "1");
+                                        if (cb) {
+                                            cb();
+                                        }
+                                    });
                                 });
                             });
                         });

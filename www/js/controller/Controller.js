@@ -1,4 +1,4 @@
-/* global daoUtil, mainController, Mustache, iconUtil, myScroll, alertUtil */
+/* global daoUtil, mainController, Mustache, iconUtil, myScroll, alertUtil, i18next, i18next */
 var Controller = {
     SCROLLER: "#scroller",
     options: "",
@@ -136,7 +136,7 @@ var Controller = {
         }
 
         if (qtdeSelecionados === 0) {
-            alertUtil.confirm("Selecione ao menos um (1) registro para editar.", " Editando...");
+            alertUtil.confirm(i18next.t("alerts-crud.body-editing"), i18next.t("alerts-crud.title-editing"));
             return;
         }
 
@@ -185,9 +185,8 @@ var Controller = {
 
         /*front-end controllers*/
         this.renderHtml(data, this.options.template, this.options.objectToBind);
-        this.setMaterializeJs();
+        this.initializePlugins();
         this.setFocus();
-        loadScroll();
         this.hideLeftMenu();
         this.setRightIcon();
         this.setFloatButton();
@@ -208,7 +207,9 @@ var Controller = {
         var htmlParsed = Mustache.render(template, data);
         $(objectToBind).html(htmlParsed);
     },
-    setMaterializeJs: function () {
+    initializePlugins: function () {
+        i18nextInitialize();
+        loadScroll();
         $('select').material_select();
     },
     setFocus: function () {
@@ -331,7 +332,7 @@ var Controller = {
                     if (qtde > dataArray.length) {
                         $("#nav-pre-footer").css("display", "block");
                         $("#footer").css("display", "block");
-                        $("#text-footer").html("Carregar mais " + (qtde - dataArray.length) + "...");
+                        $("#text-footer").html(i18next.t("generics.paginator-text-pt1") + (qtde - dataArray.length) + "...");
                         $("#footer").unbind("click");
                         $("#footer").on("click", function () {
                             currentOptions.inicial = 0;
@@ -373,32 +374,54 @@ var Controller = {
             }
         }
     },
-    insert: function (sucessMessage, errorMessage) {
-        sucessMessage = (!sucessMessage) ? "Alterado com sucesso!" : sucessMessage;
-        errorMessage = (!errorMessage) ? "Problemas ao alterar ..." : errorMessage;
-
+    insert: function (sucessMessage, errorMessage, cb) {
         var data = $("#form-cadastro").serializeObject();
         var entity = new Entity();
         entity.tableName = this.options.entity.tableName;
         Object.setPrototypeOf(data, entity);
 
         if (data.id) {
+            sucessMessage = (!sucessMessage) ? i18next.t("alerts-crud.body-edit-success") : sucessMessage;
+            errorMessage = (!errorMessage) ? i18next.t("generics.fail-crud-msg") : errorMessage;
+
             this.options.controllerOrigin.validaFormulario(data, function () {
                 daoUtil.update(data, function (rowsAffected) {
                     if (rowsAffected === 1) {
                         alertUtil.confirm(sucessMessage);
-                        Controller.options.controllerOrigin.loadList();
+                        if (Controller.options.controllerOrigin.loadList) {
+                            Controller.options.controllerOrigin.loadList(function () {
+                                if (cb) {
+                                    cb();
+                                }
+                            });
+                        } else {
+                            if (cb) {
+                                cb();
+                            }
+                        }
                     } else {
                         alertUtil.confirm(errorMessage);
                     }
                 });
             });
         } else {
+            sucessMessage = (!sucessMessage) ? i18next.t("alerts-crud.body-insert-success") : sucessMessage;
+            errorMessage = (!errorMessage) ? i18next.t("generics.fail-crud-msg") : errorMessage;
             this.options.controllerOrigin.validaFormulario(data, function () {
                 daoUtil.insert(data, function (rowsAffected) {
                     if (rowsAffected === 1) {
                         alertUtil.confirm(sucessMessage);
-                        Controller.options.controllerOrigin.loadList();
+                        if (Controller.options.controllerOrigin.loadList) {
+                            Controller.options.controllerOrigin.loadList(function () {
+                                if (cb) {
+                                    cb();
+                                }
+                            });
+                        } else {
+                            if (cb) {
+                                cb();
+                            }
+                        }
                     } else {
                         alertUtil.confirm(errorMessage);
                     }
@@ -416,30 +439,32 @@ var Controller = {
         }
 
         if (qtSelecionadas === 0) {
-            alertUtil.confirm("Selecione algum registro para deletar!");
+            alertUtil.confirm(i18next.t("alerts-crud.body-deleting"), i18next.t("alerts-crud.title-deleting"));
             return;
         }
 
-        var buttons = ["Não", "Sim"];
-        alertUtil.confirm("Deseja realmente deletar " + qtSelecionadas + " registro(s)?", "Deletando...", buttons, function (btn) {
+        var buttons = [i18next.t("generics.no"), i18next.t("generics.yes")];
+        alertUtil.confirm(i18next.t("alerts-crud.body-confirm-deleting-pt1") + qtSelecionadas + i18next.t("generics.record-s-question"),
+                i18next.t("alerts-crud.title-deleting"),
+                buttons,
+                function (btn) {
+                    if (btn == 2) {
+                        for (var i = 0; i <= itens.length; i++) {
 
-            if (btn == 2) {
-                for (var i = 0; i <= itens.length; i++) {
-
-                    if (itens[i] && itens[i].selecionado == 1) {
-                        var item = Controller.options.entity;
-                        item.id = itens[i].id;
-                        daoUtil.delete(item, function (res) {
-                            if (res != 1) {
-                                alertUtil.confirm("Erro ao deletar ", item.id);
+                            if (itens[i] && itens[i].selecionado == 1) {
+                                var item = Controller.options.entity;
+                                item.id = itens[i].id;
+                                daoUtil.delete(item, function (res) {
+                                    if (res != 1) {
+                                        alertUtil.confirm(i18next.t("generics.fail-crud-msg"), item.id);
+                                    }
+                                });
                             }
-                        });
+                        }
+                        alertUtil.confirm(i18next.t("alerts-crud.body-delete-success"));
+                        Controller.options.controllerOrigin.loadList();
                     }
-                }
-                alertUtil.confirm("Deletado com Sucesso!");
-                Controller.options.controllerOrigin.loadList();
-            }
-        });
+                });
     },
     updateMultiplaEscolha: function () {
         var ids = $("#id").val();
@@ -449,7 +474,7 @@ var Controller = {
         var valorCampo = $("#valor-campo").val();
 
         if (!valorCampo) {
-            alertUtil.confirm("Campo deve ser preenchido.");
+            alertUtil.confirm(i18next.t("generics.field-required"));
             return;
         }
 
@@ -463,12 +488,12 @@ var Controller = {
 
                 daoUtil.updateDinamicColumn(entity, campo, function (rowsAffected) {
                     if (rowsAffected != 1) {
-                        alertUtil.confirm("Erro ao atualizar, id: " + entity.id);
+                        alertUtil.confirm(i18next.t("generics.fail-crud-msg") + entity.id);
                     }
                 });
             }
         }
-        alertUtil.confirm("Atualizado com sucesso!");
+        alertUtil.confirm(i18next.t("alerts-crud.body-edit-success"));
         this.options.controllerOrigin.loadList();
     },
     checkInList: function (id) {

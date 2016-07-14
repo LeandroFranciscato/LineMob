@@ -15,7 +15,7 @@
         <!--UTIL-->
         <script src="js/util/logUtil.js" type="text/javascript"></script>
         <script src="js/util/iconUtil.js" type="text/javascript"></script>
-        <script src="js/util/alertUtil.js" type="text/javascript"></script>
+        <script src="js/util/alertUtil.js" type="text/javascript"></script>        
 
         <!--FRAMEWORKS-->        
         <script src="js/plugins/jquery-3.0.0.min.js" type="text/javascript"></script>        
@@ -38,6 +38,7 @@
         <script src="js/model/Categoria.js" type="text/javascript"></script>
         <script src="js/model/Pessoa.js" type="text/javascript"></script>
         <script src="js/model/Movimento.js" type="text/javascript"></script>
+        <script src="js/model/Config.js" type="text/javascript"></script>
 
         <!--CONTROLLER-->
         <script src="js/controller/Controller.js" type="text/javascript"></script>
@@ -45,6 +46,7 @@
         <script src="js/controller/loginController.js" type="text/javascript"></script>
         <script src="js/controller/pessoaController.js" type="text/javascript"></script>
         <script src="js/controller/contaController.js" type="text/javascript"></script>
+        <script src="js/controller/configController.js" type="text/javascript"></script>
 
         <!-- INTERNACIONALIZAÇÃO -->
         <script src="js/plugins/i18next/i18next-jquery.0.0.14.min.js" type="text/javascript"></script>
@@ -76,10 +78,46 @@
                 </div>                
                 <div id="links"> 
                     <div class="collection">
-                        <a class="collection-item" onclick="mainController.render()">Início<span class="badge"><i class="material-icons"><script>iconUtil.draw(iconUtil.home);</script></i></span></a>
-                        <a class="collection-item" onclick="contaController.loadList()">Contas<span class="badge"><i class="material-icons"><script>iconUtil.draw(iconUtil.bank);</script></i></span></a>
-                        <a class="collection-item" onclick="pessoaController.loadList()">Pessoas<span class="badge"><i class="material-icons"><script>iconUtil.draw(iconUtil.people);</script></i></span></a>
-                        <a class="collection-item" onclick="loginController.logout()">Sair<span class="badge"><i class="material-icons"><script>iconUtil.draw(iconUtil.exit);</script></i></span></a>
+                        <a class="collection-item" onclick="mainController.render()">
+                            <span data-i18n="left-menu.home"></span>
+                            <span class="badge">
+                                <i class="material-icons">
+                                    <script>iconUtil.draw(iconUtil.home);</script>
+                                </i>
+                            </span>
+                        </a>
+                        <a class="collection-item" onclick="contaController.loadList()">
+                            <span data-i18n="left-menu.bank-accounts"> </span>
+                            <span class="badge">
+                                <i class="material-icons">
+                                    <script>iconUtil.draw(iconUtil.bank);</script>
+                                </i>
+                            </span>
+                        </a>
+                        <a class="collection-item" onclick="pessoaController.loadList()">
+                            <span data-i18n="left-menu.peoples"> </span>
+                            <span class="badge">
+                                <i class="material-icons">
+                                    <script>iconUtil.draw(iconUtil.people);</script>
+                                </i>
+                            </span>
+                        </a>
+                        <a class="collection-item" onclick="configController.load()">
+                            <span data-i18n="left-menu.config"> </span>
+                            <span class="badge">
+                                <i class="material-icons">
+                                    <script>iconUtil.draw(iconUtil.config);</script>
+                                </i>
+                            </span>
+                        </a>
+                        <a class="collection-item" onclick="loginController.logout()">
+                            <span data-i18n="left-menu.exit"> </span>
+                            <span class="badge">
+                                <i class="material-icons">
+                                    <script>iconUtil.draw(iconUtil.exit);</script>
+                                </i>
+                            </span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -117,15 +155,13 @@
                     <i class="material-icons prefix"><script>iconUtil.draw(iconUtil.back);</script></i>
                 </li>
                 <li class="input-field">                        
-                    <input id="input-search" type="text" class="validate" placeholder="Pesquisar...">                                                
+                    <input id="input-search" type="text" class="validate" placeholder="" data-i18n="[placeholder]generics.search">
                 </li>                    
                 <li id="icon-clean-search-field" class="icon-clean-search-field right">
                     <i class="material-icons prefix"><script>iconUtil.draw(iconUtil.close);</script></i>
                 </li>                
             </ul>            
         </nav>
-
-
 
         <!-- CONTENT -->
         <div id="wrapper">
@@ -143,7 +179,5 @@
                 <li id="btn-float-remove"><a class="btn-floating"><i class="material-icons"><script>iconUtil.draw(iconUtil.close);</script></i></a></li>      
             </ul>
         </div>
-
-
     </body>
 </html>

@@ -1,0 +1,18 @@
+<div class="card-panel">
+    <form id="form-cadastro">
+        <div class="invisible">                       
+            <input type="text" class="" id="id" name="id" value="{{id}}">
+        </div> 
+        <div class="row">
+            <div class="input-field col s12">                
+                <select id="select-language" name="language">
+                    <option value="" disabled selected data-i18n="language-select.label"></option>
+                    {{#languageOptions}}
+                    <option value="{{lng}}" data-i18n="language-select.{{lng}}" {{#selected}}selected{{/selected}}></option>
+                    {{/languageOptions}}
+                </select>
+                <label data-i18n="language-select.label"></label>
+            </div>
+        </div>
+    </form>
+</div>

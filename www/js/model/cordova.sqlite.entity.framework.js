@@ -1,4 +1,4 @@
-/* global dbUtil */
+/* global dbUtil, alertUtil */
 
 var Entity = function (tableName) {
     this.id = "";
@@ -233,7 +233,7 @@ var dbUtil = {
                             }
                         },
                         function (err) {
-                            alertUtil.confirm("Erro executando sql ->", err.toString());
+                            alertUtil.confirm("Error executing SQL ->" + err.toString());
                             if (cb) {
                                 cb(err);
                             }
