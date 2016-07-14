@@ -90,7 +90,7 @@ body {
 }
 
 .menu-esquerdo{
-    width: 220px;
+    width: 300px;
     height: 100%;
     background-color: darkgray;
     border-right-style: solid;
@@ -99,7 +99,7 @@ body {
     position: absolute;
     z-index: 3;
     top: 0;
-    left: -220px;
+    left: -300px;
 }
 
 .menu-esquerdo #div-img-menu-esquerdo{

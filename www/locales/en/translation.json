@@ -10,12 +10,64 @@
         "exit": "Exit"
     },
     "language-select": {
-        "label": "Select App Language",
+        "label": "Language",
         "en": "English",
-        "pt": "Potuguese",
+        "pt": "Portuguese",
         "es": "Spanish"
     },
-    "nav-top-names": {
-        "config": "Options"
+    "alerts-crud": {
+        "title-editing": "Editing...",
+        "body-editing": "Select some record to edit.",
+        "title-deleting": "Deleting...",
+        "body-deleting": "Select some record to delete.",
+        "body-confirm-deleting-pt1": "Do you want really delete ",
+        "body-delete-success": "Deleted with success!",
+        "body-edit-success": "Updated with success!",
+        "body-insert-success": "Inserted with success!"
+    },
+    "config-controller": {
+        "plural": "OPTIONS",
+        "alert-lng-req": "language must be informed."
+    },
+    "conta-controller": {
+        "plural": "BANK ACCOUNTS",
+        "singular": "BANK ACCOUNT",
+        "alert-nome-req": "Name must be informed.",
+        "alert-dataFundacao-req": "Initial Date must be informed.",
+        "alert-valorSaldoInicial-req": "Initial value must be informed.",        
+        "field-nome": "Account Name",
+        "field-dataFundacao": "Fundation Date",
+        "field-valorSaldoInicial": "Initial Value"        
+    },    
+    "login-controller": {
+        "alert-usuario-req": "User must be informed.",
+        "alert-senha-req": "Password must be informed.",
+        "alert-login-fail": "User/Password not valid.",
+        "alert-welcome-pt1": "Welcome ",
+        "body-alert-logout": "This action will format the App, do you wanna continue?",
+        "title-alert-logout": "Exiting...",
+        "placeholder-email": "example@something.com",
+        "field-email": "E-mail",
+        "field-senha": "Password",
+        "field-check": "Remember-me",
+        "btn-login": "Get In"
+    },
+    "pessoa-controller": {
+        "plural": "PEOPLES",
+        "singular": "PEOPLE",
+        "alert-nome-req": "Name must be informed.",
+        "alert-apelido-req": "Nickname must be informed.",
+        "field-nome": "Name",
+        "field-apelido": "Nickname"
+    },
+    "generics": {
+        "no": "No",
+        "yes": "Yes",
+        "record-s-question": " record(s)?",
+        "field-required": "Field must be informed.",
+        "fail-crud-msg": "Issue/bug... Call to us... ",
+        "label-multedit": "Select the field to update",
+        "paginator-text-pt1": "Load more ",
+        "search": "Search..."
     }
 }
