@@ -14,8 +14,12 @@ var mainController = {
             template: this.TEMPLATE_MAIN,
             navLeft: {
                 icon: iconUtil.menu,
-                callbackClick: function () {
-                    mainController.menuEsquerdo();
+                callbackClick: function (element) {
+                    if (element) {
+                        navigator.app.exitApp();
+                    } else {
+                        mainController.menuEsquerdo();
+                    }
                 }
             },
             navCenter: {

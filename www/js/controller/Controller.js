@@ -291,7 +291,7 @@ var Controller = {
                 Controller.closeSearchField();
             } else {
                 if (Controller.options.navLeft.callbackClick) {
-                    Controller.options.navLeft.callbackClick();
+                    Controller.options.navLeft.callbackClick(this);
                 }
             }
         });
@@ -316,9 +316,15 @@ var Controller = {
                 var textField = $("#input-search").val();
                 if (textField) {
                     currentOptions.paginator = false;
-                    Controller.loadSearchedList(currentOptions, textField);
+                    Controller.loadSearchedList(currentOptions, textField, function () {
+                        $("#nav-pre-footer").css("display", "none");
+                        loadScroll();
+                    });
                 } else {
-                    Controller.options.controllerOrigin.loadList();
+                    Controller.options.controllerOrigin.loadList(function () {
+                        $("#nav-pre-footer").css("display", "none");
+                        loadScroll();
+                    });
                 }
             });
         }

@@ -46,7 +46,9 @@ var loginController = {
         if ($('#checkBoxLembrar').prop('checked') === true) {
             Controller.insert(i18next.t("login-controller.alert-welcome-pt1") + $("#inputUsuario").val());
         } else {
-            mainController.render();
+            this.validaFormulario($("#form-cadastro").serializeObject(), function () {
+                mainController.render();
+            });
         }
     },
     logout: function () {
