@@ -31,14 +31,14 @@ body {
 }
 
 #footer{    
-    margin-bottom: 0px;
+    margin: 10px 0 0 0;   
     color: #e53935;      
 }
 
 #wrapper {
     position: absolute;
     z-index: 1;
-    top: 56x;
+    top: 56px;
     bottom: 0px;
     left: 0;
     width: 100%;

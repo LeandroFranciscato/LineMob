@@ -1,5 +1,21 @@
 {
     "app": {
-        "name": "LINEMOB-pt"
+        "name": "LINEMOB"
+    },
+    "left-menu": {
+        "home": "Início",
+        "bank-accounts": "Contas Bancarias",
+        "peoples": "Pessoas",
+        "config": "Opções",
+        "exit": "Sair"
+    },    
+    "language-select": {
+        "label": "Idioma do App",
+        "en": "Inglês",
+        "pt": "Português",
+        "es": "Espanhol"
+    },
+    "nav-top-names": {
+        "config": "Opções"
     }
 }

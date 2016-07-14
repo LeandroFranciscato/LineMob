@@ -10,6 +10,7 @@ var iconUtil = {
     add: "&#xE145;",
     check: "&#xE876;",
     edit: "&#xE254;",
+    config: "&#xE8B8;",
     draw: function(iconName){
         document.write(iconName);
     }

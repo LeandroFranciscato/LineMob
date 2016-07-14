@@ -47,7 +47,8 @@ var contaController = {
             navCenter: {
                 title: "CONTA",
                 icon: iconUtil.add
-            }
+            },
+            inputToFocus: "#nome"
         }, data, function () {
             if (cb) {
                 cb();
@@ -68,7 +69,7 @@ var contaController = {
             navCenter: {
                 title: "CONTAS",
                 icon: iconUtil.edit
-            }
+            }            
         }, data, function () {
             if (cb) {
                 cb();
@@ -91,6 +92,7 @@ var contaController = {
             $("#valor-campo").prop("name", "valorSaldoInicial");
             $("#valor-campo").prop("type", "number");
         }
+        $("#prompt-campo").addClass("active");
     },
     validaFormulario: function (conta, callbackSucess) {
         if (!conta.nome) {

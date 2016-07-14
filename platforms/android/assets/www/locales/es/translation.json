@@ -1,0 +1,17 @@
+{
+    "app": {
+        "name": "LINEMOB"
+    },
+    "left-menu": {
+        "home": "Home",
+        "bank-accounts": "Cuentas Bancarias",
+        "peoples": "Pueblos",
+        "exit": "Salida"
+    },    
+    "language-select": {
+        "label": "Select App Language es",
+        "en": "English es",
+        "pt": "Potuguese es",
+        "es": "Spanish es"
+    }
+}
