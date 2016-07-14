@@ -67,7 +67,7 @@ var contaController = {
                 }
             },
             navCenter: {
-                title: i18next.t("conta-controller.singular"),
+                title: i18next.t("conta-controller.plural"),
                 icon: iconUtil.edit
             }            
         }, data, function () {

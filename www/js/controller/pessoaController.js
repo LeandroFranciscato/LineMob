@@ -67,7 +67,7 @@ var pessoaController = {
                 }
             },
             navCenter: {
-                title: i18next.t("pessoa-controller.singular"),
+                title: i18next.t("pessoa-controller.plural"),
                 icon: iconUtil.edit
             }
         }, data, function () {
