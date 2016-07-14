@@ -19,4 +19,4 @@ Registering some tables like: Bank Accounts, Peoples, Credit  Card and inserting
 </ul>
 
 # Expected Compatibility
-Android 4.4.0 e higher
+Android 4.4.0 and higher
