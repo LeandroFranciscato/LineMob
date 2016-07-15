@@ -6,6 +6,7 @@
         "home": "Início",
         "bank-accounts": "Contas Bancarias",
         "peoples": "Pessoas",
+        "cred-card": "Cartões",
         "config": "Opções",
         "exit": "Sair"
     },
@@ -59,6 +60,22 @@
         "alert-apelido-req": "Apelido deve ser informado.",
         "field-nome": "Nome",
         "field-apelido": "Apelido"
+    },
+    "cartao-controller": {
+        "plural": "CARTÕES",
+        "singular": "CARTÃO",
+        "alert-nome-req": "Nome deve ser informado.",
+        "alert-diaVencimento-req": "Dia do vencimento deve ser informado.",
+        "alert-diaFechamento-req": "Dia do fechamento deve ser informado.",
+        "alert-valorLimite-req": "Limite deve ser informado.",
+        "alert-idConta-req": "Conta deve ser informada.",
+        "alert-idConta-not-exists": "Conta não cadastrada.",
+        "field-nome": "Nome",
+        "field-diaFechamento": "Fechamento",
+        "field-diaVencimento": "Vencimento",
+        "field-valorLimite": "Limite",
+        "field-idConta": "Conta",
+        "field-select-conta": "Selecione a Conta"        
     },
     "generics": {
         "no": "Não",

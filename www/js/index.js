@@ -1,4 +1,4 @@
-/* global dbUtil, logUtil, contaController, loginController, mainController, daoUtil, pessoaController, configController, loadController */
+/* global dbUtil, logUtil, contaController, loginController, mainController, daoUtil, pessoaController, configController, loadController, cartaoController */
 
 var app = {
     initialize: function () {
@@ -12,7 +12,7 @@ var app = {
             dbUtil.initialize(function () {
                 app.createTables(function () {
                     app.loadTemplates(function () {
-                        loginController.load(function(){
+                        loginController.load(function () {
                             loadController.hide();
                         });
                     });
@@ -23,10 +23,12 @@ var app = {
     loadTemplates: function (cb) {
         app.loadTemplateConta(function () {
             app.loadTemplatePessoa(function () {
-                app.loadTemplateMain(function () {
-                    if (cb) {
-                        cb();
-                    }
+                app.loadTemplateCartao(function () {
+                    app.loadTemplateMain(function () {
+                        if (cb) {
+                            cb();
+                        }
+                    });
                 });
             });
         });
@@ -53,6 +55,20 @@ var app = {
                 pessoaController.TEMPLATE_LISTA = string;
                 $.get('templates/pessoaEdicao.html', function (string) {
                     pessoaController.TEMPLATE_EDICAO = string;
+                    if (cb) {
+                        cb();
+                    }
+                });
+            });
+        });
+    },
+    loadTemplateCartao: function (cb) {
+        $.get('templates/cartaoCadastro.html', function (string) {
+            cartaoController.TEMPLATE_CADASTRO = string;
+            $.get('templates/cartaoLista.html', function (string) {
+                cartaoController.TEMPLATE_LISTA = string;
+                $.get('templates/cartaoEdicao.html', function (string) {
+                    cartaoController.TEMPLATE_EDICAO = string;
                     if (cb) {
                         cb();
                     }

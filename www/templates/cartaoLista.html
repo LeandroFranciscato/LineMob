@@ -5,11 +5,13 @@
                 <input id="check-all" type="checkbox" class="filled-in"/>
                 <label for="check-all"></label>
             </div>            
-            <div class="col s7 titulo-lista" data-i18n="conta-controller.field-nome"></div>
-            <div class="col s4 titulo-lista right-align" data-i18n="conta-controller.field-valorSaldoInicial"></div>
+            <div class="col s5 titulo-lista" data-i18n="cartao-controller.field-nome"></div>
+            <div class="col s3 m2 titulo-lista right-align" data-i18n="cartao-controller.field-diaVencimento"></div>
+            <div class="col    m2 hide-on-small-and-down titulo-lista right-align" data-i18n="cartao-controller.field-diaFechamento"></div>
+            <div class="col s3 m2 titulo-lista right-align" data-i18n="cartao-controller.field-valorLimite"></div>            
         </div>
     </li>
-    {{#conta}}
+    {{#cartao}}
     <li class="collection-item" onclick="Controller.checkInList({{id}})">
         <div class="li-lista row">
             <div class="col s1">
@@ -18,11 +20,13 @@
             </div>                        
             <div name="id" class="invisible">{{id}}</div>
             <div name="selecionado" id="selecionado-{{id}}" class="invisible">0</div>            
-            <div class="col s7">{{nome}}</div>            
-            <div class="col s4 right-align">{{valorSaldoInicial}}</div>
+            <div class="col s5">{{nome}}</div>            
+            <div class="col s3 m2 right-align">{{diaVencimento}}</div>
+            <div class="col    m2 hide-on-small-and-down right-align">{{diaFechamento}}</div>
+            <div class="col s3 m2 right-align">{{valorLimite}}</div>
         </div>
     </li>
-    {{/conta}}
+    {{/cartao}}
     <div id="nav-pre-footer">
         <nav class="collection-item waves-effect waves-block waves-red">    
             <div id="footer" class="row invisible">

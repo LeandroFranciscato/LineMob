@@ -46,7 +46,7 @@ var contaController = {
             },
             navCenter: {
                 title: i18next.t("conta-controller.singular"),
-                icon: iconUtil.add
+                icon: (data) ? iconUtil.edit : iconUtil.add
             },
             inputToFocus: "#nome"
         }, data, function () {

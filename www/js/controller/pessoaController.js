@@ -46,7 +46,7 @@ var pessoaController = {
             },
             navCenter: {
                 title: i18next.t("pessoa-controller.singular"),
-                icon: iconUtil.add
+                icon: (data) ? iconUtil.edit : iconUtil.add
             },
             inputToFocus: "#nome"
         }, data, function () {

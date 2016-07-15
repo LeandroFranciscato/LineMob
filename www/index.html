@@ -48,6 +48,7 @@
         <script src="js/controller/pessoaController.js" type="text/javascript"></script>
         <script src="js/controller/contaController.js" type="text/javascript"></script>
         <script src="js/controller/configController.js" type="text/javascript"></script>
+        <script src="js/controller/cartaoController.js" type="text/javascript"></script>
 
         <!-- INTERNACIONALIZAÇÃO -->
         <script src="js/plugins/i18next/i18next-jquery.0.0.14.min.js" type="text/javascript"></script>
@@ -100,6 +101,14 @@
                             <span class="badge">
                                 <i class="material-icons">
                                     <script>iconUtil.draw(iconUtil.people);</script>
+                                </i>
+                            </span>
+                        </a>
+                        <a class="collection-item" onclick="cartaoController.loadList()">
+                            <span data-i18n="left-menu.cred-card"> </span>
+                            <span class="badge">
+                                <i class="material-icons">
+                                    <script>iconUtil.draw(iconUtil.card);</script>
                                 </i>
                             </span>
                         </a>

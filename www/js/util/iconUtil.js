@@ -11,6 +11,7 @@ var iconUtil = {
     check: "&#xE876;",
     edit: "&#xE254;",
     config: "&#xE8B8;",
+    card: "&#xE870;",
     draw: function(iconName){
         document.write(iconName);
     }

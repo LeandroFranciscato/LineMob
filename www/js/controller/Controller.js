@@ -78,11 +78,6 @@ var Controller = {
             inputToFocus: ""
         };
         this.setOptions(this.options, options);
-
-        if (data) {
-            this.options.navCenter.icon = iconUtil.edit;
-        }
-
         this.render(this.options, data, function () {
             if (cb) {
                 cb();
@@ -380,8 +375,13 @@ var Controller = {
             }
         }
     },
-    insert: function (sucessMessage, errorMessage, cb) {
+    insert: function (sucessMessage, errorMessage, cb, othersFields) {
         var data = $("#form-cadastro").serializeObject();
+        if (othersFields) {
+            for (var i = 0; i < othersFields.length; i++) {
+                data[othersFields[i].fieldName] = othersFields[i].fieldValue;
+            }
+        }
         var entity = new Entity();
         entity.tableName = this.options.entity.tableName;
         Object.setPrototypeOf(data, entity);

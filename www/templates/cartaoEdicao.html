@@ -1,0 +1,26 @@
+<div class="card-panel">
+    <form id="form-cadastro">
+
+        <input type="text" class="invisible" id="id" name="id" value="{{id}}">
+
+        <div class="row">
+            <div class="input-field col s12">
+                <select id="select-campo" onchange="cartaoController.selecionaCampoEdicaoMultipla()">
+                    <option value="nome" selected data-i18n="cartao-controller.field-nome"></option>
+                    <option value="diaVencimento" data-i18n="cartao-controller.field-diaVencimento"></option>
+                    <option value="diaFechamento" data-i18n="cartao-controller.field-diaFechamento"></option>
+                    <option value="valorLimite" data-i18n="cartao-controller.field-valorLimite"></option>
+                    <option value="idConta" data-i18n="cartao-controller.field-idConta"></option>
+                </select>
+                <label data-i18n="generics.label-multedit"></label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s12">
+                <input type="text" id="valor-campo" name="nome">
+                <label id="prompt-campo" for="valor-campo" class="active" data-i18n="cartao-controller.field-nome"></label>
+            </div>
+        </div>
+    </form>
+</div>
