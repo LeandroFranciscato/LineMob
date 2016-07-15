@@ -13,7 +13,11 @@ var loginController = {
         var usuario = new Usuario();
         daoUtil.getAll(usuario, "id", function (res) {
             if (res && res.length > 0) {
-                mainController.render();
+                mainController.render(function(){
+                    if (cb){
+                        cb();
+                    }
+                });
             } else {
                 $("#wrapper").css("top", "0px");
                 Controller.loadNewOrSingleEdit({

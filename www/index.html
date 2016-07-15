@@ -44,6 +44,7 @@
         <script src="js/controller/Controller.js" type="text/javascript"></script>
         <script src="js/controller/mainController.js" type="text/javascript"></script>        
         <script src="js/controller/loginController.js" type="text/javascript"></script>
+        <script src="js/controller/loadController.js" type="text/javascript"></script>
         <script src="js/controller/pessoaController.js" type="text/javascript"></script>
         <script src="js/controller/contaController.js" type="text/javascript"></script>
         <script src="js/controller/configController.js" type="text/javascript"></script>
@@ -178,6 +179,25 @@
                 <li id="btn-float-edit"><a class="btn-floating yellow darken-3"><i class="material-icons"><script>iconUtil.draw(iconUtil.edit);</script></i></a></li>
                 <li id="btn-float-remove"><a class="btn-floating"><i class="material-icons"><script>iconUtil.draw(iconUtil.close);</script></i></a></li>      
             </ul>
+        </div>
+
+        <!-- LOAD -->
+        <div id="loader" class="modal modal-load">
+            <div id="loader-content" class="modal-content modal-content-load">
+                <div class="preloader-wrapper small active">
+                    <div class="spinner-layer spinner-red-only">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="gap-patch">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>

@@ -1,4 +1,4 @@
-/* global daoUtil, mainController, Mustache, iconUtil, myScroll, alertUtil, i18next, i18next */
+/* global daoUtil, mainController, Mustache, iconUtil, myScroll, alertUtil, i18next, i18next, loadController */
 var Controller = {
     SCROLLER: "#scroller",
     options: "",
@@ -505,21 +505,24 @@ var Controller = {
     checkInList: function (id) {
 
         if (!id) {
-            var itens = tableToJSON("#ul-list", "li", "div");
-
-            var checkedAll = $('#check-all').prop("checked");
-            if (checkedAll && checkedAll === true) {
-                $('#check-all').prop("checked", false);
-            } else {
-                $('#check-all').prop("checked", true);
-            }
-
-            for (var i = 0; i <= itens.length; i++) {
-                if (itens[i]) {
-                    $('#check-' + itens[i].id).prop("checked", checkedAll);
-                    this.checkInList(itens[i].id);
+            loadController.show(function () {
+                var itens = tableToJSON("#ul-list", "li", "div");
+                var checkedAll = $('#check-all').prop("checked");
+                if (checkedAll && checkedAll === true) {
+                    $('#check-all').prop("checked", false);
+                } else {
+                    $('#check-all').prop("checked", true);
                 }
-            }
+
+                for (var i = 0; i <= itens.length; i++) {
+                    if (itens[i]) {
+                        $('#check-' + itens[i].id).prop("checked", checkedAll);
+                        Controller.checkInList(itens[i].id);
+                    }
+                }
+                loadController.hide();
+            });
+
         }
 
         var checked = $('#check-' + id).prop("checked");

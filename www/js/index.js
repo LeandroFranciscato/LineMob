@@ -1,4 +1,4 @@
-/* global dbUtil, logUtil, contaController, loginController, mainController, daoUtil, pessoaController, configController */
+/* global dbUtil, logUtil, contaController, loginController, mainController, daoUtil, pessoaController, configController, loadController */
 
 var app = {
     initialize: function () {
@@ -8,16 +8,20 @@ var app = {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
     onDeviceReady: function () {
-        dbUtil.initialize(function () {
-            app.createTables(function () {
-                app.loadTemplates(function () {
-                    loginController.load();
+        loadController.show(function () {
+            dbUtil.initialize(function () {
+                app.createTables(function () {
+                    app.loadTemplates(function () {
+                        loginController.load(function(){
+                            loadController.hide();
+                        });
+                    });
                 });
             });
         });
     },
     loadTemplates: function (cb) {
-        this.loadTemplateConta(function () {
+        app.loadTemplateConta(function () {
             app.loadTemplatePessoa(function () {
                 app.loadTemplateMain(function () {
                     if (cb) {
