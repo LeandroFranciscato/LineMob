@@ -159,5 +159,10 @@ body {
 }
 .modal-load .modal-content-load{
     padding: 0px !Important;
-    margin: 3px 0 0 3px !Important;
+    margin: 6px 0 0 6px !Important;
+}
+
+.preloader-wrapper.small{
+    width: 30px !Important;
+    height: 30px !Important;    
 }

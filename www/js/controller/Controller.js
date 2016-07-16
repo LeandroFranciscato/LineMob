@@ -505,37 +505,43 @@ var Controller = {
             }
         }, field = {name: campo, value: valorCampo});
     },
-    checkInList: function (id) {
+    checkInList: function (id, action) {
 
         if (!id) {
             loadController.show(function () {
                 var itens = tableToJSON("#ul-list", "li", "div");
-                var checkedAll = $('#check-all').prop("checked");
-                if (checkedAll && checkedAll === true) {
-                    $('#check-all').prop("checked", false);
+                var selectedAll = $('#ul-header').hasClass("selected");
+
+                if (selectedAll && selectedAll === true) {
+                    $('#ul-header').removeClass("selected");
                 } else {
-                    $('#check-all').prop("checked", true);
+                    $('#ul-header').addClass("selected");                    
+                    selectedAll = false;
                 }
 
                 for (var i = 0; i <= itens.length; i++) {
                     if (itens[i]) {
-                        $('#check-' + itens[i].id).prop("checked", checkedAll);
-                        Controller.checkInList(itens[i].id);
+                        Controller.checkInList(itens[i].id, selectedAll);
                     }
                 }
                 loadController.hide();
             });
-
-        }
-
-        var checked = $('#check-' + id).prop("checked");
-        if (checked && checked === true) {
-            $('#check-' + id).prop("checked", false);
-            checked = 0;
         } else {
-            $('#check-' + id).prop("checked", true);
-            checked = 1;
+            
+            if (action != undefined) {
+                selected = action;
+            } else {
+                var selected = $('#item-' + id).hasClass("active");
+            }
+
+            if (selected && selected === true) {
+                $('#item-' + id).removeClass("active");
+                selected = 0;
+            } else {
+                $('#item-' + id).addClass("active");
+                selected = 1;
+            }
+            $('#selecionado-' + id).html(selected);
         }
-        $('#selecionado-' + id).html(checked);
     }
 };
