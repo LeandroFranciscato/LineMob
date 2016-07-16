@@ -103,8 +103,7 @@ var Controller = {
             },
             floatButton: {
                 display: "none"
-            },
-            inputToFocus: "#valor-campo"
+            }
         };
         this.setOptions(this.options, options);
         this.render(this.options, data, function () {
@@ -484,23 +483,27 @@ var Controller = {
             return;
         }
 
-        for (var i = 0; i < ids.length; i++) {
-            if (ids[i]) {
+        this.options.controllerOrigin.validaFormulario(null, function (err) {
+            if (!err) {
+                for (var i = 0; i < ids.length; i++) {
+                    if (ids[i]) {
 
-                var entity = new Entity();
-                entity.tableName = this.options.entity.tableName;
-                entity.id = ids[i];
-                entity[campo] = valorCampo;
+                        var entity = new Entity();
+                        entity.tableName = Controller.options.entity.tableName;
+                        entity.id = ids[i];
+                        entity[campo] = valorCampo;
 
-                daoUtil.updateDinamicColumn(entity, campo, function (rowsAffected) {
-                    if (rowsAffected != 1) {
-                        alertUtil.confirm(i18next.t("generics.fail-crud-msg") + entity.id);
+                        daoUtil.updateDinamicColumn(entity, campo, function (rowsAffected) {
+                            if (rowsAffected != 1) {
+                                alertUtil.confirm(i18next.t("generics.fail-crud-msg") + entity.id);
+                            }
+                        });
                     }
-                });
+                }
+                alertUtil.confirm(i18next.t("alerts-crud.body-edit-success"));
+                Controller.options.controllerOrigin.loadList();
             }
-        }
-        alertUtil.confirm(i18next.t("alerts-crud.body-edit-success"));
-        this.options.controllerOrigin.loadList();
+        }, field = {name: campo, value: valorCampo});
     },
     checkInList: function (id) {
 

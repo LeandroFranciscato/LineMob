@@ -69,7 +69,7 @@ var contaController = {
             navCenter: {
                 title: i18next.t("conta-controller.plural"),
                 icon: iconUtil.edit
-            }            
+            }
         }, data, function () {
             if (cb) {
                 cb();
@@ -94,17 +94,24 @@ var contaController = {
         }
         $("#prompt-campo").addClass("active");
     },
-    validaFormulario: function (conta, callbackSucess) {
-        if (!conta.nome) {
-            alertUtil.confirm(i18next.t("conta-controller.alert-nome-req"));
-        } else if (!conta.dataFundacao) {
-            alertUtil.confirm(i18next.t("conta-controller.alert-dataFundacao-req"));
-        } else if (!conta.valorSaldoInicial) {
-            alertUtil.confirm(i18next.t("conta-controller.alert-valorSaldoInicial-req"));
+    validaFormulario: function (conta, cb, field) {
+        if (!field) {
+            if (!conta.nome) {
+                alertUtil.confirm(i18next.t("conta-controller.alert-nome-req"));
+            } else if (!conta.dataFundacao) {
+                alertUtil.confirm(i18next.t("conta-controller.alert-dataFundacao-req"));
+            } else if (!conta.valorSaldoInicial) {
+                alertUtil.confirm(i18next.t("conta-controller.alert-valorSaldoInicial-req"));
+            } else {
+                if (cb) {
+                    cb();
+                }
+            }
         } else {
-            if (callbackSucess) {
-                callbackSucess();
+            if (cb) {
+                cb();
             }
         }
+
     }
 }; 

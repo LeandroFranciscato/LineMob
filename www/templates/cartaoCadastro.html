@@ -31,7 +31,7 @@
                 <select id="select-conta" name="idConta">
                     <option value="" disabled selected data-i18n="cartao-controller.field-select-conta"></option>
                     {{#conta}}
-                    <option value="{{id}}">{{nome}}</option>
+                    <option value="{{id}}" {{selected}}>{{nome}}</option>
                     {{/conta}}
                 </select>
                 <label data-i18n="cartao-controller.field-select-conta"></label>

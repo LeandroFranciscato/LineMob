@@ -89,15 +89,22 @@ var pessoaController = {
             $("#valor-campo").prop("type", "text");
         }
     },
-    validaFormulario: function (pessoa, callbackSucess) {
-        if (!pessoa.nome) {
-            alertUtil.confirm(i18next.t("pessoa-controller.alert-nome-req"));
-        } else if (!pessoa.apelido) {
-            alertUtil.confirm(i18next.t("pessoa-controller.alert-apelido-req"));
+    validaFormulario: function (pessoa, cb, field) {
+        if (!field) {
+            if (!pessoa.nome) {
+                alertUtil.confirm(i18next.t("pessoa-controller.alert-nome-req"));
+            } else if (!pessoa.apelido) {
+                alertUtil.confirm(i18next.t("pessoa-controller.alert-apelido-req"));
+            } else {
+                if (cb) {
+                    cb();
+                }
+            }
         } else {
-            if (callbackSucess) {
-                callbackSucess();
+            if (cb) {
+                cb();
             }
         }
     }
+
 }; 

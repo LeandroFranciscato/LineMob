@@ -17,9 +17,18 @@
         </div>
 
         <div class="row">
-            <div class="input-field col s12">
+            <div id="input-text" class="input-field col s12">
                 <input type="text" id="valor-campo" name="nome">
                 <label id="prompt-campo" for="valor-campo" class="active" data-i18n="cartao-controller.field-nome"></label>
+            </div>
+            <div id="input-select" class="input-field col s12 hide">                
+                <select id="select-conta" name="idConta">
+                    <option value="" disabled selected data-i18n="cartao-controller.field-select-conta"></option>
+                    {{#conta}}
+                    <option value="{{id}}">{{nome}}</option>
+                    {{/conta}}
+                </select>
+                <label data-i18n="cartao-controller.field-select-conta"></label>
             </div>
         </div>
     </form>
