@@ -180,7 +180,7 @@
 
         <!-- FLOAT-BUTTON -->
         <div id="btn-float" class="fixed-action-btn click-to-toggle invisible">
-            <a class="btn-floating btn-large red">
+            <a class="btn-floating btn-large red darken-1">
                 <i class="material-icons"><script>iconUtil.draw(iconUtil.menu);</script></i>
             </a>
             <ul>
@@ -207,6 +207,30 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- MODAL -->                
+        <div id="modal" class="modal modal-aux">            
+            <div class="modal-content">                
+                <nav class="white">
+                    <ul>
+                        <li class="modal-action modal-close icon-left-nav red-text darken-1 left">
+                            <i class="material-icons"><script>iconUtil.draw(iconUtil.back);</script></i>
+                        </li>
+
+                        <li id="titulo-center-modal" class="titulo-center-modal red-text darken-1 center">CONTA</li>
+
+                        <li class="icon-titulo-center-modal">
+                            <i class="material-icons red-text darken-1"><script>iconUtil.draw(iconUtil.add);</script></i>                       
+                        </li>
+
+                        <li class="icon-right-modal right red-text darken-1" >
+                            <i class="material-icons"><script>iconUtil.draw(iconUtil.check);</script></i>
+                        </li>
+                    </ul>
+                </nav>
+                <div id="modal-aux-form-content"></div>
+            </div>            
         </div>
     </body>
 </html>

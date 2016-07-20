@@ -2,8 +2,8 @@ var loadController = {
     show: function (cbReady, cbComplete, isModal) {
         $('#loader').openModal({
             opacity: 0,
-            in_duration: 500,
-            out_duration: 500,
+            in_duration: 300,
+            out_duration: 300,
             ready: function () {
                 if (cbReady) {
                     cbReady();
@@ -20,7 +20,7 @@ var loadController = {
     },
     hide: function (cbComplete) {
         $("#loader").closeModal({
-            out_duration: 500,
+            out_duration: 300,
             complete: function () {
                 if (cbComplete) {
                     cbComplete();

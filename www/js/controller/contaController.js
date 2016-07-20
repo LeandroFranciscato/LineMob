@@ -5,7 +5,6 @@ var contaController = {
     TEMPLATE_LISTA: "",
     TEMPLATE_EDICAO: "",
     loadList: function (cb) {
-
         Controller.loadList({
             controllerOrigin: this,
             entity: new Conta(),
@@ -54,6 +53,13 @@ var contaController = {
                 cb();
             }
         });
+    },
+    loadNewModal: function (element, cb) {
+        if ($(element).val() === "+") {
+            Controller.renderHtml({}, this.TEMPLATE_CADASTRO, "#modal-aux-form-content");
+            Controller.initializePlugins();
+            $("#modal").openModal({dismissible: false});
+        }
     },
     loadMultipleEdit: function (data, cb) {
         Controller.loadMultipleEdit({

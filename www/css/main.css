@@ -166,3 +166,26 @@ body {
     width: 30px !Important;
     height: 30px !Important;    
 }
+
+.modal-aux{
+    width: 95% !Important;
+}
+
+.modal-aux .modal-content{
+    padding: 5px 5px 0px 5px !Important;    
+}
+
+.modal-aux .modal-aux-header{
+    margin-bottom: 0px;    
+}
+
+.modal-aux .titulo-center-modal{
+    font-size: x-large;
+    font-weight: bold;    
+    margin-left: 20px;        
+    float: left;
+}
+
+.modal-aux .icon-right-modal {
+    margin-right: 10px;
+}

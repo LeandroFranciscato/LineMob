@@ -141,13 +141,13 @@ var cartaoController = {
                 alertUtil.confirm(i18next.t("cartao-controller.alert-diaFechamento-req"));
             } else if (!cartao.valorLimite) {
                 alertUtil.confirm(i18next.t("cartao-controller.alert-valorLimite-req"));
-            } else if (!cartao.idConta) {
+            } else if (!cartao.idConta || cartao.idConta == "new") {
                 alertUtil.confirm(i18next.t("cartao-controller.alert-idConta-req"));
             }
             //OTHER VALIDATIONS
             else if (cartao.diaVencimento <= 0 || cartao.diaVencimento > 28) {
                 alertUtil.confirm(i18next.t("cartao-controller.alert-diaVencimento-val"));
-            } else if (cartao.diaFechamento <= 0 || cartao.diaFechamento > 28) {
+            } else if (cartao.diaFechamento <= 0 || cartao.diaFechamento > 30) {
                 alertUtil.confirm(i18next.t("cartao-controller.alert-diaFechamento-val"));
             } else if (cartao.valorLimite <= 0) {
                 alertUtil.confirm(i18next.t("cartao-controller.alert-valorLimite-val"));
@@ -169,7 +169,7 @@ var cartaoController = {
                     }
                 }
             } else if (field.name == "diaFechamento") {
-                if (field.value <= 0 || field.value > 28) {
+                if (field.value <= 0 || field.value > 30) {
                     alertUtil.confirm(i18next.t("cartao-controller.alert-diaFechamento-val"));
                     if (cb) {
                         cb(true);

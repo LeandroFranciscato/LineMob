@@ -68,7 +68,7 @@
         "alert-diaVencimento-req": "Dia do vencimento deve ser informado.",
         "alert-diaVencimento-val": "Dia do vencimento deve estar entre 1 e 28.",
         "alert-diaFechamento-req": "Dia do fechamento deve ser informado.",
-        "alert-diaFechamento-val": "Dia do fechamento deve estar entre 1 e 28.",
+        "alert-diaFechamento-val": "Dia do fechamento deve estar entre 1 e 30.",
         "alert-valorLimite-req": "Limite deve ser informado.",
         "alert-valorLimite-val": "Limite deve ser maior que zero.",
         "alert-idConta-req": "Conta deve ser informada.",

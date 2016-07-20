@@ -60,6 +60,7 @@ var Controller = {
             controllerOrigin: Controller,
             entity: new Entity(),
             template: "",
+            objectToBind: "#scroller",
             navLeft: {},
             navCenter: {},
             navRight: {
@@ -515,7 +516,7 @@ var Controller = {
                 if (selectedAll && selectedAll === true) {
                     $('#ul-header').removeClass("selected");
                 } else {
-                    $('#ul-header').addClass("selected");                    
+                    $('#ul-header').addClass("selected");
                     selectedAll = false;
                 }
 
@@ -527,7 +528,7 @@ var Controller = {
                 loadController.hide();
             });
         } else {
-            
+
             if (action != undefined) {
                 selected = action;
             } else {

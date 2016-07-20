@@ -27,15 +27,17 @@
         </div>
 
         <div class="row">
-            <div class="input-field col s12">                
-                <select id="select-conta" name="idConta">
+            <div class="input-field col s12">
+                <select id="select-conta" name="idConta" onchange="contaController.loadNewModal(this)">
                     <option value="" disabled selected data-i18n="cartao-controller.field-select-conta"></option>
+                    <option value="+">+</option>
                     {{#conta}}
                     <option value="{{id}}" {{selected}}>{{nome}}</option>
-                    {{/conta}}
+                    {{/conta}}                                        
                 </select>
                 <label data-i18n="cartao-controller.field-select-conta"></label>
-            </div>
+            </div>           
+            
         </div>
     </form>
 </div>
