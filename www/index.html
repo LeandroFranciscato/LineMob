@@ -66,6 +66,10 @@
                 myScrollLeftMenu = new IScroll('#menu-esquerdo', {preventDefault: false});
             }
 
+            function loadScrollModal() {
+                myScrollLeftMenu = new IScroll('#modal', {preventDefault: false});
+            }
+
             document.addEventListener('touchmove', function (e) {
                 e.preventDefault();
             }, false);
@@ -224,12 +228,14 @@
                             <i class="material-icons red-text darken-1"><script>iconUtil.draw(iconUtil.add);</script></i>                       
                         </li>
 
-                        <li class="icon-right-modal right red-text darken-1" >
+                        <li id="icon-right-modal" class="icon-right-modal right red-text darken-1" >
                             <i class="material-icons"><script>iconUtil.draw(iconUtil.check);</script></i>
                         </li>
                     </ul>
                 </nav>
-                <div id="modal-aux-form-content"></div>
+                <form id="form-modal">
+                    <div id="modal-aux-form-content"></div>
+                </form>
             </div>            
         </div>
     </body>
