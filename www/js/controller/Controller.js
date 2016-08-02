@@ -484,6 +484,11 @@ var Controller = {
             return;
         }
 
+        if (!$("#select-campo").val()) {
+            alertUtil.confirm(i18next.t("generics.field-required"));
+            return;
+        }
+
         this.options.controllerOrigin.validaFormulario(null, function (err) {
             if (!err) {
                 for (var i = 0; i < ids.length; i++) {

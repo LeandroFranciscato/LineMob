@@ -54,48 +54,6 @@ var contaController = {
             }
         });
     },
-    loadNewModal: function (element, callbackAction) {
-        if ($(element).val() === "") {
-            Controller.renderHtml({}, this.TEMPLATE_CADASTRO, "#modal-aux-form-content");
-            Controller.initializePlugins();
-            $("#titulo-center-modal").html("CONTA");
-            loadScrollModal();
-            $("#icon-right-modal").unbind("click");
-            $("#icon-right-modal").on("click", function () {
-                var data = $("#form-modal").serializeObject();
-                var conta = new Conta();
-                Object.setPrototypeOf(data, conta);
-                contaController.validaFormulario(data, function () {
-                    daoUtil.insert(data, function (rowsAffected) {
-                        if (rowsAffected === 1) {
-                            alertUtil.confirm(i18next.t("alerts-crud.body-insert-success"));
-                            $("#modal").closeModal();
-                            $("#select-conta").html("<option value='' disabled selected>" + i18next.t("cartao-controller.field-select-conta") + "</option>");
-                            $("#select-conta").append("<option value=''>+</option>");
-                            daoUtil.getAll(conta, "nome", function (res) {
-                                for (var i = 0; i < res.length; i++) {
-                                    $("#select-conta").append("<option value='" + res[i].id + "'>" + res[i].nome + "</option>");
-                                }
-                                $('select').material_select();
-                            });
-                        } else {
-                            alertUtil.confirm(i18next.t("generics.fail-crud-msg"));
-                        }
-                    });
-                });
-            });
-            $(document).unbind("backbutton");
-            $(document).on("backbutton", function () {
-                $("#modal").closeModal();
-                $(document).on("backbutton", function () {
-                    if (callbackAction) {
-                        callbackAction();
-                    }
-                });
-            });
-            $("#modal").openModal({dismissible: false});
-        }
-    },
     loadMultipleEdit: function (data, cb) {
         Controller.loadMultipleEdit({
             controllerOrigin: contaController,
@@ -153,6 +111,47 @@ var contaController = {
                 cb();
             }
         }
-
+    },
+    loadNewModal: function (element, callbackAction) {
+        if ($(element).val() === "") {
+            Controller.renderHtml({}, this.TEMPLATE_CADASTRO, "#modal-aux-form-content");
+            Controller.initializePlugins();
+            $("#titulo-center-modal").html("CONTA");
+            loadScrollModal();
+            $("#icon-right-modal").unbind("click");
+            $("#icon-right-modal").on("click", function () {
+                var data = $("#form-modal").serializeObject();
+                var conta = new Conta();
+                Object.setPrototypeOf(data, conta);
+                contaController.validaFormulario(data, function () {
+                    daoUtil.insert(data, function (rowsAffected) {
+                        if (rowsAffected === 1) {
+                            alertUtil.confirm(i18next.t("alerts-crud.body-insert-success"));
+                            $("#modal").closeModal();
+                            $("#select-conta").html("<option value='' disabled selected>" + i18next.t("cartao-controller.field-select-conta") + "</option>");
+                            $("#select-conta").append("<option value=''>+</option>");
+                            daoUtil.getAll(conta, "nome", function (res) {
+                                for (var i = 0; i < res.length; i++) {
+                                    $("#select-conta").append("<option value='" + res[i].id + "'>" + res[i].nome + "</option>");
+                                }
+                                $('select').material_select();
+                            });
+                        } else {
+                            alertUtil.confirm(i18next.t("generics.fail-crud-msg"));
+                        }
+                    });
+                });
+            });
+            $(document).unbind("backbutton");
+            $(document).on("backbutton", function () {
+                $("#modal").closeModal();
+                $(document).on("backbutton", function () {
+                    if (callbackAction) {
+                        callbackAction();
+                    }
+                });
+            });
+            $("#modal").openModal({dismissible: false});
+        }
     }
 }; 

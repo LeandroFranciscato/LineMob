@@ -5,11 +5,11 @@
 
         <div class="row">
             <div class="input-field col s12">
-                <select id="select-campo" onchange="pessoaController.selecionaCampoEdicaoMultipla()">
-                    <option value="nome" selected data-i18n="pessoa-controller.field-nome"></option>
+                <select id="select-campo" class="browser-default" onchange="pessoaController.selecionaCampoEdicaoMultipla()">
+                    <option value="" selected disabled data-i18n="generics.label-multedit"></option>
+                    <option value="nome" data-i18n="pessoa-controller.field-nome"></option>
                     <option value="apelido" data-i18n="pessoa-controller.field-apelido"></option>                    
-                </select>
-                <label data-i18n="generics.label-multedit"></label>
+                </select>                
             </div>
         </div>
 

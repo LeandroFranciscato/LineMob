@@ -1,16 +1,14 @@
 <div class="card-panel">
     <form id="form-cadastro">
-
         <input type="text" class="invisible" id="id" name="id" value="{{id}}">
-
         <div class="row">
             <div class="input-field col s12">
-                <select id="select-campo" onchange="contaController.selecionaCampoEdicaoMultipla()">
-                    <option value="nome" selected data-i18n="conta-controller.field-nome"></option>
+                <select id="select-campo" class="browser-default" onchange="contaController.selecionaCampoEdicaoMultipla()">
+                    <option value="" selected disabled data-i18n="generics.label-multedit"></option>
+                    <option value="nome" data-i18n="conta-controller.field-nome"></option>
                     <option value="dataFundacao" data-i18n="conta-controller.field-dataFundacao"></option>
                     <option value="valorSaldoInicial" data-i18n="conta-controller.field-valorSaldoInicial"></option>
-                </select>
-                <label data-i18n="generics.label-multedit"></label>
+                </select>                
             </div>
         </div>
 
