@@ -283,6 +283,7 @@ var Controller = {
         $(document).on("backbutton", function () {
             if ($(".search-field").css("display") === "block") {
                 Controller.closeSearchField();
+                Controller.options.controllerOrigin.loadList();
             } else {
                 if (Controller.options.navLeft.callbackClick) {
                     Controller.options.navLeft.callbackClick(this);
