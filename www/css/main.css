@@ -189,3 +189,7 @@ body {
 .modal-aux .icon-right-modal {
     margin-right: 10px;
 }
+
+.label-select {
+    margin-left: 10px !Important;
+}
