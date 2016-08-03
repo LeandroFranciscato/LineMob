@@ -13,8 +13,8 @@ var loginController = {
         var usuario = new Usuario();
         daoUtil.getAll(usuario, "id", function (res) {
             if (res && res.length > 0) {
-                mainController.render(function(){
-                    if (cb){
+                mainController.render(function () {
+                    if (cb) {
                         cb();
                     }
                 });
@@ -24,7 +24,12 @@ var loginController = {
                     controllerOrigin: loginController,
                     entity: new Usuario(),
                     template: loginController.TEMPLATE_LOGIN,
-                    inputToFocus: "#inputUsuario"
+                    inputToFocus: "#inputUsuario",
+                    navLeft: {
+                        callbackClick: function () {
+                            navigator.app.exitApp();
+                        }
+                    }
                 }, null, function () {
                     if (cb) {
                         cb();
