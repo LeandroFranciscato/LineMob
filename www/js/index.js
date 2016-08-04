@@ -1,4 +1,4 @@
-/* global dbUtil, logUtil, contaController, loginController, mainController, daoUtil, pessoaController, configController, loadController, cartaoController */
+/* global dbUtil, logUtil, contaController, loginController, mainController, daoUtil, pessoaController, configController, loadController, cartaoController, categoriaController */
 
 var app = {
     initialize: function () {
@@ -24,10 +24,12 @@ var app = {
         app.loadTemplateConta(function () {
             app.loadTemplatePessoa(function () {
                 app.loadTemplateCartao(function () {
-                    app.loadTemplateMain(function () {
-                        if (cb) {
-                            cb();
-                        }
+                    app.loadTemplateCategoria(function () {
+                        app.loadTemplateMain(function () {
+                            if (cb) {
+                                cb();
+                            }
+                        });
                     });
                 });
             });
@@ -69,6 +71,20 @@ var app = {
                 cartaoController.TEMPLATE_LISTA = string;
                 $.get('templates/cartaoEdicao.html', function (string) {
                     cartaoController.TEMPLATE_EDICAO = string;
+                    if (cb) {
+                        cb();
+                    }
+                });
+            });
+        });
+    },
+    loadTemplateCategoria: function (cb) {
+        $.get('templates/categoriaCadastro.html', function (string) {
+            categoriaController.TEMPLATE_CADASTRO = string;
+            $.get('templates/categoriaLista.html', function (string) {
+                categoriaController.TEMPLATE_LISTA = string;
+                $.get('templates/categoriaEdicao.html', function (string) {
+                    categoriaController.TEMPLATE_EDICAO = string;
                     if (cb) {
                         cb();
                     }

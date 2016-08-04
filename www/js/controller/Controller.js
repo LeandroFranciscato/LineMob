@@ -480,7 +480,7 @@ var Controller = {
         var valorCampo = $("#valor-campo").val();
 
         if (!valorCampo) {
-            alertUtil.confirm(i18next.t("generics.field-required")+"1");
+            alertUtil.confirm(i18next.t("generics.field-required"));
             return;
         }
 

@@ -1,0 +1,24 @@
+<div class="card-panel">
+    <form id="form-cadastro">
+
+        <input type="text" class="invisible" id="id" name="id" value="{{id}}">
+
+        <div class="row">
+            <label class="label-select" data-i18n="generics.label-multedit"></label>
+            <div class="input-field col s12">
+                <select id="select-campo" class="browser-default" onchange="categoriaController.selecionaCampoEdicaoMultipla()">
+                    <option value="" selected disabled data-i18n="generics.label-multedit"></option>
+                    <option value="nome" data-i18n="categoria-controller.field-nome"></option>
+                    <option value="nomeSubCategoria" data-i18n="categoria-controller.field-nome-sub-categoria"></option>                    
+                </select>                
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s12">
+                <input type="text" id="valor-campo" name="nome">
+                <label id="prompt-campo" for="valor-campo" class="active" data-i18n="categoria-controller.field-nome"></label>
+            </div>
+        </div>
+    </form>
+</div>

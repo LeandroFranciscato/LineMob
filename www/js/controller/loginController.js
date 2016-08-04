@@ -1,4 +1,4 @@
-/* global logUtil, Mustache, alertUtil, mainController, daoUtil, Materialize, database_helper, Controller, dbUtil, i18next */
+/* global logUtil, Mustache, alertUtil, mainController, daoUtil, Materialize, database_helper, Controller, dbUtil, i18next, iconUtil */
 
 var loginController = {
     TEMPLATE_LOGIN: "",
@@ -76,12 +76,14 @@ var loginController = {
         );
     },
     showOrHidePasswd: function (element) {
-        if ($(element).hasClass("grey-text")) {
-            $(element).removeClass("grey-text").addClass("red-text darken-1");
+        if ($(element).hasClass("eyeOn")) {
+            $(element).removeClass("eyeOn").addClass("eyeOff");
             $("#inputPassword").attr("type", "text");
+            $("#icon-eye").html(iconUtil.eyeOff);
         } else {
-            $(element).removeClass("red-text darken-1").addClass("grey-text");
+            $(element).removeClass("eyeOff").addClass("eyeOn");
             $("#inputPassword").attr("type", "password");
+            $("#icon-eye").html(iconUtil.eyeOn);
         }
         $("#inputPassword").trigger("focus");
     }

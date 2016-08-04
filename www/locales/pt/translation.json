@@ -7,6 +7,7 @@
         "bank-accounts": "Contas Bancarias",
         "peoples": "Pessoas",
         "cred-card": "Cartões",
+        "category": "Categorias",
         "config": "Opções",
         "exit": "Sair"
     },
@@ -35,11 +36,11 @@
         "singular": "CONTA",
         "alert-nome-req": "Nome deve ser informado.",
         "alert-dataFundacao-req": "Data início do saldo deve ser informado.",
-        "alert-valorSaldoInicial-req": "Valor do saldo inicial deve ser informado.",        
+        "alert-valorSaldoInicial-req": "Valor do saldo inicial deve ser informado.",
         "field-nome": "Nome da Conta",
         "field-dataFundacao": "Data Fundação",
-        "field-valorSaldoInicial": "Valor Saldo Inicial"        
-    },    
+        "field-valorSaldoInicial": "Valor Saldo Inicial"
+    },
     "login-controller": {
         "alert-usuario-req": "Usuário deve ser informado.",
         "alert-senha-req": "Senha deve ser informada.",
@@ -78,7 +79,14 @@
         "field-diaVencimento": "Vencimento",
         "field-valorLimite": "Limite",
         "field-idConta": "Conta",
-        "field-select-conta": "Selecione a Conta"        
+        "field-select-conta": "Selecione a Conta"
+    },
+    "categoria-controller": {
+        "plural": "CATEGORIAS",
+        "singular": "CATEGORIA",
+        "alert-nome-req": "Nome deve ser informado.",        
+        "field-nome": "Nome",
+        "field-nome-sub-categoria": "SubCategoria"
     },
     "generics": {
         "no": "Não",
