@@ -12,7 +12,8 @@ var iconUtil = {
     edit: "&#xE254;",
     config: "&#xE8B8;",
     card: "&#xE870;",
-    draw: function(iconName){
+    eye: "&#xE417;",
+    draw: function (iconName) {        
         document.write(iconName);
     }
 };

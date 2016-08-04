@@ -74,5 +74,15 @@ var loginController = {
                     }
                 }
         );
+    },
+    showOrHidePasswd: function (element) {
+        if ($(element).hasClass("grey-text")) {
+            $(element).removeClass("grey-text").addClass("red-text darken-1");
+            $("#inputPassword").attr("type", "text");
+        } else {
+            $(element).removeClass("red-text darken-1").addClass("grey-text");
+            $("#inputPassword").attr("type", "password");
+        }
+        $("#inputPassword").trigger("focus");
     }
 };

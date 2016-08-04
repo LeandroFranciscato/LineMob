@@ -203,7 +203,7 @@ var Controller = {
         $(objectToBind).html(htmlParsed);
     },
     initializePlugins: function () {
-        i18nextInitialize();
+        i18nextInitialize();        
         loadScroll();
     },
     setFocus: function () {
