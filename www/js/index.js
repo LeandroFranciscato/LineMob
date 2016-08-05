@@ -1,4 +1,4 @@
-/* global dbUtil, logUtil, contaController, loginController, mainController, daoUtil, pessoaController, configController, loadController, cartaoController, categoriaController */
+/* global dbUtil, logUtil, contaController, loginController, mainController, daoUtil, pessoaController, configController, loadController, cartaoController, categoriaController, movimentoController */
 
 var app = {
     initialize: function () {
@@ -25,10 +25,12 @@ var app = {
             app.loadTemplatePessoa(function () {
                 app.loadTemplateCartao(function () {
                     app.loadTemplateCategoria(function () {
-                        app.loadTemplateMain(function () {
-                            if (cb) {
-                                cb();
-                            }
+                        app.loadTemplateMovimento(function () {
+                            app.loadTemplateMain(function () {
+                                if (cb) {
+                                    cb();
+                                }
+                            });
                         });
                     });
                 });
@@ -89,6 +91,25 @@ var app = {
                         cb();
                     }
                 });
+            });
+        });
+    },
+    loadTemplateMovimento: function (cb) {
+        $.get('templates/movimentoCadastro.html', function (string) {
+            movimentoController.TEMPLATE_CADASTRO = string;
+
+            $.get('templates/movimentoLista.html', function (string) {
+                movimentoController.TEMPLATE_LISTA = string;
+                if (cb) {
+                    cb();
+                }
+                /*
+                 $.get('templates/movimentoEdicao.html', function (string) {
+                 movimentoController.TEMPLATE_EDICAO = string;
+                 if (cb) {
+                 cb();
+                 }
+                 });*/
             });
         });
     },

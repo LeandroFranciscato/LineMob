@@ -8,6 +8,7 @@
         "peoples": "Pessoas",
         "cred-card": "Cartões",
         "category": "Categorias",
+        "activity": "Movimetações",
         "config": "Opções",
         "exit": "Sair"
     },
@@ -39,7 +40,8 @@
         "alert-valorSaldoInicial-req": "Valor do saldo inicial deve ser informado.",
         "field-nome": "Nome da Conta",
         "field-dataFundacao": "Data Fundação",
-        "field-valorSaldoInicial": "Valor Saldo Inicial"
+        "field-valorSaldoInicial": "Valor Saldo Inicial",
+        "field-select-conta": "Selecione a Conta"
     },
     "login-controller": {
         "alert-usuario-req": "Usuário deve ser informado.",
@@ -60,7 +62,8 @@
         "alert-nome-req": "Nome deve ser informado.",
         "alert-apelido-req": "Apelido deve ser informado.",
         "field-nome": "Nome",
-        "field-apelido": "Apelido"
+        "field-apelido": "Apelido",
+        "field-select-pessoa": "Selecione a Pessoa"
     },
     "cartao-controller": {
         "plural": "CARTÕES",
@@ -79,14 +82,36 @@
         "field-diaVencimento": "Vencimento",
         "field-valorLimite": "Limite",
         "field-idConta": "Conta",
-        "field-select-conta": "Selecione a Conta"
+        "field-select-cartao": "Selecione o Cartão"
     },
     "categoria-controller": {
         "plural": "CATEGORIAS",
         "singular": "CATEGORIA",
         "alert-nome-req": "Nome deve ser informado.",        
         "field-nome": "Nome",
-        "field-nome-sub-categoria": "SubCategoria"
+        "field-nome-sub-categoria": "SubCategoria",
+        "field-select-categoria": "Selecione a Categoria"
+    },
+    "movimento-controller": {
+        "plural": "MOVIMENTAÇÕES",
+        "singular": "MOVIMENTAÇÃO",
+        "alert-nome-req": "Nome deve ser informado.",
+        "alert-diaVencimento-req": "Dia do vencimento deve ser informado.",
+        "alert-diaVencimento-val": "Dia do vencimento deve estar entre 1 e 28.",
+        "alert-diaFechamento-req": "Dia do fechamento deve ser informado.",
+        "alert-diaFechamento-val": "Dia do fechamento deve estar entre 1 e 30.",
+        "alert-valorLimite-req": "Limite deve ser informado.",
+        "alert-valorLimite-val": "Limite deve ser maior que zero.",
+        "alert-idConta-req": "Conta deve ser informada.",
+        "alert-idConta-not-exists": "Conta não cadastrada.",
+        "field-data": "Data",
+        "field-valor": "Valor",
+        "field-select-natureza": "Natureza",
+        "field-select-natureza-option-d": "Débito",
+        "field-select-natureza-option-c": "Crédito",
+        "field-descricao": "Descricao",
+        "field-idConta": "Conta",
+        "field-select-conta": "Selecione a Conta"
     },
     "generics": {
         "no": "Não",

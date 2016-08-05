@@ -50,6 +50,7 @@
         <script src="js/controller/configController.js" type="text/javascript"></script>
         <script src="js/controller/cartaoController.js" type="text/javascript"></script>
         <script src="js/controller/categoriaController.js" type="text/javascript"></script>
+        <script src="js/controller/movimentoController.js" type="text/javascript"></script>
 
         <!-- INTERNACIONALIZAÇÃO -->
         <script src="js/plugins/i18next/i18next-jquery.0.0.14.min.js" type="text/javascript"></script>
@@ -122,6 +123,14 @@
                             <span class="badge">
                                 <i class="material-icons">
                                     <script>iconUtil.draw(iconUtil.category);</script>
+                                </i>
+                            </span>
+                        </a>
+                        <a class="collection-item" onclick="movimentoController.loadList()">
+                            <span data-i18n="left-menu.activity"> </span>
+                            <span class="badge">
+                                <i class="material-icons">
+                                    <script>iconUtil.draw(iconUtil.activity);</script>
                                 </i>
                             </span>
                         </a>

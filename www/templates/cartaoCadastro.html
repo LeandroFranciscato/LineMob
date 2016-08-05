@@ -27,7 +27,7 @@
         </div>
 
         <div class="row">
-            <label class="label-select" data-i18n="cartao-controller.field-select-conta" for="select-conta"></label>
+            <label class="label-select" data-i18n="conta-controller.field-select-conta" for="select-conta"></label>
             <div class="input-field col s12">                
                 <select id="select-conta" 
                         class="browser-default"
@@ -35,7 +35,7 @@
                         onchange="contaController.loadNewModal(this, function () {
                                     cartaoController.loadList();
                                 });">
-                    <option value="" disabled selected data-i18n="cartao-controller.field-select-conta"></option>
+                    <option value="" disabled selected data-i18n="conta-controller.field-select-conta"></option>
                     <option value="">+</option>                    
                     {{#conta}}
                     <option value="{{id}}" {{selected}}>{{nome}}</option>
