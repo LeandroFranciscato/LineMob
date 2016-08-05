@@ -105,6 +105,22 @@ var pessoaController = {
                 cb();
             }
         }
+    },
+    loadNewModal: function (element, callbackAction) {
+        Controller.loadNewModal({
+            controllerModal: pessoaController,
+            entity: new Pessoa(),
+            element: element,
+            templateCadastro: pessoaController.TEMPLATE_CADASTRO,
+            tituloNavCenter: i18next.t("pessoa-controller.singular"),
+            columnToReRender: "apelido",
+            orderByReRender: "apelido",
+            callbackAction: function () {
+                if (callbackAction) {
+                    callbackAction();
+                }
+            },
+            labelSelect: i18next.t("pessoa-controller.field-select-pessoa")
+        });
     }
-
 }; 

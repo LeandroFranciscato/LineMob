@@ -561,12 +561,13 @@ var Controller = {
             columnToReRender: "",
             orderByReRender: "",
             callbackAction: "",
-            labelSelect: ""
+            labelSelect: "",
+            data: {}
         };
         this.setOptions(modalOptions, options);
 
         if ($(modalOptions.element).val() === "") {
-            Controller.renderHtml({}, modalOptions.controllerModal.TEMPLATE_CADASTRO, modalOptions.objectToBind);
+            Controller.renderHtml(modalOptions.data, modalOptions.controllerModal.TEMPLATE_CADASTRO, modalOptions.objectToBind);
             Controller.initializePlugins();
             $("#titulo-center-modal").html(modalOptions.tituloNavCenter);
             loadScrollModal();

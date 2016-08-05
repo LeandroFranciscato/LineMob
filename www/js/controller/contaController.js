@@ -118,7 +118,7 @@ var contaController = {
             entity: new Conta(),
             element: element,
             templateCadastro: contaController.TEMPLATE_CADASTRO,
-            tituloNavCenter: "CONTA",
+            tituloNavCenter: i18next.t("conta-controller.singular"),
             columnToReRender: "nome",
             orderByReRender: "nome",
             callbackAction: function () {
@@ -126,7 +126,7 @@ var contaController = {
                     callbackAction();
                 }
             },
-            labelSelect: i18next.t("cartao-controller.field-select-conta")
+            labelSelect: i18next.t("conta-controller.field-select-conta")
         });
     }
 }; 

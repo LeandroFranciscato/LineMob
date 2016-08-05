@@ -103,6 +103,22 @@ var categoriaController = {
                 cb();
             }
         }
+    },
+    loadNewModal: function (element, callbackAction) {
+        Controller.loadNewModal({
+            controllerModal: categoriaController,
+            entity: new Categoria(),
+            element: element,
+            templateCadastro: categoriaController.TEMPLATE_CADASTRO,
+            tituloNavCenter: i18next.t("categoria-controller.singular"),
+            columnToReRender: "nome",
+            orderByReRender: "nome",
+            callbackAction: function () {
+                if (callbackAction) {
+                    callbackAction();
+                }
+            },
+            labelSelect: i18next.t("conta-controller.field-select-conta")
+        });
     }
-
 }; 

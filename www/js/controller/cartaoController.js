@@ -105,13 +105,13 @@ var cartaoController = {
         if (campo === "idConta") {
             $("#input-text").addClass("hide");
             $("#input-select").removeClass("hide");
-            $("#valor-campo").prop("id","id-temp");
-            $("#select-conta").prop("id","valor-campo");
+            $("#valor-campo").prop("id", "id-temp");
+            $("#select-conta").prop("id", "valor-campo");
         } else {
             $("#input-text").removeClass("hide");
             $("#input-select").addClass("hide");
-            $("#valor-campo").prop("id","id-temp");            
-            $("#id-temp").prop("id","valor-campo");
+            $("#valor-campo").prop("id", "id-temp");
+            $("#id-temp").prop("id", "valor-campo");
 
             if (campo === "nome") {
                 $("#prompt-campo").html(i18next.t("cartao-controller.field-nome"));
@@ -195,6 +195,33 @@ var cartaoController = {
                     cb();
                 }
             }
+        }
+    },
+    loadNewModal: function (element, callbackAction) {
+        // if para não ir sempre ao BD //
+        if ($(element).val() === "") {
+            var conta = new Conta();
+            daoUtil.getAll(conta, "nome", function (res) {
+                var data = {};
+                data.conta = [];
+                data.conta = res;
+                Controller.loadNewModal({
+                    controllerModal: cartaoController,
+                    entity: new Cartao(),
+                    element: element,
+                    templateCadastro: cartaoController.TEMPLATE_CADASTRO,
+                    tituloNavCenter: i18next.t("cartao-controller.singular"),
+                    columnToReRender: "nome",
+                    orderByReRender: "nome",
+                    callbackAction: function () {
+                        if (callbackAction) {
+                            callbackAction();
+                        }
+                    },
+                    labelSelect: i18next.t("cartao-controller.field-select-cartao"),
+                    data: data
+                });
+            });
         }
     }
 }; 

@@ -34,25 +34,84 @@ var movimentoController = {
         });
     },
     loadNewOrSingleEdit: function (data, cb) {
-        Controller.loadNewOrSingleEdit({
-            controllerOrigin: movimentoController,
-            entity: new Movimento(),
-            template: this.TEMPLATE_CADASTRO,
-            navLeft: {
-                icon: iconUtil.back,
-                callbackClick: function () {
-                    movimentoController.loadList();
+        var conta = new Conta();
+        var inserting = true;
+        daoUtil.getAll(conta, "nome", function (res) {
+            if (data) {
+                data.conta = res;
+                inserting = false;
+                for (var i = 0; i < data.conta.length; i++) {
+                    if (data.conta[i].id == data.idConta) {
+                        data.conta[i].selected = "selected";
+                    }
                 }
-            },
-            navCenter: {
-                title: i18next.t("movimento-controller.singular"),
-                icon: (data) ? iconUtil.edit : iconUtil.add
-            },
-            inputToFocus: "#data"
-        }, data, function () {
-            if (cb) {
-                cb();
+            } else {
+                data = {};
+                data.conta = [];
+                data.conta = res;
             }
+            var categoria = new Categoria();
+            daoUtil.getAll(categoria, "nome", function (res) {
+                if (data) {
+                    data.categoria = res;
+                    for (var i = 0; i < data.categoria.length; i++) {
+                        if (data.categoria[i].id == data.idCategoria) {
+                            data.categoria[i].selected = "selected";
+                        }
+                    }
+                } else {
+                    data.categoria = [];
+                    data.categoria = res;
+                }
+                var pessoa = new Pessoa();
+                daoUtil.getAll(pessoa, "apelido", function (res) {
+                    if (data) {
+                        data.pessoa = res;
+                        for (var i = 0; i < data.pessoa.length; i++) {
+                            if (data.pessoa[i].id == data.idPessoa) {
+                                data.pessoa[i].selected = "selected";
+                            }
+                        }
+                    } else {
+                        data.pessoa = [];
+                        data.pessoa = res;
+                    }
+                    var cartao = new Cartao();
+                    daoUtil.getAll(cartao, "nome", function (res) {
+                        if (data) {
+                            data.cartao = res;
+                            for (var i = 0; i < data.cartao.length; i++) {
+                                if (data.cartao[i].id == data.idCartao) {
+                                    data.cartao[i].selected = "selected";
+                                }
+                            }
+                        } else {
+                            data.cartao = [];
+                            data.cartao = res;
+                        }
+                        Controller.loadNewOrSingleEdit({
+                            controllerOrigin: movimentoController,
+                            entity: new Movimento(),
+                            template: movimentoController.TEMPLATE_CADASTRO,
+                            navLeft: {
+                                icon: iconUtil.back,
+                                callbackClick: function () {
+                                    movimentoController.loadList();
+                                }
+                            },
+                            navCenter: {
+                                title: i18next.t("movimento-controller.singular"),
+                                icon: (!inserting) ? iconUtil.edit : iconUtil.add
+                            },
+                            inputToFocus: "#data"
+                        }, data, function () {
+                            if (cb) {
+                                cb();
+                            }
+                        });
+                    });
+                });
+            });
         });
     },
     loadMultipleEdit: function (data, cb) {
