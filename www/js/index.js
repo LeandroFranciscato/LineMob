@@ -97,19 +97,14 @@ var app = {
     loadTemplateMovimento: function (cb) {
         $.get('templates/movimentoCadastro.html', function (string) {
             movimentoController.TEMPLATE_CADASTRO = string;
-
             $.get('templates/movimentoLista.html', function (string) {
                 movimentoController.TEMPLATE_LISTA = string;
-                if (cb) {
-                    cb();
-                }
-                /*
-                 $.get('templates/movimentoEdicao.html', function (string) {
-                 movimentoController.TEMPLATE_EDICAO = string;
-                 if (cb) {
-                 cb();
-                 }
-                 });*/
+                $.get('templates/movimentoEdicao.html', function (string) {
+                    movimentoController.TEMPLATE_EDICAO = string;
+                    if (cb) {
+                        cb();
+                    }
+                });
             });
         });
     },

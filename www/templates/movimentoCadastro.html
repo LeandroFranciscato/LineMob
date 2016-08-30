@@ -62,7 +62,7 @@
                     <option value="" disabled selected data-i18n="categoria-controller.field-select-categoria"></option>
                     <option value="">+</option>                    
                     {{#categoria}}
-                    <option value="{{id}}" {{selected}}>{{nome}}</option>
+                    <option value="{{id}}" {{selected}}>{{nome}}{{#nomeSubCategoria}}/{{/nomeSubCategoria}}{{nomeSubCategoria}}</option>
                     {{/categoria}}                                                            
                 </select>                
             </div>           

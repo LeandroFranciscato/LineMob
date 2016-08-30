@@ -115,43 +115,117 @@ var movimentoController = {
         });
     },
     loadMultipleEdit: function (data, cb) {
-        Controller.loadMultipleEdit({
-            controllerOrigin: movimentoController,
-            entity: new Movimento(),
-            template: this.TEMPLATE_EDICAO,
-            navLeft: {
-                icon: iconUtil.back,
-                callbackClick: function () {
-                    movimentoController.loadList();
+        var conta = new Conta();
+        daoUtil.getAll(conta, "nome", function (res) {
+            if (data) {
+                data.conta = res;
+            }
+            var categoria = new Categoria();
+            daoUtil.getAll(categoria, "nome", function (res) {
+                if (data) {
+                    data.categoria = res;
                 }
-            },
-            navCenter: {
-                title: i18next.t("movimento-controller.plural"),
-                icon: iconUtil.edit
-            }
-        }, data, function () {
-            if (cb) {
-                cb();
-            }
+                var pessoa = new Pessoa();
+                daoUtil.getAll(pessoa, "nome", function (res) {
+                    if (data) {
+                        data.pessoa = res;
+                    }
+                    var cartao = new Cartao();
+                    daoUtil.getAll(cartao, "nome", function (res) {
+                        if (data) {
+                            data.cartao = res;
+                        }
+                        var natureza = [];
+                        natureza.push({D: "Débito"});
+                        natureza.push({C: "Crédito"});
+                        data.natureza = natureza;
+                        Controller.loadMultipleEdit({
+                            controllerOrigin: movimentoController,
+                            entity: new Movimento(),
+                            template: movimentoController.TEMPLATE_EDICAO,
+                            navLeft: {
+                                icon: iconUtil.back,
+                                callbackClick: function () {
+                                    movimentoController.loadList();
+                                }
+                            },
+                            navCenter: {
+                                title: i18next.t("movimento-controller.plural"),
+                                icon: iconUtil.edit
+                            }
+                        }, data, function () {
+                            if (cb) {
+                                cb();
+                            }
+                        });
+                    });
+                });
+            });
         });
     },
     selecionaCampoEdicaoMultipla: function () {
         var campo = $("#select-campo").val();
 
-        if (campo === "nome") {
-            $("#prompt-campo").html(i18next.t("movimento-controller.field-nome"));
-            $("#valor-campo").prop("name", "nome");
-            $("#valor-campo").prop("type", "text");
-        } else if (campo === "nomeSubCategoria") {
-            $("#prompt-campo").html(i18next.t("movimento-controller.field-nome-sub-movimento"));
-            $("#valor-campo").prop("name", "nomeSubCategoria");
-            $("#valor-campo").prop("type", "text");
+        var selects = ["idConta", "idCategoria", "idPessoa", "idCartao", "natureza"];
+
+        if (selects.indexOf(campo) >= 0) {
+            $("#input-text").addClass("hide");
+            $("#input-select").removeClass("hide");
+            $("#valor-campo").prop("id", "id-temp");
+            $("#select-conta").prop("id", "valor-campo");
+
+            if (campo === "conta") {
+                $("#idContaOptions").removeClass("hide");
+                $("#idCategoriaOptions").addClass("hide");
+                $("#idPessoaOptions").addClass("hide");
+            } else if (campo === "idCategoria") {
+                $("#idContaOptions").addClass("hide");
+                $("#idCategoriaOptions").removeClass("hide");
+                $("#idPessoaOptions").addClass("hide");
+            } else if (campo === "idPessoa") {
+                $("#idContaOptions").addClass("hide");
+                $("#idCategoriaOptions").addClass("hide");
+                $("#idPessoaOptions").removeClass("hide");
+            }
+        } else {
+            $("#input-text").removeClass("hide");
+            $("#input-select").addClass("hide");
+            $("#valor-campo").prop("id", "id-temp");
+            $("#id-temp").prop("id", "valor-campo");
+
+            if (campo === "nome") {
+                $("#prompt-campo").html(i18next.t("cartao-controller.field-nome"));
+                $("#valor-campo").prop("type", "text");
+            } else if (campo === "diaVencimento") {
+                $("#prompt-campo").html(i18next.t("cartao-controller.field-diaVencimento"));
+                $("#valor-campo").prop("type", "number");
+            } else if (campo === "diaFechamento") {
+                $("#prompt-campo").html(i18next.t("cartao-controller.field-diaFechamento"));
+                $("#valor-campo").prop("type", "number");
+            } else if (campo === "valorLimite") {
+                $("#prompt-campo").html(i18next.t("cartao-controller.field-valorLimite"));
+                $("#valor-campo").prop("type", "number");
+            }
+
+            $("#valor-campo").prop("name", campo.toString());
         }
     },
     validaFormulario: function (movimento, cb, field) {
         if (!field) {
-            if (!movimento.nome) {
-                alertUtil.confirm(i18next.t("movimento-controller.alert-nome-req"));
+            if (!movimento.data) {
+                alertUtil.confirm(i18next.t("movimento-controller.alert-data-req"));
+            } else if (!movimento.valor) {
+                alertUtil.confirm(i18next.t("movimento-controller.alert-valor-req"));
+            } else if (!movimento.descricao) {
+                alertUtil.confirm(i18next.t("movimento-controller.alert-descricao-req"));
+            } else if (!movimento.idConta) {
+                alertUtil.confirm(i18next.t("movimento-controller.alert-idConta-req"));
+            } else if (!movimento.idCategoria) {
+                alertUtil.confirm(i18next.t("movimento-controller.alert-idCategoria-req"));
+            } else if (!movimento.idPessoa) {
+                alertUtil.confirm(i18next.t("movimento-controller.alert-idPessoa-req"));
+            } else if (!movimento.idCartao) {
+                alertUtil.confirm(i18next.t("movimento-controller.alert-idCartao-req"));
             } else {
                 if (cb) {
                     cb();
