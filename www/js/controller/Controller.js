@@ -203,7 +203,7 @@ var Controller = {
         $(objectToBind).html(htmlParsed);
     },
     initializePlugins: function () {
-        i18nextInitialize();        
+        i18nextInitialize();
         loadScroll();
     },
     setFocus: function () {
@@ -580,12 +580,28 @@ var Controller = {
                         if (rowsAffected === 1) {
                             alertUtil.confirm(i18next.t("alerts-crud.body-insert-success"));
                             $("#modal").closeModal();
-                            $(modalOptions.element).html("<option value='' disabled selected>" + modalOptions.labelSelect + "</option>");
-                            $(modalOptions.element).append("<option value=''>+</option>");
+                            $(modalOptions.element).html("<option value=''>" + modalOptions.labelSelect + "</option>");
+                            $(modalOptions.element).append("<option value='+'>+</option>");
                             daoUtil.getAll(modalOptions.entity, modalOptions.orderByReRender, function (res) {
+
+                                var maxId = 0;
                                 for (var i = 0; i < res.length; i++) {
-                                    $(modalOptions.element).append("<option value='" + res[i].id + "'>" + res[i][modalOptions.columnToReRender] + "</option>");
+                                    if (maxId < res[i].id) {
+                                        maxId = res[i].id;
+                                    }
                                 }
+
+                                var selectedString = "";
+                                for (var i = 0; i < res.length; i++) {
+                                    if (res[i].id === maxId) {
+                                        selectedString = "selected";
+                                    } else {
+                                        selectedString = "";
+                                    }
+
+                                    $(modalOptions.element).append("<option value='" + res[i].id + "'" + selectedString + ">" + res[i][modalOptions.columnToReRender] + "</option>");
+                                }
+
                                 $(document).unbind("backbutton");
                                 $(document).on("backbutton", function () {
                                     if (modalOptions.callbackAction) {

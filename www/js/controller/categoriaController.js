@@ -118,7 +118,7 @@ var categoriaController = {
                     callbackAction();
                 }
             },
-            labelSelect: i18next.t("conta-controller.field-select-conta")
+            labelSelect: i18next.t("categoria-controller.field-select-categoria")
         });
     }
 }; 
