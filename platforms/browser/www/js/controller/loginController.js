@@ -1,69 +1,90 @@
-/* global logUtil, Mustache, loginModel, contaController, alertUtil, mainController */
+/* global logUtil, Mustache, alertUtil, mainController, daoUtil, Materialize, database_helper, Controller, dbUtil, i18next, iconUtil */
 
 var loginController = {
     TEMPLATE_LOGIN: "",
-    OBJECT_TO_BIND: "[data-content=content]",
+    loadList: function (cb) {
+        this.load(function () {
+            if (cb) {
+                cb();
+            }
+        });
+    },
     load: function (cb) {
-        //loginModel.getAll(function (res) {
-        var res = 'LEANDRO';        
-            if (res) {
-                alertUtil.confirm("Bem Vindo " + res.usuario);
-                mainController.render();
+        var usuario = new Usuario();
+        daoUtil.getAll(usuario, "id", function (res) {
+            if (res && res.length > 0) {
+                mainController.render(function () {
+                    if (cb) {
+                        cb();
+                    }
+                });
             } else {
-                loginController.render(function () {
+                $("#wrapper").css("top", "0px");
+                Controller.loadNewOrSingleEdit({
+                    controllerOrigin: loginController,
+                    entity: new Usuario(),
+                    template: loginController.TEMPLATE_LOGIN,
+                    inputToFocus: "#inputUsuario",
+                    navLeft: {
+                        callbackClick: function () {
+                            navigator.app.exitApp();
+                        }
+                    }
+                }, null, function () {
                     if (cb) {
                         cb();
                     }
                 });
             }
-        //});
-    },
-    render: function (cb) {
-        var html = Mustache.render(this.TEMPLATE_LOGIN);
-        $(this.OBJECT_TO_BIND).html(html);
-        this.bindEvents();
-        if (cb) {
-            cb();
-        }
-    },
-    bindEvents: function () {
-        $('[data-id=btnLogin]').click(loginController.getLogin);        
-        
-        $(".glyphicon-eye-open").click(function () {
-            $("#inputPassword").attr('type', 'text');            
-            $(".glyphicon-eye-open").hide();
-            $(".glyphicon-eye-close").show();
-        });
-
-        $(".glyphicon-eye-close").click(function () {
-            $("#inputPassword").attr('type', 'password');
-            $(".glyphicon-eye-open").show();
-            $(".glyphicon-eye-close").hide();
         });
     },
-    getLogin: function () {
-        var usuario = $('[data-id=formLogin]').serializeObject();
-        
-        if (!usuario.usuario){
-            alertUtil.confirm("Informe o Usuário!");
-            return;
+    validaFormulario: function (usuario, callbackSucess) {
+        if (!usuario.usuario) {
+            alertUtil.confirm(i18next.t("login-controller.alert-usuario-req"));
+        } else if (!usuario.senha) {
+            alertUtil.confirm(i18next.t("login-controller.alert-senha-req"));
+        } else if (usuario.senha !== "L") { //WS no futuro
+            alertUtil.confirm(i18next.t("login-controller.alert-login-fail"));
+        } else {
+            if (callbackSucess) {
+                callbackSucess();
+            }
         }
-        
-        if (!usuario.senha){
-            alertUtil.confirm("Informe a Senha!");
-            return;
-        }
-        
-        //Aqui teremos no futuro uma validação com o WS
-        if (usuario.senha !== "L") {
-            alertUtil.confirm("Usuário e Senha incorretos.");
-            return;
-        }
-
+    },
+    insert: function () {
         if ($('#checkBoxLembrar').prop('checked') === true) {
-            loginModel.insert(usuario);
+            Controller.insert(i18next.t("login-controller.alert-welcome-pt1") + $("#inputUsuario").val());
+        } else {
+            this.validaFormulario($("#form-cadastro").serializeObject(), function () {
+                mainController.render();
+            });
         }
-        alertUtil.confirm("Bem vindo " + usuario.usuario);
-        mainController.render();
+    },
+    logout: function () {
+        alertUtil.confirm(
+                i18next.t("login-controller.body-alert-logout"),
+                i18next.t("login-controller.title-alert-logout"),
+                [i18next.t("generics.no"), i18next.t("generics.yes")],
+                function (btnEscolhido) {
+                    if (btnEscolhido == 2) {
+                        dbUtil.dropDatabase(function () {
+                            window.localStorage.removeItem("dataBaseCreated");
+                            navigator.app.exitApp();
+                        });
+                    }
+                }
+        );
+    },
+    showOrHidePasswd: function (element) {
+        if ($(element).hasClass("eyeOn")) {
+            $(element).removeClass("eyeOn").addClass("eyeOff");
+            $("#inputPassword").attr("type", "text");
+            $("#icon-eye").html(iconUtil.eyeOff);
+        } else {
+            $(element).removeClass("eyeOff").addClass("eyeOn");
+            $("#inputPassword").attr("type", "password");
+            $("#icon-eye").html(iconUtil.eyeOn);
+        }
+        $("#inputPassword").trigger("focus");
     }
 };

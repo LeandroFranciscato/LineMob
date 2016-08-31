@@ -1,11 +1,10 @@
-/* global Mustache, logUtil, mainController, alertUtil, daoUtil, Controller, iconUtil */
+/* global Mustache, logUtil, mainController, alertUtil, daoUtil, Controller, iconUtil, i18next */
 
 var contaController = {
     TEMPLATE_CADASTRO: "",
     TEMPLATE_LISTA: "",
     TEMPLATE_EDICAO: "",
     loadList: function (cb) {
-
         Controller.loadList({
             controllerOrigin: this,
             entity: new Conta(),
@@ -18,7 +17,7 @@ var contaController = {
                 }
             },
             navCenter: {
-                title: "CONTAS",
+                title: i18next.t("conta-controller.plural"),
                 icon: ""
             },
             floatButton: {
@@ -45,8 +44,8 @@ var contaController = {
                 }
             },
             navCenter: {
-                title: "CONTA",
-                icon: iconUtil.add
+                title: i18next.t("conta-controller.singular"),
+                icon: (data) ? iconUtil.edit : iconUtil.add
             },
             inputToFocus: "#nome"
         }, data, function () {
@@ -67,9 +66,9 @@ var contaController = {
                 }
             },
             navCenter: {
-                title: "CONTAS",
+                title: i18next.t("conta-controller.plural"),
                 icon: iconUtil.edit
-            }            
+            }
         }, data, function () {
             if (cb) {
                 cb();
@@ -80,31 +79,54 @@ var contaController = {
         var campo = $("#select-campo").val();
 
         if (campo === "nome") {
-            $("#prompt-campo").html("Nome da Conta");
+            $("#prompt-campo").html(i18next.t("conta-controller.field-nome"));
             $("#valor-campo").prop("name", "nome");
             $("#valor-campo").prop("type", "text");
         } else if (campo === "dataFundacao") {
-            $("#prompt-campo").html("Data Início Saldo");
+            $("#prompt-campo").html(i18next.t("conta-controller.field-dataFundacao"));
             $("#valor-campo").prop("name", "dataFundacao");
             $("#valor-campo").prop("type", "date");
         } else if (campo === "valorSaldoInicial") {
-            $("#prompt-campo").html("Valor Saldo Inicial");
+            $("#prompt-campo").html(i18next.t("conta-controller.field-valorSaldoInicial"));
             $("#valor-campo").prop("name", "valorSaldoInicial");
             $("#valor-campo").prop("type", "number");
         }
         $("#prompt-campo").addClass("active");
     },
-    validaFormulario: function (conta, callbackSucess) {
-        if (!conta.nome) {
-            alertUtil.confirm("Nome deve ser informado.");
-        } else if (!conta.dataFundacao) {
-            alertUtil.confirm("Data início do saldo deve ser informado.");
-        } else if (!conta.valorSaldoInicial) {
-            alertUtil.confirm("Valor do saldo inicial deve ser informado.");
+    validaFormulario: function (conta, cb, field) {
+        if (!field) {
+            if (!conta.nome) {
+                alertUtil.confirm(i18next.t("conta-controller.alert-nome-req"));
+            } else if (!conta.dataFundacao) {
+                alertUtil.confirm(i18next.t("conta-controller.alert-dataFundacao-req"));
+            } else if (!conta.valorSaldoInicial) {
+                alertUtil.confirm(i18next.t("conta-controller.alert-valorSaldoInicial-req"));
+            } else {
+                if (cb) {
+                    cb();
+                }
+            }
         } else {
-            if (callbackSucess) {
-                callbackSucess();
+            if (cb) {
+                cb();
             }
         }
+    },
+    loadNewModal: function (element, callbackAction) {
+        Controller.loadNewModal({
+            controllerModal: contaController,
+            entity: new Conta(),
+            element: element,
+            templateCadastro: contaController.TEMPLATE_CADASTRO,
+            tituloNavCenter: i18next.t("conta-controller.singular"),
+            columnToReRender: "nome",
+            orderByReRender: "nome",
+            callbackAction: function () {
+                if (callbackAction) {
+                    callbackAction();
+                }
+            },
+            labelSelect: i18next.t("conta-controller.field-select-conta")
+        });
     }
 }; 

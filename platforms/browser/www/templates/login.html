@@ -1,35 +1,47 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <link rel="stylesheet" href="css/login.css">
-        <title>Login</title>
-    </head>
-    <body>
-        <div class="container">
-            <form class="form-signin" data-id="formLogin">
-                <div style="text-align: -webkit-center;">
-                    <img src="img/logo.png" style="max-height:150px;
-                         max-width: 150px;
-                         margin-bottom: 5px;
-                         border-radius: 50%;
-                         background-color: white;"/>
-                </div>
-                <input type="email" id="inputUsuario" name="usuario" class="form-control" placeholder="Usuário" required autofocus>
-                <div class="password">
-                    <input type="password" id="inputPassword" name="senha" class="form-control" placeholder="Senha" required style="z-index: 0">
-                    <span class="glyphicon glyphicon-eye-open" style="color: gray; display: initial" ></span>
-                    <span class="glyphicon glyphicon-eye-close" style="color: gray"></span>
-                </div>
-                <div class="checkbox">
-                    <label>
-                        <input id="checkBoxLembrar" type="checkbox" value="Lembrar" checked="checked">
-                        Lembrar </label>
-                </div>
-                <button data-id="btnLogin" class="btn btn-lg btn-danger btn-block" type="button">
-                    Entrar
-                </button>
-            </form>
+<div class="container row">    
+    <form id="form-cadastro" class="form-signin col s12" data-id="formLogin">        
+
+        <div class="row">
+            <div class="col s12 center">
+                <img id="img-form-signin" src="img/logo.png" />
+            </div>
         </div>
-        <!-- /container -->
-    </body>
-</html>
+
+        <div class="row">
+            <div class="input-field col s12">
+                <input type="email" id="inputUsuario" name="usuario" placeholder="" data-i18n="[placeholder]login-controller.placeholder-email">
+                <label for="inputUsuario" class="active" data-i18n="login-controller.field-email"></label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s10">
+                <input type="password" id="inputPassword" name="senha" placeholder="********">                    
+                <label for="inputPassword" class="active" data-i18n="login-controller.field-senha"></label>
+            </div>
+            <div class="input-field col s2">                
+                <i id="icon-eye" class="material-icons grey-text eyeOn" onclick="loginController.showOrHidePasswd(this)">
+                    <script>$("#icon-eye").html(iconUtil.eyeOn);</script>
+                </i>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12">
+                <input id="checkBoxLembrar" type="checkbox" class="filled-in" checked="checked" />
+                <label for="checkBoxLembrar" data-i18n="login-controller.field-check"></label>
+            </div>
+        </div>            
+
+        <div class="row">
+            <div class="col s12">
+                <button data-id="btnLogin" 
+                        class="red darken-1 btn waves-effect waves-light" 
+                        type="button"
+                        onclick="loginController.insert();"
+                        data-i18n="login-controller.btn-login">                    
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

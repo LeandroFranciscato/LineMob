@@ -1,25 +1,54 @@
-/* global Mustache, contaController */
+/* global Mustache, contaController, Controller, iconUtil, i18next */
 
 var mainController = {
-    TEMPLATE_BARRA_TOPO: "",
+    TEMPLATE_MAIN: "",
     SITUACAO_MENU_ESQUERDO: 0,
     render: function (cb) {
-        var html = Mustache.render(this.TEMPLATE_BARRA_TOPO);
-        $("[data-content=content]").html(html);
-        this.bindEvents();
-        //contaController.load();
-        if (cb) {
-            cb();
-        }
+        $("#wrapper").css("top", "56px");
+        $("#header").css("display", "block");
+        $("#menu-esquerdo").css("display", "block");
+
+        Controller.render({
+            controllerOrigin: this,
+            entity: new Entity(),
+            template: this.TEMPLATE_MAIN,
+            navLeft: {
+                icon: iconUtil.menu,
+                callbackClick: function (element) {
+                    if (element) {
+                        navigator.app.exitApp();
+                    } else {
+                        mainController.menuEsquerdo();
+                    }
+                }
+            },
+            navCenter: {
+                title: i18next.t("app.name"),
+                icon: ""
+            },
+            navSearch: {
+                display: "none"
+            }
+        }, null, function () {
+            loadScrollLeftMenu();
+            mainController.bindEvents();
+            if (cb) {
+                cb();
+            }
+        });
     },
     bindEvents: function () {
-        $(".tudo").on("swipeleft", function (e) {
-            mainController.menuEsquerdo();
+        $("body").on("swipeleft", function (e) {
+            if (mainController.SITUACAO_MENU_ESQUERDO === 1) {
+                mainController.menuEsquerdo();
+            }
         }).on("swiperight", function (e) {
-            mainController.menuEsquerdo();
+            if (mainController.SITUACAO_MENU_ESQUERDO === 0) {
+                mainController.menuEsquerdo();
+            }
         });
 
-        $("#centro-abaixo").click(function () {
+        $("#scroller").click(function () {
             if (mainController.SITUACAO_MENU_ESQUERDO === 1) {
                 mainController.menuEsquerdo();
             }
@@ -29,14 +58,24 @@ var mainController = {
         var border;
         if (this.SITUACAO_MENU_ESQUERDO === 0) {
             $("#menu-esquerdo").animate({
-                width: "60%",
-                borderWidth: "3px"
+                left: "0px"
+            }, 150);
+            $("#wrapper").animate({
+                left: "300px"
+            }, 150);
+            $("#header").animate({
+                left: "300px"
             }, 150);
             this.SITUACAO_MENU_ESQUERDO = 1;
         } else {
             $("#menu-esquerdo").animate({
-                width: "0%",
-                borderWidth: "0px"
+                left: "-300px"
+            }, 150);
+            $("#wrapper").animate({
+                left: "0px"
+            }, 150);
+            $("#header").animate({
+                left: "0px"
             }, 150);
             this.SITUACAO_MENU_ESQUERDO = 0;
         }

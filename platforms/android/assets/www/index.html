@@ -44,9 +44,13 @@
         <script src="js/controller/Controller.js" type="text/javascript"></script>
         <script src="js/controller/mainController.js" type="text/javascript"></script>        
         <script src="js/controller/loginController.js" type="text/javascript"></script>
+        <script src="js/controller/loadController.js" type="text/javascript"></script>
         <script src="js/controller/pessoaController.js" type="text/javascript"></script>
         <script src="js/controller/contaController.js" type="text/javascript"></script>
         <script src="js/controller/configController.js" type="text/javascript"></script>
+        <script src="js/controller/cartaoController.js" type="text/javascript"></script>
+        <script src="js/controller/categoriaController.js" type="text/javascript"></script>
+        <script src="js/controller/movimentoController.js" type="text/javascript"></script>
 
         <!-- INTERNACIONALIZAÇÃO -->
         <script src="js/plugins/i18next/i18next-jquery.0.0.14.min.js" type="text/javascript"></script>
@@ -62,6 +66,10 @@
 
             function loadScrollLeftMenu() {
                 myScrollLeftMenu = new IScroll('#menu-esquerdo', {preventDefault: false});
+            }
+
+            function loadScrollModal() {
+                myScrollLeftMenu = new IScroll('#modal', {preventDefault: false});
             }
 
             document.addEventListener('touchmove', function (e) {
@@ -99,6 +107,30 @@
                             <span class="badge">
                                 <i class="material-icons">
                                     <script>iconUtil.draw(iconUtil.people);</script>
+                                </i>
+                            </span>
+                        </a>
+                        <a class="collection-item" onclick="cartaoController.loadList()">
+                            <span data-i18n="left-menu.cred-card"> </span>
+                            <span class="badge">
+                                <i class="material-icons">
+                                    <script>iconUtil.draw(iconUtil.card);</script>
+                                </i>
+                            </span>
+                        </a>
+                        <a class="collection-item" onclick="categoriaController.loadList()">
+                            <span data-i18n="left-menu.category"> </span>
+                            <span class="badge">
+                                <i class="material-icons">
+                                    <script>iconUtil.draw(iconUtil.category);</script>
+                                </i>
+                            </span>
+                        </a>
+                        <a class="collection-item" onclick="movimentoController.loadList()">
+                            <span data-i18n="left-menu.activity"> </span>
+                            <span class="badge">
+                                <i class="material-icons">
+                                    <script>iconUtil.draw(iconUtil.activity);</script>
                                 </i>
                             </span>
                         </a>
@@ -155,7 +187,7 @@
                     <i class="material-icons prefix"><script>iconUtil.draw(iconUtil.back);</script></i>
                 </li>
                 <li class="input-field">                        
-                    <input id="input-search" type="text" class="validate" placeholder="Pesquisar...">                                                
+                    <input id="input-search" type="text" class="validate" placeholder="" data-i18n="[placeholder]generics.search">
                 </li>                    
                 <li id="icon-clean-search-field" class="icon-clean-search-field right">
                     <i class="material-icons prefix"><script>iconUtil.draw(iconUtil.close);</script></i>
@@ -170,7 +202,7 @@
 
         <!-- FLOAT-BUTTON -->
         <div id="btn-float" class="fixed-action-btn click-to-toggle invisible">
-            <a class="btn-floating btn-large red">
+            <a class="btn-floating btn-large red darken-1">
                 <i class="material-icons"><script>iconUtil.draw(iconUtil.menu);</script></i>
             </a>
             <ul>
@@ -178,6 +210,51 @@
                 <li id="btn-float-edit"><a class="btn-floating yellow darken-3"><i class="material-icons"><script>iconUtil.draw(iconUtil.edit);</script></i></a></li>
                 <li id="btn-float-remove"><a class="btn-floating"><i class="material-icons"><script>iconUtil.draw(iconUtil.close);</script></i></a></li>      
             </ul>
+        </div>
+
+        <!-- LOAD -->
+        <div id="loader" class="modal modal-load">
+            <div id="loader-content" class="modal-content modal-content-load">
+                <div class="preloader-wrapper small active">
+                    <div class="spinner-layer spinner-red-only">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="gap-patch">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL -->                
+        <div id="modal" class="modal modal-aux">            
+            <div class="modal-content">                
+                <nav class="white">
+                    <ul>
+                        <li class="modal-action modal-close icon-left-nav red-text darken-1 left">
+                            <i class="material-icons"><script>iconUtil.draw(iconUtil.back);</script></i>
+                        </li>
+
+                        <li id="titulo-center-modal" class="titulo-center-modal red-text darken-1 center">CONTA</li>
+
+                        <li class="icon-titulo-center-modal">
+                            <i class="material-icons red-text darken-1"><script>iconUtil.draw(iconUtil.add);</script></i>                       
+                        </li>
+
+                        <li id="icon-right-modal" class="icon-right-modal right red-text darken-1" >
+                            <i class="material-icons"><script>iconUtil.draw(iconUtil.check);</script></i>
+                        </li>
+                    </ul>
+                </nav>
+                <form id="form-modal">
+                    <div id="modal-aux-form-content"></div>
+                </form>
+            </div>            
         </div>
     </body>
 </html>

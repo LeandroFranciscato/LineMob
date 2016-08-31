@@ -81,7 +81,7 @@ body {
 }
 .icon-search-nav,.icon-clean-search-field,.icon-right-nav{
     margin-right: 10px;
-    
+
 }
 .titulo-center-nav{
     font-size: x-large;
@@ -90,7 +90,7 @@ body {
 }
 
 .menu-esquerdo{
-    width: 220px;
+    width: 300px;
     height: 100%;
     background-color: darkgray;
     border-right-style: solid;
@@ -99,7 +99,7 @@ body {
     position: absolute;
     z-index: 3;
     top: 0;
-    left: -220px;
+    left: -300px;
 }
 
 .menu-esquerdo #div-img-menu-esquerdo{
@@ -151,3 +151,45 @@ body {
     color: #e53935;
 }
 
+.modal-load{        
+    border-radius: 50% !Important;
+    width: 42px !Important;
+    height: 42px !Important;
+    overflow: hidden !Important;
+}
+.modal-load .modal-content-load{
+    padding: 0px !Important;
+    margin: 6px 0 0 6px !Important;
+}
+
+.preloader-wrapper.small{
+    width: 30px !Important;
+    height: 30px !Important;    
+}
+
+.modal-aux{
+    width: 95% !Important;
+}
+
+.modal-aux .modal-content{
+    padding: 5px 5px 0px 5px !Important;    
+}
+
+.modal-aux .modal-aux-header{
+    margin-bottom: 0px;    
+}
+
+.modal-aux .titulo-center-modal{
+    font-size: x-large;
+    font-weight: bold;    
+    margin-left: 20px;        
+    float: left;
+}
+
+.modal-aux .icon-right-modal {
+    margin-right: 10px;
+}
+
+.label-select {
+    margin-left: 10px !Important;
+}

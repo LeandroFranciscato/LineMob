@@ -14,8 +14,12 @@ var mainController = {
             template: this.TEMPLATE_MAIN,
             navLeft: {
                 icon: iconUtil.menu,
-                callbackClick: function () {
-                    mainController.menuEsquerdo();
+                callbackClick: function (element) {
+                    if (element) {
+                        navigator.app.exitApp();
+                    } else {
+                        mainController.menuEsquerdo();
+                    }
                 }
             },
             navCenter: {
@@ -57,15 +61,15 @@ var mainController = {
                 left: "0px"
             }, 150);
             $("#wrapper").animate({
-                left: "220px"
+                left: "300px"
             }, 150);
             $("#header").animate({
-                left: "220px"
+                left: "300px"
             }, 150);
             this.SITUACAO_MENU_ESQUERDO = 1;
         } else {
             $("#menu-esquerdo").animate({
-                left: "-220px"
+                left: "-300px"
             }, 150);
             $("#wrapper").animate({
                 left: "0px"

@@ -1,4 +1,4 @@
-/* global logUtil, Mustache, alertUtil, mainController, daoUtil, Materialize, database_helper, Controller, dbUtil */
+/* global logUtil, Mustache, alertUtil, mainController, daoUtil, Materialize, database_helper, Controller, dbUtil, i18next, iconUtil */
 
 var loginController = {
     TEMPLATE_LOGIN: "",
@@ -13,14 +13,23 @@ var loginController = {
         var usuario = new Usuario();
         daoUtil.getAll(usuario, "id", function (res) {
             if (res && res.length > 0) {
-                mainController.render();
+                mainController.render(function () {
+                    if (cb) {
+                        cb();
+                    }
+                });
             } else {
                 $("#wrapper").css("top", "0px");
                 Controller.loadNewOrSingleEdit({
                     controllerOrigin: loginController,
                     entity: new Usuario(),
                     template: loginController.TEMPLATE_LOGIN,
-                    inputToFocus: "#inputUsuario"
+                    inputToFocus: "#inputUsuario",
+                    navLeft: {
+                        callbackClick: function () {
+                            navigator.app.exitApp();
+                        }
+                    }
                 }, null, function () {
                     if (cb) {
                         cb();
@@ -31,11 +40,11 @@ var loginController = {
     },
     validaFormulario: function (usuario, callbackSucess) {
         if (!usuario.usuario) {
-            alertUtil.confirm("Usuário deve ser informado.");
+            alertUtil.confirm(i18next.t("login-controller.alert-usuario-req"));
         } else if (!usuario.senha) {
-            alertUtil.confirm("Senha deve ser informada.");
+            alertUtil.confirm(i18next.t("login-controller.alert-senha-req"));
         } else if (usuario.senha !== "L") { //WS no futuro
-            alertUtil.confirm("Usuário e/ou senha incorretos.");
+            alertUtil.confirm(i18next.t("login-controller.alert-login-fail"));
         } else {
             if (callbackSucess) {
                 callbackSucess();
@@ -44,17 +53,18 @@ var loginController = {
     },
     insert: function () {
         if ($('#checkBoxLembrar').prop('checked') === true) {
-            Controller.insert("Bem vindo " + $("#inputUsuario").val());
+            Controller.insert(i18next.t("login-controller.alert-welcome-pt1") + $("#inputUsuario").val());
         } else {
-            mainController.render();
+            this.validaFormulario($("#form-cadastro").serializeObject(), function () {
+                mainController.render();
+            });
         }
-
     },
     logout: function () {
         alertUtil.confirm(
-                "Esta ação fará com que todos os dados locais sejam perdidos, deseja mesmo continuar?",
-                "Saindo...",
-                ["Não", "Sim"],
+                i18next.t("login-controller.body-alert-logout"),
+                i18next.t("login-controller.title-alert-logout"),
+                [i18next.t("generics.no"), i18next.t("generics.yes")],
                 function (btnEscolhido) {
                     if (btnEscolhido == 2) {
                         dbUtil.dropDatabase(function () {
@@ -64,5 +74,17 @@ var loginController = {
                     }
                 }
         );
+    },
+    showOrHidePasswd: function (element) {
+        if ($(element).hasClass("eyeOn")) {
+            $(element).removeClass("eyeOn").addClass("eyeOff");
+            $("#inputPassword").attr("type", "text");
+            $("#icon-eye").html(iconUtil.eyeOff);
+        } else {
+            $(element).removeClass("eyeOff").addClass("eyeOn");
+            $("#inputPassword").attr("type", "password");
+            $("#icon-eye").html(iconUtil.eyeOn);
+        }
+        $("#inputPassword").trigger("focus");
     }
 };

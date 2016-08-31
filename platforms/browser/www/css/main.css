@@ -1,41 +1,195 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html {
+    -ms-touch-action: none;
+}
+
+body,ul,li {
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+body {                
+    overflow: hidden; /* this is important to prevent the whole page to bounce */
+}
+
+#header {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    width: 100%;    
+    background: #e53935;
+    padding: 0;
+    color: white;        
+    display: none;
+}
+
+#footer{    
+    margin: 10px 0 0 0;   
+    color: #e53935;      
+}
+
+#wrapper {
+    position: absolute;
+    z-index: 1;
+    top: 56px;
+    bottom: 0px;
+    left: 0;
+    width: 100%;
+    background: #ccc;
+    overflow: hidden;    
+}
+
+#scroller {
+    background-color: whitesmoke;
+    position: absolute;
+    z-index: 1;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    width: 100%;
+    min-height: 100%;
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-text-size-adjust: none;
+    -moz-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    -o-text-size-adjust: none;
+    text-size-adjust: none;
+    display: block;
+}
+
 .barra-topo{
     width: 100%;    
-    background-color: red;   
-    height: 50px;
-    display: -webkit-box;
-    border-bottom-style: solid;
-    border-bottom-width: 2px;
-    border-bottom-color: cornsilk;
+    background-color: #e53935;           
 }
-.barra-topo h4 {    
-    font-weight: bold;
-    color: white;    
-    margin-top: 16.5px;
-    margin-left: 15px;
-}
-.barra-topo img{
-    width: 20px;
-    height: 20px;
-    margin-top: 15px;
+
+.icon-left-nav,.icon-back-search-field{
     margin-left: 10px;
+}
+.icon-search-nav,.icon-clean-search-field,.icon-right-nav{
+    margin-right: 10px;
+
+}
+.titulo-center-nav{
+    font-size: x-large;
+    font-weight: bold;    
+    margin-left: 20px; 
 }
 
 .menu-esquerdo{
-    width: 0%;
-    height: 100%;    
+    width: 300px;
+    height: 100%;
     background-color: darkgray;
     border-right-style: solid;
-    border-right-width: 0px;
+    border-right-width: 3px;
     border-right-color: gainsboro;
-    display: table-cell;
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    left: -300px;
 }
 
-.centro{
+.menu-esquerdo #div-img-menu-esquerdo{
+    text-align: -webkit-center;
+    margin-top: 15px;
+    margin-bottom: 15px;        
+}
+
+.menu-esquerdo #img-menu-esquerdo{
+    width: 150px;
+    background-color: whitesmoke;
+    border-radius: 50%;
+}
+
+.menu-esquerdo #links{
+    height: 100%;
+    width: 100%;
+    background-color: lightgray;
+}
+
+.menu-esquerdo #ul-links{
     width: 100%;
     height: 100%;
-    display: table-cell;
+    position: initial;
+    display: block;
 }
 
-.centro-abaixo{
-    height:100%;
+.invisible{
+    display:none;
+}
+
+.search-field {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    width: 100%;        
+    padding: 0;    
+    display:none;
+}
+
+.li-lista, .li-lista-header{
+    margin-bottom: 0 !important;
+    margin-top: 10px !important;
+}
+
+.titulo-lista{
+    font-weight: 900;
+    color: #e53935;
+}
+
+.modal-load{        
+    border-radius: 50% !Important;
+    width: 42px !Important;
+    height: 42px !Important;
+    overflow: hidden !Important;
+}
+.modal-load .modal-content-load{
+    padding: 0px !Important;
+    margin: 6px 0 0 6px !Important;
+}
+
+.preloader-wrapper.small{
+    width: 30px !Important;
+    height: 30px !Important;    
+}
+
+.modal-aux{
+    width: 95% !Important;
+}
+
+.modal-aux .modal-content{
+    padding: 5px 5px 0px 5px !Important;    
+}
+
+.modal-aux .modal-aux-header{
+    margin-bottom: 0px;    
+}
+
+.modal-aux .titulo-center-modal{
+    font-size: x-large;
+    font-weight: bold;    
+    margin-left: 20px;        
+    float: left;
+}
+
+.modal-aux .icon-right-modal {
+    margin-right: 10px;
+}
+
+.label-select {
+    margin-left: 10px !Important;
 }

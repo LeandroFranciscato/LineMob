@@ -1,4 +1,4 @@
-/* global dbUtil, logUtil, contaController, loginController, mainController, daoUtil, pessoaController, configController */
+/* global dbUtil, logUtil, contaController, loginController, mainController, daoUtil, pessoaController, configController, loadController, cartaoController, categoriaController, movimentoController, cordova */
 
 var app = {
     initialize: function () {
@@ -6,23 +6,34 @@ var app = {
     },
     bindEvents: function () {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+        cordova.plugins.backgroundMode.enable();
     },
     onDeviceReady: function () {
-        dbUtil.initialize(function () {
-            app.createTables(function () {
-                app.loadTemplates(function () {
-                    loginController.load();
+        loadController.show(function () {
+            dbUtil.initialize(function () {
+                app.createTables(function () {
+                    app.loadTemplates(function () {
+                        loginController.load(function () {
+                            loadController.hide();
+                        });
+                    });
                 });
             });
         });
     },
     loadTemplates: function (cb) {
-        this.loadTemplateConta(function () {
+        app.loadTemplateConta(function () {
             app.loadTemplatePessoa(function () {
-                app.loadTemplateMain(function () {
-                    if (cb) {
-                        cb();
-                    }
+                app.loadTemplateCartao(function () {
+                    app.loadTemplateCategoria(function () {
+                        app.loadTemplateMovimento(function () {
+                            app.loadTemplateMain(function () {
+                                if (cb) {
+                                    cb();
+                                }
+                            });
+                        });
+                    });
                 });
             });
         });
@@ -49,6 +60,48 @@ var app = {
                 pessoaController.TEMPLATE_LISTA = string;
                 $.get('templates/pessoaEdicao.html', function (string) {
                     pessoaController.TEMPLATE_EDICAO = string;
+                    if (cb) {
+                        cb();
+                    }
+                });
+            });
+        });
+    },
+    loadTemplateCartao: function (cb) {
+        $.get('templates/cartaoCadastro.html', function (string) {
+            cartaoController.TEMPLATE_CADASTRO = string;
+            $.get('templates/cartaoLista.html', function (string) {
+                cartaoController.TEMPLATE_LISTA = string;
+                $.get('templates/cartaoEdicao.html', function (string) {
+                    cartaoController.TEMPLATE_EDICAO = string;
+                    if (cb) {
+                        cb();
+                    }
+                });
+            });
+        });
+    },
+    loadTemplateCategoria: function (cb) {
+        $.get('templates/categoriaCadastro.html', function (string) {
+            categoriaController.TEMPLATE_CADASTRO = string;
+            $.get('templates/categoriaLista.html', function (string) {
+                categoriaController.TEMPLATE_LISTA = string;
+                $.get('templates/categoriaEdicao.html', function (string) {
+                    categoriaController.TEMPLATE_EDICAO = string;
+                    if (cb) {
+                        cb();
+                    }
+                });
+            });
+        });
+    },
+    loadTemplateMovimento: function (cb) {
+        $.get('templates/movimentoCadastro.html', function (string) {
+            movimentoController.TEMPLATE_CADASTRO = string;
+            $.get('templates/movimentoLista.html', function (string) {
+                movimentoController.TEMPLATE_LISTA = string;
+                $.get('templates/movimentoEdicao.html', function (string) {
+                    movimentoController.TEMPLATE_EDICAO = string;
                     if (cb) {
                         cb();
                     }

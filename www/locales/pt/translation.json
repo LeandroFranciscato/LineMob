@@ -28,6 +28,10 @@
         "body-edit-success": "Alterado com sucesso!",
         "body-insert-success": "Cadastrado com sucesso!"
     },
+    "background-mode": {
+        "title": "Linemob",
+        "sub-title": "Executando"
+    },
     "config-controller": {
         "plural": "OPÇÕES",
         "alert-lng-req": "Idioma deve ser informado."

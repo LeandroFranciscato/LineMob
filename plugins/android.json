@@ -15,7 +15,14 @@
         },
         "cordova-plugin-dialogs": {
             "PACKAGE_NAME": "org.linepack"
+        },
+        "cordova-plugin-background-mode": {
+            "PACKAGE_NAME": "org.linepack"
         }
     },
-    "dependent_plugins": {}
+    "dependent_plugins": {
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "org.linepack"
+        }
+    }
 }
