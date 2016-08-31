@@ -26,8 +26,14 @@
             <div id="input-select" class="row hide">
                 <label class="label-select" data-i18n="conta-controller.field-select-conta"></label>
                 <div class="input-field col s12">                
-                    <select id="select-conta" name="idConta" class="browser-default">
+                    <select id="select-conta" 
+                            name="idConta" 
+                            class="browser-default"
+                            onchange="contaController.loadNewModal(this, function () {
+                                        movimentoController.loadList();
+                                    });">
                         <option value="" disabled selected data-i18n="conta-controller.field-select-conta"></option>
+                        <option value="+">+</option>
                         {{#conta}}
                         <option value="{{id}}">{{nome}}</option>
                         {{/conta}}

@@ -7,5 +7,6 @@ var Movimento = function(){
     this.idCategoria = "";
     this.idPessoa = "";
     this.idCartao = "";
+    this.idExterno = "";
 };
 Movimento.prototype = new Entity("movimento");

@@ -89,6 +89,7 @@ var movimentoController = {
                             data.cartao = [];
                             data.cartao = res;
                         }
+                        (data.natureza === "C") ? data.naturezaC = "1" : data.naturezaD = "1";
                         Controller.loadNewOrSingleEdit({
                             controllerOrigin: movimentoController,
                             entity: new Movimento(),
@@ -166,26 +167,34 @@ var movimentoController = {
     selecionaCampoEdicaoMultipla: function () {
         var campo = $("#select-campo").val();
 
-        var selects = ["idConta", "idCategoria", "idPessoa", "idCartao", "natureza"];
+        var selects = ["natureza", "idConta", "idCategoria", "idPessoa", "idCartao"];
 
         if (selects.indexOf(campo) >= 0) {
             $("#input-text").addClass("hide");
             $("#input-select").removeClass("hide");
             $("#valor-campo").prop("id", "id-temp");
-            $("#select-conta").prop("id", "valor-campo");
 
-            if (campo === "conta") {
-                $("#idContaOptions").removeClass("hide");
-                $("#idCategoriaOptions").addClass("hide");
-                $("#idPessoaOptions").addClass("hide");
+            $("#naturezaAux").addClass("hide");
+            $("#idContaAux").addClass("hide");
+            $("#idCategoriaAux").addClass("hide");
+            $("#idPessoaAux").addClass("hide");
+            $("#idCartaoAux").addClass("hide");
+
+            if (campo === "natureza") {
+                $("#naturezaAux").removeClass("hide");
+                $("#select-natureza").prop("id", "valor-campo");
+            } else if (campo === "idConta") {
+                $("#idContaAux").removeClass("hide");
+                $("#select-conta").prop("id", "valor-campo");
             } else if (campo === "idCategoria") {
-                $("#idContaOptions").addClass("hide");
-                $("#idCategoriaOptions").removeClass("hide");
-                $("#idPessoaOptions").addClass("hide");
+                $("#idCategoriaAux").removeClass("hide");
+                $("#select-categoria").prop("id", "valor-campo");
             } else if (campo === "idPessoa") {
-                $("#idContaOptions").addClass("hide");
-                $("#idCategoriaOptions").addClass("hide");
-                $("#idPessoaOptions").removeClass("hide");
+                $("#idPessoaAux").removeClass("hide");
+                $("#select-pessoa").prop("id", "valor-campo");
+            } else if (campo === "idCartao") {
+                $("#idCartaoAux").removeClass("hide");
+                $("#select-cartao").prop("id", "valor-campo");
             }
         } else {
             $("#input-text").removeClass("hide");
@@ -193,18 +202,15 @@ var movimentoController = {
             $("#valor-campo").prop("id", "id-temp");
             $("#id-temp").prop("id", "valor-campo");
 
-            if (campo === "nome") {
-                $("#prompt-campo").html(i18next.t("cartao-controller.field-nome"));
+            if (campo === "data") {
+                $("#prompt-campo").html(i18next.t("movimento-controller.field-data"));
+                $("#valor-campo").prop("type", "date");
+            } else if (campo === "valor") {
+                $("#prompt-campo").html(i18next.t("movimento-controller.field-valor"));
+                $("#valor-campo").prop("type", "number");
+            } else if (campo === "descricao") {
+                $("#prompt-campo").html(i18next.t("movimento-controller.field-descricao"));
                 $("#valor-campo").prop("type", "text");
-            } else if (campo === "diaVencimento") {
-                $("#prompt-campo").html(i18next.t("cartao-controller.field-diaVencimento"));
-                $("#valor-campo").prop("type", "number");
-            } else if (campo === "diaFechamento") {
-                $("#prompt-campo").html(i18next.t("cartao-controller.field-diaFechamento"));
-                $("#valor-campo").prop("type", "number");
-            } else if (campo === "valorLimite") {
-                $("#prompt-campo").html(i18next.t("cartao-controller.field-valorLimite"));
-                $("#valor-campo").prop("type", "number");
             }
 
             $("#valor-campo").prop("name", campo.toString());
@@ -224,8 +230,6 @@ var movimentoController = {
                 alertUtil.confirm(i18next.t("movimento-controller.alert-idCategoria-req"));
             } else if (!movimento.idPessoa) {
                 alertUtil.confirm(i18next.t("movimento-controller.alert-idPessoa-req"));
-            } else if (!movimento.idCartao) {
-                alertUtil.confirm(i18next.t("movimento-controller.alert-idCartao-req"));
             } else {
                 if (cb) {
                     cb();

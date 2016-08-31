@@ -199,7 +199,7 @@ var cartaoController = {
     },
     loadNewModal: function (element, callbackAction) {
         // if para não ir sempre ao BD //
-        if ($(element).val() === "") {
+        if ($(element).val() === "+") {
             var conta = new Conta();
             daoUtil.getAll(conta, "nome", function (res) {
                 var data = {};

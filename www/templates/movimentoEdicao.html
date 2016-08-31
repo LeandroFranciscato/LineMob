@@ -27,26 +27,83 @@
             </div>
 
             <div id="input-select" class="row hide">
-                <label class="label-select" data-i18n="conta-controller.field-select-conta"></label>
-                <div class="input-field col s12">                
-                    <select id="select-conta" name="idConta" class="browser-default">
-                        <option value="" disabled selected data-i18n="conta-controller.field-select-conta"></option>
-                        {{#conta}}
-                        <option value="{{id}}">{{nome}}</option>
-                        {{/conta}}                        
-
-                        <div id="idCategoriaOptions">
-                            {{#categoria}}
+                <div id="naturezaAux">
+                    <label class="label-select" data-i18n="movimento-controller.field-select-natureza"></label>
+                    <div class="input-field col s12">                
+                        <select id="select-natureza" name="natureza" class="browser-default">
+                            <option value="" disabled selected data-i18n="movimento-controller.field-select-natureza"></option>                            
+                            <option value="D" data-i18n="movimento-controller.field-select-natureza-option-d"></option>                            
+                            <option value="C" data-i18n="movimento-controller.field-select-natureza-option-c"></option>
+                        </select>
+                    </div>
+                </div>
+                <div id="idContaAux">
+                    <label class="label-select" data-i18n="conta-controller.field-select-conta"></label>
+                    <div class="input-field col s12">                
+                        <select id="select-conta" 
+                                name="idConta" 
+                                class="browser-default"
+                                onchange="contaController.loadNewModal(this, function () {
+                                            movimentoController.loadList();
+                                        });">
+                            <option value="" disabled selected data-i18n="conta-controller.field-select-conta"></option>                            
+                            <option value="+">+</option>                    
+                            {{#conta}}
                             <option value="{{id}}">{{nome}}</option>
-                            {{/categoria}}
-                        </div>
-
-                        <div id="idPessoaOptions">
+                            {{/conta}}                                              
+                        </select>
+                    </div>
+                </div>
+                <div id="idCategoriaAux">
+                    <label class="label-select" data-i18n="categoria-controller.field-select-categoria"></label>
+                    <div class="input-field col s12">                
+                        <select id="select-categoria" 
+                                name="idCategoria" 
+                                class="browser-default"
+                                onchange="categoriaController.loadNewModal(this, function () {
+                                            movimentoController.loadList();
+                                        });">
+                            <option value="" disabled selected data-i18n="categoria-controller.field-select-categoria"></option>
+                            <option value="+">+</option>
+                            {{#categoria}}
+                            <option value="{{id}}">{{nome}}{{#nomeSubCategoria}}/{{/nomeSubCategoria}}{{nomeSubCategoria}}</option>
+                            {{/categoria}}                                              
+                        </select>
+                    </div>
+                </div>
+                <div id="idPessoaAux">
+                    <label class="label-select" data-i18n="pessoa-controller.field-select-pessoa"></label>
+                    <div class="input-field col s12">                
+                        <select id="select-pessoa" 
+                                name="idPessoa" 
+                                class="browser-default"
+                                onchange="pessoaController.loadNewModal(this, function () {
+                                            movimentoController.loadList();
+                                        });">
+                            <option value="" disabled selected data-i18n="pessoa-controller.field-select-pessoa"></option>
+                            <option value="+">+</option>
                             {{#pessoa}}
                             <option value="{{id}}">{{apelido}}</option>
-                            {{/pessoa}}
-                        </div>
-                    </select>
+                            {{/pessoa}}                                              
+                        </select>
+                    </div>
+                </div>
+                <div id="idCartaoAux">
+                    <label class="label-select" data-i18n="cartao-controller.field-select-cartao"></label>
+                    <div class="input-field col s12">                
+                        <select id="select-cartao" 
+                                name="idPessoa" 
+                                class="browser-default"
+                                onchange="cartaoController.loadNewModal(this, function () {
+                                            movimentoController.loadList();
+                                        });">
+                            <option value="+">+</option>
+                            <option value=" " selected data-i18n="cartao-controller.field-option-cartao-nulo"></option>      
+                            {{#cartao}}
+                            <option value="{{id}}">{{nome}}</option>
+                            {{/cartao}}                                              
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>

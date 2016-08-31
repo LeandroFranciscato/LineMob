@@ -4,5 +4,6 @@ var Cartao = function(){
   this.diaFechamento = "";
   this.valorLimite = "";
   this.idConta = "";
+  this.idExterno = "";
 };
 Cartao.prototype = new Entity("cartao");

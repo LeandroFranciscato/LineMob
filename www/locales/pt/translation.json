@@ -8,7 +8,7 @@
         "peoples": "Pessoas",
         "cred-card": "Cartões",
         "category": "Categorias",
-        "activity": "Movimetações",
+        "activity": "Lançamentos",
         "config": "Opções",
         "exit": "Sair"
     },
@@ -82,19 +82,20 @@
         "field-diaVencimento": "Vencimento",
         "field-valorLimite": "Limite",
         "field-idConta": "Conta",
-        "field-select-cartao": "Selecione o Cartão"
+        "field-select-cartao": "Selecione o Cartão",
+        "field-option-cartao-nulo": "Sem Cartão"
     },
     "categoria-controller": {
         "plural": "CATEGORIAS",
         "singular": "CATEGORIA",
-        "alert-nome-req": "Nome deve ser informado.",        
+        "alert-nome-req": "Nome deve ser informado.",
         "field-nome": "Nome",
         "field-nome-sub-categoria": "SubCategoria",
         "field-select-categoria": "Selecione a Categoria"
     },
     "movimento-controller": {
-        "plural": "MOVIMENTAÇÕES",
-        "singular": "MOVIMENTAÇÃO",
+        "plural": "LANÇAMENTOS",
+        "singular": "LANÇAMENTO",
         "alert-data-req": "Data deve ser informada!",
         "alert-valor-req": "Valor deve ser informado!",
         "alert-descricao-req": "Descrição deve ser informada!",
@@ -108,10 +109,10 @@
         "field-select-natureza-option-d": "Débito",
         "field-select-natureza-option-c": "Crédito",
         "field-descricao": "Descricao",
-        "field-idConta": "Conta",        
+        "field-idConta": "Conta",
         "field-idCategoria": "Categoria",
         "field-idPessoa": "Pessoa",
-        "field-idCartao": "Cartão"        
+        "field-idCartao": "Cartão"
     },
     "generics": {
         "no": "Não",
