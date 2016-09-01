@@ -202,8 +202,11 @@ var movimentoController = {
             $("#valor-campo").prop("id", "id-temp");
             $("#id-temp").prop("id", "valor-campo");
 
-            if (campo === "data") {
-                $("#prompt-campo").html(i18next.t("movimento-controller.field-data"));
+            if (campo === "dataVencimento") {
+                $("#prompt-campo").html(i18next.t("movimento-controller.field-dataVencimento"));
+                $("#valor-campo").prop("type", "date");
+            } else if (campo === "dataLancamento") {
+                $("#prompt-campo").html(i18next.t("movimento-controller.field-dataLancamento"));
                 $("#valor-campo").prop("type", "date");
             } else if (campo === "valor") {
                 $("#prompt-campo").html(i18next.t("movimento-controller.field-valor"));
@@ -218,8 +221,10 @@ var movimentoController = {
     },
     validaFormulario: function (movimento, cb, field) {
         if (!field) {
-            if (!movimento.data) {
-                alertUtil.confirm(i18next.t("movimento-controller.alert-data-req"));
+            if (!movimento.dataVencimento) {
+                alertUtil.confirm(i18next.t("movimento-controller.alert-dataVencimento-req"));
+            } else if (!movimento.dataLancamento) {
+                alertUtil.confirm(i18next.t("movimento-controller.alert-dataLancamento-req"));
             } else if (!movimento.valor) {
                 alertUtil.confirm(i18next.t("movimento-controller.alert-valor-req"));
             } else if (!movimento.descricao) {

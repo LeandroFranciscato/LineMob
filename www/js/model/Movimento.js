@@ -1,5 +1,6 @@
 var Movimento = function(){
-    this.data = "";
+    this.dataLancamento = "";    
+    this.dataVencimento = "";    
     this.valor = "";
     this.natureza = "";
     this.descricao = "";

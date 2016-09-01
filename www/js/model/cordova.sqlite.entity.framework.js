@@ -23,11 +23,22 @@ var Entity = function (tableName) {
             cb(fields, values);
         }
     };
+
+    this.getAllFields = function (cb, showId) {
+        this.idExterno = "";
+        this.deleted = "";
+        this.updated = "";
+        this.getFields(function (fields, values) {
+            if (cb) {
+                cb(fields, values);
+            }
+        }, showId);
+    };
 };
 
 var daoUtil = {
     initialize: function (entity, cb) {
-        entity.getFields(function (fields) {
+        entity.getAllFields(function (fields) {
             var sql = "create table if not exists " + entity.tableName + "(";
             for (var i = 0; i < fields.length; i++) {
                 sql += fields[i] + " text,";

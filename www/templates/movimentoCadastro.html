@@ -6,17 +6,21 @@
 
         <div class="row">
             <div class="input-field col s6">
-                <input type="date" id="data" name="data" value="{{data}}" placeholder="" data-i18n="[placeholder]movimento-controller.field-data">
-                <label for="data" class="active" data-i18n="movimento-controller.field-data"></label>
+                <input type="date" id="dataLancamento" name="dataLancamento" value="{{dataLancamento}}" placeholder="" data-i18n="[placeholder]movimento-controller.field-dataLancamento">
+                <label for="dataLancamento" class="active" data-i18n="movimento-controller.field-dataLancamento"></label>
             </div>
             <div class="input-field col s6">
-                <input type="number" id="valor" name="valor" value="{{valor}}" placeholder="" data-i18n="[placeholder]movimento-controller.field-valor">
-                <label for="valor" class="active" data-i18n="movimento-controller.field-valor"></label>
-            </div>            
+                <input type="date" id="dataVencimento" name="dataVencimento" value="{{dataVencimento}}" placeholder="" data-i18n="[placeholder]movimento-controller.field-dataVencimento">
+                <label for="dataVencimento" class="active" data-i18n="movimento-controller.field-dataVencimento"></label>
+            </div>                        
         </div>        
 
         <div class="row">
-            <div class="input-field col s12">
+            <div class="input-field col s6">
+                <input type="number" id="valor" name="valor" value="{{valor}}" placeholder="" data-i18n="[placeholder]movimento-controller.field-valor">
+                <label for="valor" class="active" data-i18n="movimento-controller.field-valor"></label>
+            </div>
+            <div class="input-field col s6">
                 <input type="text" id="descricao" name="descricao" value="{{descricao}}" placeholder="" data-i18n="[placeholder]movimento-controller.field-descricao">
                 <label for="descricao" class="active" data-i18n="movimento-controller.field-descricao"></label>
             </div>
