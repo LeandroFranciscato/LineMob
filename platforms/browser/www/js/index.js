@@ -1,4 +1,4 @@
-/* global dbUtil, logUtil, contaController, loginController, mainController, daoUtil, pessoaController, configController, loadController, cartaoController, categoriaController, movimentoController */
+/* global dbUtil, logUtil, contaController, loginController, mainController, daoUtil, pessoaController, configController, loadController, cartaoController, categoriaController, movimentoController, cordova, i18next */
 
 var app = {
     initialize: function () {
@@ -6,8 +6,13 @@ var app = {
     },
     bindEvents: function () {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+
     },
     onDeviceReady: function () {
+        cordova.plugins.backgroundMode.setDefaults({
+            silent: true
+        });
+        cordova.plugins.backgroundMode.enable();
         loadController.show(function () {
             dbUtil.initialize(function () {
                 app.createTables(function () {

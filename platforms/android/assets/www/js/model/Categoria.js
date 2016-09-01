@@ -1,6 +1,5 @@
 var Categoria = function () {
     this.nome = "";
-    this.nomeSubCategoria = ""; 
-    this.idExterno = "";
+    this.nomeSubCategoria = "";   
 };
 Categoria.prototype = new Entity("categoria");

@@ -3,7 +3,6 @@ var Cartao = function(){
   this.diaVencimento = "";
   this.diaFechamento = "";
   this.valorLimite = "";
-  this.idConta = "";
-  this.idExterno = "";
+  this.idConta = "";  
 };
 Cartao.prototype = new Entity("cartao");

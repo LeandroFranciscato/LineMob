@@ -1,5 +1,4 @@
 var Config = function () {
-    this.language = "";    
-    this.idExterno = "";
+    this.language = "";        
 };
 Config.prototype = new Entity("config");

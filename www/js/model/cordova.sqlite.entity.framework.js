@@ -3,6 +3,9 @@
 var Entity = function (tableName) {
     this.id = "";
     this.tableName = tableName;
+    this.idExterno;
+    this.deleted;
+    this.updated;
 
     this.getFields = function (cb, showId) {
         var fields = [];
@@ -50,7 +53,7 @@ var daoUtil = {
     },
     update: function (entity, cb) {
         entity.getFields(function (fields, values) {
-            var sql = "update " + entity.tableName + " set ";
+            var sql = "update " + entity.tableName + " set updated = '1', ";
             for (var i = 0; i < fields.length; i++) {
                 sql += fields[i] + " = " + values[i] + ",";
             }
@@ -73,7 +76,7 @@ var daoUtil = {
                 }
             }
             var sql = "update " + entity.tableName +
-                    "   set " + coluna + " = " + valor +
+                    "   set updated = '1', " + coluna + " = " + valor +
                     " where id = ?";
             dbUtil.executeSql(sql, [entity.id], function (res) {
                 if (cb) {
@@ -90,8 +93,16 @@ var daoUtil = {
             }
         });
     },
+    markToDelete: function (entity, cb) {
+        var sql = "update " + entity.tableName + " set deleted = '1' where id = ?";
+        dbUtil.executeSql(sql, [entity.id], function (res) {
+            if (cb) {
+                cb(res.rowsAffected);
+            }
+        });
+    },
     getAll: function (entity, orderByColumn, cb) {
-        var sql = "select * from " + entity.tableName;
+        var sql = "select * from " + entity.tableName + " where deleted <> '1' ";
 
         if (orderByColumn) {
             sql += " order by " + orderByColumn;
@@ -106,7 +117,7 @@ var daoUtil = {
         });
     },
     getById: function (entity, cb) {
-        var sql = "select * from " + entity.tableName + " where id = ?";
+        var sql = "select * from " + entity.tableName + " where deleted <> '1' and id = ?";
         dbUtil.executeSql(sql, [entity.id], function (res) {
             daoUtil.sucessGets(entity, res, function (retorno) {
                 if (cb) {
@@ -116,7 +127,7 @@ var daoUtil = {
         });
     },
     getByRange: function (entity, orderByColumn, start, end, cb) {
-        var sql = "select * from " + entity.tableName;
+        var sql = "select * from " + entity.tableName + " where deleted <> '1' ";
 
         if (orderByColumn) {
             sql += " order by " + orderByColumn;
@@ -133,7 +144,7 @@ var daoUtil = {
         });
     },
     getCount: function (entity, cb) {
-        var sql = "select count(*) qtde from " + entity.tableName;
+        var sql = "select count(*) qtde from " + entity.tableName + " where deleted <> '1' ";
         dbUtil.executeSql(sql, [], function (res) {
             daoUtil.sucessGets(null, res, function (retorno) {
                 if (cb) {
@@ -153,7 +164,7 @@ var daoUtil = {
                     sql = "select distinct " + fields + " from (";
                 }
 
-                sql += " select * from " + entity.tableName + " where " + fields[i] + " like '%" + likeText + "%'";
+                sql += " select * from " + entity.tableName + " where deleted <> '1' and " + fields[i] + " like '%" + likeText + "%'";
             }
             sql += ")";
 
@@ -179,7 +190,6 @@ var daoUtil = {
                 if (entity) {
                     Object.setPrototypeOf(obj, Object.getPrototypeOf(entity));
                 }
-
                 retorno.push(obj);
             }
             if (cb) {

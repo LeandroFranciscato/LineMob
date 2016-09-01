@@ -460,7 +460,7 @@ var Controller = {
                             if (itens[i] && itens[i].selecionado == 1) {
                                 var item = Controller.options.entity;
                                 item.id = itens[i].id;
-                                daoUtil.delete(item, function (res) {
+                                daoUtil.markToDelete(item, function (res) {
                                     if (res != 1) {
                                         alertUtil.confirm(i18next.t("generics.fail-crud-msg"), item.id);
                                     }

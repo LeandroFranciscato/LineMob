@@ -5,6 +5,14 @@ var contaController = {
     TEMPLATE_LISTA: "",
     TEMPLATE_EDICAO: "",
     loadList: function (cb) {
+        cordova.plugins.notification.local.schedule({
+            id: 1,
+            title: "Linemob!",
+            text: "Ocorreu um erro, clique para mais informações",
+            //at: new Date(),
+            data: {meetingId: "#123FG8"},
+            icon: "https://avatars2.githubusercontent.com/u/19695477?v=3&s=200"
+        });
         Controller.loadList({
             controllerOrigin: this,
             entity: new Conta(),

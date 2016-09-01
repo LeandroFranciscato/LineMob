@@ -18,10 +18,16 @@
         },
         "cordova-plugin-background-mode": {
             "PACKAGE_NAME": "org.linepack"
+        },
+        "de.appplant.cordova.plugin.local-notification": {
+            "PACKAGE_NAME": "org.linepack"
         }
     },
     "dependent_plugins": {
         "cordova-plugin-device": {
+            "PACKAGE_NAME": "org.linepack"
+        },
+        "cordova-plugin-app-event": {
             "PACKAGE_NAME": "org.linepack"
         }
     }
