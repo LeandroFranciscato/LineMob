@@ -5,7 +5,18 @@ var categoriaController = {
     TEMPLATE_LISTA: "",
     TEMPLATE_EDICAO: "",
     loadList: function (cb) {
-
+        var idNotification = Math.random();
+        cordova.plugins.notification.local.schedule({
+            id: idNotification,
+            title: "Linemob!",
+            text: "Ocorreu um erro, clique para mais informações",
+            icon: "res://ic_popup_reminder"
+        });
+        cordova.plugins.notification.local.on("click", function (notification) {
+            if (notification.id == idNotification) {
+                alert("voltô danado?!!!!");
+            }
+        });
         Controller.loadList({
             controllerOrigin: this,
             entity: new Categoria(),

@@ -3,15 +3,16 @@
 var Entity = function (tableName) {
     this.id = "";
     this.tableName = tableName;
-    this.idExterno;
-    this.deleted;
-    this.updated;
+    this.idExterno = "";
+    this.deleted = "0";
+    this.updated = "0";
 
     this.getFields = function (cb, showId) {
         var fields = [];
         var values = [];
+
         for (var key in this) {
-            if (key != undefined && typeof this[key] !== 'function' && key !== "tableName") {
+            if (key != undefined && typeof this[key] !== 'function') {
                 if (key == "id" && !showId) {
                     continue;
                 }
@@ -23,22 +24,11 @@ var Entity = function (tableName) {
             cb(fields, values);
         }
     };
-
-    this.getAllFields = function (cb, showId) {
-        this.idExterno = "";
-        this.deleted = "";
-        this.updated = "";
-        this.getFields(function (fields, values) {
-            if (cb) {
-                cb(fields, values);
-            }
-        }, showId);
-    };
 };
 
 var daoUtil = {
     initialize: function (entity, cb) {
-        entity.getAllFields(function (fields) {
+        entity.getFields(function (fields) {
             var sql = "create table if not exists " + entity.tableName + "(";
             for (var i = 0; i < fields.length; i++) {
                 sql += fields[i] + " text,";
@@ -64,7 +54,7 @@ var daoUtil = {
     },
     update: function (entity, cb) {
         entity.getFields(function (fields, values) {
-            var sql = "update " + entity.tableName + " set updated = '1', ";
+            var sql = "update " + entity.tableName + " set ";
             for (var i = 0; i < fields.length; i++) {
                 sql += fields[i] + " = " + values[i] + ",";
             }
