@@ -53,6 +53,7 @@ var daoUtil = {
         });
     },
     update: function (entity, cb) {
+        entity.updated = 1;
         entity.getFields(function (fields, values) {
             var sql = "update " + entity.tableName + " set ";
             for (var i = 0; i < fields.length; i++) {
@@ -68,6 +69,7 @@ var daoUtil = {
         });
     },
     updateDinamicColumn: function (entity, coluna, cb) {
+        entity.updated = 1;
         entity.getFields(function (fields, values) {
             var valor = "";
             for (var i = 0; i < fields.length; i++) {
@@ -77,7 +79,7 @@ var daoUtil = {
                 }
             }
             var sql = "update " + entity.tableName +
-                    "   set updated = '1', " + coluna + " = " + valor +
+                    "   set " + coluna + " = " + valor +
                     " where id = ?";
             dbUtil.executeSql(sql, [entity.id], function (res) {
                 if (cb) {
@@ -95,12 +97,20 @@ var daoUtil = {
         });
     },
     markToDelete: function (entity, cb) {
-        var sql = "update " + entity.tableName + " set deleted = '1' where id = ?";
-        dbUtil.executeSql(sql, [entity.id], function (res) {
-            if (cb) {
-                cb(res.rowsAffected);
-            }
-        });
+        if (entity.idExterno == "") {
+            this.delete(entity, function (res) {
+                if (cb) {
+                    cb(res.rowsAffected);
+                }
+            });
+        } else {
+            var sql = "update " + entity.tableName + " set deleted = '1' where id = ?";
+            dbUtil.executeSql(sql, [entity.id], function (res) {
+                if (cb) {
+                    cb(res.rowsAffected);
+                }
+            });
+        }
     },
     getAll: function (entity, orderByColumn, cb) {
         var sql = "select * from " + entity.tableName + " where deleted <> '1' ";
@@ -181,6 +191,36 @@ var daoUtil = {
                 });
             });
         }, true);
+    },
+    getDeleted: function (entity, cb) {
+        var sql = "select * from " + entity.tableName + " where deleted = '1' ";
+        dbUtil.executeSql(sql, [], function (res) {
+            daoUtil.sucessGets(entity, res, function (retorno) {
+                if (cb) {
+                    cb(retorno);
+                }
+            });
+        });
+    },
+    getUpdated: function (entity, cb) {
+        var sql = "select * from " + entity.tableName + " where updated = '1' ";
+        dbUtil.executeSql(sql, [], function (res) {
+            daoUtil.sucessGets(entity, res, function (retorno) {
+                if (cb) {
+                    cb(retorno);
+                }
+            });
+        });
+    },
+    getInserted: function (entity, cb) {
+        var sql = "select * from " + entity.tableName + " where idExterno = '' ";
+        dbUtil.executeSql(sql, [], function (res) {
+            daoUtil.sucessGets(entity, res, function (retorno) {
+                if (cb) {
+                    cb(retorno);
+                }
+            });
+        });
     },
     sucessGets: function (entity, res, cb) {
         if (res && res.rows && res.rows.item) {

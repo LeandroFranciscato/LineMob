@@ -391,7 +391,6 @@ var Controller = {
             errorMessage = (!errorMessage) ? i18next.t("generics.fail-crud-msg") : errorMessage;
 
             this.options.controllerOrigin.validaFormulario(data, function () {
-                data.updated = 1;
                 daoUtil.update(data, function (rowsAffected) {
                     if (rowsAffected === 1) {
                         alertUtil.confirm(sucessMessage);
