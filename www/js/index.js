@@ -165,10 +165,7 @@ var app = {
         syncUtil.run();
         cordova.plugins.backgroundMode.onactivate = function () {
             syncUtil.run();
-        };
-        cordova.plugins.backgroundMode.ondeactivate = function () {
-            syncUtil.run();
-        };
+        };        
     }
 };
 
