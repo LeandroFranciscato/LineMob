@@ -20,16 +20,20 @@ var sync = {
             sync.setRunning(entityList.length);
             for (var i = 0; i < entityList.length; i++) {
                 var objModel = entityList[i];
-                entityList[i] = sync.normalizeFields(entityList[i]);
-                sync.ajax("POST", "TEXT", entityType.tableName, entityList[i], function (idExterno) {
-                    objModel.idExterno = idExterno;
-                    daoUtil.update(objModel, function (rowsAffected) {
-                        if (rowsAffected != 1) {
-                        }
+                var conta = new Conta();
+                conta.id = objModel.idConta;
+                daoUtil.getById(conta, function (contaRes) {
+                    if (contaRes.idExterno) {
+                        objModel.idConta = contaRes.idExterno;
+                    }
+                    sync.ajax("POST", "TEXT", entityType.tableName, objModel, function (idExterno) {
+                        objModel.idExterno = idExterno;
+                        daoUtil.update(objModel, function (rowsAffected) {
+                            sync.setRunning(-1);
+                        });
+                    }, function (errorThrown) {
                         sync.setRunning(-1);
                     });
-                }, function (errorThrown) {
-                    sync.setRunning(-1);
                 });
             }
         });
