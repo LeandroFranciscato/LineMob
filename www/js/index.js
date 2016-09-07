@@ -159,14 +159,17 @@ var app = {
     },
     enableBackground: function () {
         cordova.plugins.backgroundMode.setDefaults({
-            silent: true
+            title: i18next.t("background-mode.title"),
+            text: i18next.t("background-mode.text"),
+            icon: "icon.png",
+            resume: true,
+            color: "e53935"
         });
         cordova.plugins.backgroundMode.enable();
-        syncUtil.run();
+        sync.run();
         cordova.plugins.backgroundMode.onactivate = function () {
-            syncUtil.run();
-        };        
+            sync.run();
+        };
     }
 };
-
 app.initialize();

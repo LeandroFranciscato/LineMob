@@ -18,6 +18,11 @@
         "pt": "Português",
         "es": "Espanhol"
     },
+    "background-mode": {
+      "title": "App executando",
+      "text": "Linemob",
+      "title-sync": "App sincronizando"      
+    },
     "alerts-crud": {
         "title-editing": "Editando...",
         "body-editing": "Selecione ao menos um (1) registro para editar.",
