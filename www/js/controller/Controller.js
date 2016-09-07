@@ -464,11 +464,11 @@ var Controller = {
                                     if (res != 1) {
                                         alertUtil.confirm(i18next.t("generics.fail-crud-msg"), item.id);
                                     }
+                                    Controller.options.controllerOrigin.loadList();
                                 });
                             }
                         }
-                        alertUtil.confirm(i18next.t("alerts-crud.body-delete-success"));
-                        Controller.options.controllerOrigin.loadList();
+                        alertUtil.confirm(i18next.t("alerts-crud.body-delete-success"));                        
                     }
                 });
     },

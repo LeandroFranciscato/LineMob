@@ -97,20 +97,22 @@ var daoUtil = {
         });
     },
     markToDelete: function (entity, cb) {
-        if (entity.idExterno == "") {
-            this.delete(entity, function (res) {
-                if (cb) {
-                    cb(res.rowsAffected);
-                }
-            });
-        } else {
-            var sql = "update " + entity.tableName + " set deleted = '1' where id = ?";
-            dbUtil.executeSql(sql, [entity.id], function (res) {
-                if (cb) {
-                    cb(res.rowsAffected);
-                }
-            });
-        }
+        this.getById(entity, function (entityComplete) {
+            if (entityComplete.idExterno == "") {
+                daoUtil.delete(entityComplete, function (res) {
+                    if (cb) {
+                        cb(res.rowsAffected);
+                    }
+                });
+            } else {
+                var sql = "update " + entityComplete.tableName + " set deleted = '1' where id = ?";
+                dbUtil.executeSql(sql, [entityComplete.id], function (res) {
+                    if (cb) {
+                        cb(res.rowsAffected);
+                    }
+                });
+            }
+        });
     },
     getAll: function (entity, orderByColumn, cb) {
         var sql = "select * from " + entity.tableName + " where deleted <> '1' ";
