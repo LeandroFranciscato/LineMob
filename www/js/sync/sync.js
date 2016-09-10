@@ -8,44 +8,60 @@ var sync = {
         }
         // COLCAR VALIDAÇÃO DA EXISTENCIA DE INTERNET //
         if (this.running === 0 || !this.running) {
-            sync.insert(new Conta());
-            sync.insert(new Cartao());
+            alert('inicie o debug!');
+            sync.insertCartao();
         }
     },
-    insert: function (entityType) {
-        daoUtil.getInserted(entityType, function (entityList) {
-            if (!entityList.length) {
+    insertCartao: function () {
+        daoUtil.getInserted(new Cartao(), function (cartoes) {
+            if (!cartoes.length) {
                 return;
             }
-            sync.setRunning(entityList.length);
-            for (var i = 0; i < entityList.length; i++) {
-                var objModel = entityList[i];
+            sync.setRunning(cartoes.length);
+            for (var i = 0; i < cartoes.length; i++) {
+                var cartao = cartoes[i];
+
                 var conta = new Conta();
-                conta.id = objModel.idConta;
-                daoUtil.getById(conta, function (contaRes) {
-                    if (contaRes.idExterno) {
-                        objModel.idConta = contaRes.idExterno;
-                    }
-                    sync.ajax("POST", "TEXT", entityType.tableName, objModel, function (idExterno) {
-                        objModel.idExterno = idExterno;
-                        daoUtil.update(objModel, function (rowsAffected) {
+                conta.id = cartao.idConta;
+                daoUtil.getById(conta, function (res) {
+                    conta = res;
+                    if (!conta.idExterno) {
+
+                        sync.ajax("POST", "TEXT", conta.tableName, conta, function (idExterno) {
+                            conta.idExterno = idExterno;
+                            daoUtil.update(conta, function (rowsAffected) {
+                                sync.setRunning(-1);
+                                if (rowsAffected != 0) {
+                                    cartao.idConta = idExterno;
+
+                                    sync.ajax("POST", "TEXT", cartao.tableName, cartao, function (idExterno) {
+                                        conta.idExterno = idExterno;
+                                        daoUtil.update(conta, function (rowsAffected) {
+                                            sync.setRunning(-1);
+                                        });
+                                    }, function (errorThrown) {
+                                        sync.setRunning(-1);
+                                    });
+                                }
+                            });
+                        }, function (errorThrown) {
                             sync.setRunning(-1);
                         });
-                    }, function (errorThrown) {
-                        sync.setRunning(-1);
-                    });
+                    } else {
+                        cartao.idConta = conta.idExterno;
+                        sync.ajax("POST", "TEXT", cartao.tableName, cartao, function (idExterno) {
+                            conta.idExterno = idExterno;
+                            daoUtil.update(conta, function (rowsAffected) {
+                                sync.setRunning(-1);
+                            });
+                        }, function (errorThrown) {
+                            sync.setRunning(-1);
+                        });
+                    }
                 });
+
             }
         });
-    },
-    normalizeFields: function (entity) {
-        var newEntity = {};
-        for (var key in entity) {
-            if (key != undefined && typeof entity[key] !== 'function') {
-                newEntity[key.toLowerCase()] = entity[key];
-            }
-        }
-        return newEntity;
     },
     ajax: function (httpType, responseType, url, dataInput, cbSuccess, cbError) {
         url = "http://10.0.0.102:8080/LinemobAPI/" + url;
