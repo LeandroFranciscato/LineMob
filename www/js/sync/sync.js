@@ -35,8 +35,8 @@ var sync = {
                                     cartao.idConta = idExterno;
 
                                     sync.ajax("POST", "TEXT", cartao.tableName, cartao, function (idExterno) {
-                                        conta.idExterno = idExterno;
-                                        daoUtil.update(conta, function (rowsAffected) {
+                                        cartao.idExterno = idExterno;
+                                        daoUtil.update(cartao, function (rowsAffected) {
                                             sync.setRunning(-1);
                                         });
                                     }, function (errorThrown) {
@@ -50,8 +50,8 @@ var sync = {
                     } else {
                         cartao.idConta = conta.idExterno;
                         sync.ajax("POST", "TEXT", cartao.tableName, cartao, function (idExterno) {
-                            conta.idExterno = idExterno;
-                            daoUtil.update(conta, function (rowsAffected) {
+                            cartao.idExterno = idExterno;
+                            daoUtil.update(cartao, function (rowsAffected) {
                                 sync.setRunning(-1);
                             });
                         }, function (errorThrown) {
@@ -70,7 +70,13 @@ var sync = {
             dataType: responseType,
             url: url,
             data: (dataInput) ? JSON.stringify(dataInput) : {},
-            headers: {"Usuario": "Leandro", "Token": "testepwd", "Content-Type": "application/json"},
+            //headers: {"Usuario": "Leandro", "Token": "testepwd", "Content-Type": "application/json"},
+            beforeSend: function (request)
+            {
+                request.setRequestHeader("Usuario", "Leandro");
+                request.setRequestHeader("Token", "testepwd");
+                request.setRequestHeader("Content-Type", "application/json");
+            },
             success: function (returnedData, textStatus, jqXHR) {
                 if (cbSuccess) {
                     cbSuccess(returnedData);
