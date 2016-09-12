@@ -63,6 +63,28 @@ var sync = {
             }
         });
     },
+    insert: function (entity, callbackSuccess, callbackError) {
+        sync.ajax("POST", "TEXT", entity.tableName, entity, function (idExterno) {
+            entity.idExterno = idExterno;
+            daoUtil.update(entity, function (rowsAffected) {
+                sync.setRunning(-1);
+                if (rowsAffected != 0) {
+                    if (callbackSuccess) {
+                        callbackSuccess(idExterno);
+                    }
+                } else {
+                    if (callbackError) {
+                        callbackError();
+                    }
+                }
+            });
+        }, function (errorThrown) {
+            sync.setRunning(-1);
+            if (callbackError) {
+                callbackError(errorThrown);
+            }
+        });
+    },
     ajax: function (httpType, responseType, url, dataInput, cbSuccess, cbError) {
         url = "http://10.0.0.102:8080/LinemobAPI/" + url;
         $.ajax({
