@@ -25,37 +25,10 @@ var sync = {
                 conta.id = cartao.idConta;
                 daoUtil.getById(conta, function (res) {
                     conta = res;
-                    if (!conta.idExterno) {
-
-                        sync.ajax("POST", "TEXT", conta.tableName, conta, function (idExterno) {
-                            conta.idExterno = idExterno;
-                            daoUtil.update(conta, function (rowsAffected) {
-                                sync.setRunning(-1);
-                                if (rowsAffected != 0) {
-                                    cartao.idConta = idExterno;
-
-                                    sync.ajax("POST", "TEXT", cartao.tableName, cartao, function (idExterno) {
-                                        cartao.idExterno = idExterno;
-                                        daoUtil.update(cartao, function (rowsAffected) {
-                                            sync.setRunning(-1);
-                                        });
-                                    }, function (errorThrown) {
-                                        sync.setRunning(-1);
-                                    });
-                                }
-                            });
-                        }, function (errorThrown) {
-                            sync.setRunning(-1);
-                        });
-                    } else {
+                    if (conta.idExterno) {
                         cartao.idConta = conta.idExterno;
-                        sync.ajax("POST", "TEXT", cartao.tableName, cartao, function (idExterno) {
-                            cartao.idExterno = idExterno;
-                            daoUtil.update(cartao, function (rowsAffected) {
-                                sync.setRunning(-1);
-                            });
-                        }, function (errorThrown) {
-                            sync.setRunning(-1);
+                        sync.insert(cartao, function (idExterno) {}, function (err) {
+                            
                         });
                     }
                 });
