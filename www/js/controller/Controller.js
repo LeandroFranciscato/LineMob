@@ -409,7 +409,7 @@ var Controller = {
                     } else {
                         alertUtil.confirm(errorMessage);
                     }
-                });
+                }, 1);
             });
         } else {
             sucessMessage = (!sucessMessage) ? i18next.t("alerts-crud.body-insert-success") : sucessMessage;
@@ -469,7 +469,7 @@ var Controller = {
                                 });
                             }
                         }
-                        alertUtil.confirm(i18next.t("alerts-crud.body-delete-success"));                        
+                        alertUtil.confirm(i18next.t("alerts-crud.body-delete-success"));
                     }
                 });
     },
@@ -500,7 +500,6 @@ var Controller = {
                         entity.id = ids[i];
                         entity[campo] = valorCampo;
                         
-                        entity.updated = 1;
                         daoUtil.updateDinamicColumn(entity, campo, function (rowsAffected) {
                             if (rowsAffected != 1) {
                                 alertUtil.confirm(i18next.t("generics.fail-crud-msg") + entity.id);

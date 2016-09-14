@@ -7,13 +7,16 @@ var Entity = function (tableName) {
     this.deleted = "0";
     this.updated = "0";
 
-    this.getFields = function (cb, showId) {
+    this.getFields = function (cb, showId, hideIdExterno) {
         var fields = [];
         var values = [];
 
         for (var key in this) {
             if (key != undefined && typeof this[key] !== 'function') {
                 if (key == "id" && !showId) {
+                    continue;
+                }
+                if (key == "idExterno" && hideIdExterno) {
                     continue;
                 }
                 fields.push(key);
@@ -52,7 +55,7 @@ var daoUtil = {
             });
         });
     },
-    update: function (entity, cb) {
+    update: function (entity, cb, updateIdExterno) {
         entity.getFields(function (fields, values) {
             var sql = "update " + entity.tableName + " set ";
             for (var i = 0; i < fields.length; i++) {
@@ -65,7 +68,7 @@ var daoUtil = {
                     cb(res.rowsAffected);
                 }
             });
-        });
+        }, null, updateIdExterno);
     },
     updateDinamicColumn: function (entity, coluna, cb) {
         entity.getFields(function (fields, values) {
@@ -77,7 +80,7 @@ var daoUtil = {
                 }
             }
             var sql = "update " + entity.tableName +
-                    "   set " + coluna + " = " + valor +
+                    "   set updated = 1, " + coluna + " = " + valor +
                     " where id = ?";
             dbUtil.executeSql(sql, [entity.id], function (res) {
                 if (cb) {
