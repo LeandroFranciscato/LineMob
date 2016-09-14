@@ -53,7 +53,6 @@ var daoUtil = {
         });
     },
     update: function (entity, cb) {
-        entity.updated = 1;
         entity.getFields(function (fields, values) {
             var sql = "update " + entity.tableName + " set ";
             for (var i = 0; i < fields.length; i++) {
@@ -69,7 +68,6 @@ var daoUtil = {
         });
     },
     updateDinamicColumn: function (entity, coluna, cb) {
-        entity.updated = 1;
         entity.getFields(function (fields, values) {
             var valor = "";
             for (var i = 0; i < fields.length; i++) {
@@ -286,7 +284,7 @@ var dbUtil = {
                             }
                         },
                         function (err) {
-                            alertUtil.confirm("Error executing SQL ->" + err.toString());
+                            alertUtil.confirm("Error executing SQL ->" + err.valueOf());
                             if (cb) {
                                 cb(err);
                             }

@@ -391,6 +391,7 @@ var Controller = {
             errorMessage = (!errorMessage) ? i18next.t("generics.fail-crud-msg") : errorMessage;
 
             this.options.controllerOrigin.validaFormulario(data, function () {
+                data.updated = 1;
                 daoUtil.update(data, function (rowsAffected) {
                     if (rowsAffected === 1) {
                         alertUtil.confirm(sucessMessage);
@@ -498,7 +499,8 @@ var Controller = {
                         entity.tableName = Controller.options.entity.tableName;
                         entity.id = ids[i];
                         entity[campo] = valorCampo;
-
+                        
+                        entity.updated = 1;
                         daoUtil.updateDinamicColumn(entity, campo, function (rowsAffected) {
                             if (rowsAffected != 1) {
                                 alertUtil.confirm(i18next.t("generics.fail-crud-msg") + entity.id);

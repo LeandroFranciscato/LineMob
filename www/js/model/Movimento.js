@@ -5,8 +5,12 @@ var Movimento = function(){
     this.natureza = "";
     this.descricao = "";
     this.idConta = "";
+    this.idExternoConta = "";
     this.idCategoria = "";
+    this.idExternoCategoria = "";
     this.idPessoa = "";
-    this.idCartao = "";    
+    this.idExternoPessoa = "";
+    this.idCartao = "";
+    this.idExternoCartao = "";    
 };
 Movimento.prototype = new Entity("movimento");

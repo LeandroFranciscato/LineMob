@@ -1,4 +1,4 @@
-/* global daoUtil, alertUtil, logUtil, cordova, i18next, sync */
+/* global daoUtil, alertUtil, logUtil, cordova, i18next, sync, cartaoSync, movimentoSync */
 
 var sync = {
     running: 0,
@@ -7,36 +7,27 @@ var sync = {
             return;
         }
         // COLCAR VALIDAÇÃO DA EXISTENCIA DE INTERNET //
-        if (this.running === 0 || !this.running) {
-            alert('inicie o debug!');
-            sync.insertCartao();
+        if (this.running === 0 || !this.running) {           
+            sync.insertEntity(new Conta());
+            sync.insertEntity(new Pessoa());
+            sync.insertEntity(new Categoria());
+            cartaoSync.insert();
+            movimentoSync.insert();
         }
     },
-    insertCartao: function () {
-        daoUtil.getInserted(new Cartao(), function (cartoes) {
-            if (!cartoes.length) {
+    insertEntity: function (entity) {
+        daoUtil.getInserted(entity, function (entityes) {
+            if (!entityes.length) {
                 return;
             }
-            sync.setRunning(cartoes.length);
-            for (var i = 0; i < cartoes.length; i++) {
-                var cartao = cartoes[i];
-
-                var conta = new Conta();
-                conta.id = cartao.idConta;
-                daoUtil.getById(conta, function (res) {
-                    conta = res;
-                    if (conta.idExterno) {
-                        cartao.idConta = conta.idExterno;
-                        sync.insert(cartao, function (idExterno) {}, function (err) {
-                            
-                        });
-                    }
-                });
-
+            sync.setRunning(entityes.length);
+            for (var i = 0; i < entityes.length; i++) {
+                var theEntity = entityes[i];
+                sync.insertRequest(theEntity);
             }
         });
     },
-    insert: function (entity, callbackSuccess, callbackError) {
+    insertRequest: function (entity, callbackSuccess, callbackError) {
         sync.ajax("POST", "TEXT", entity.tableName, entity, function (idExterno) {
             entity.idExterno = idExterno;
             daoUtil.update(entity, function (rowsAffected) {
@@ -59,19 +50,14 @@ var sync = {
         });
     },
     ajax: function (httpType, responseType, url, dataInput, cbSuccess, cbError) {
-        url = "http://10.0.0.102:8080/LinemobAPI/" + url;
+        url = "http://10.0.0.101:8080/LinemobAPI/" + url;
         $.ajax({
+            crossDomain: true,
             type: httpType,
             dataType: responseType,
             url: url,
             data: (dataInput) ? JSON.stringify(dataInput) : {},
-            //headers: {"Usuario": "Leandro", "Token": "testepwd", "Content-Type": "application/json"},
-            beforeSend: function (request)
-            {
-                request.setRequestHeader("Usuario", "Leandro");
-                request.setRequestHeader("Token", "testepwd");
-                request.setRequestHeader("Content-Type", "application/json");
-            },
+            headers: {"Usuario": "Leandro", "Token": "testepwd", "Content-Type": "application/json"},
             success: function (returnedData, textStatus, jqXHR) {
                 if (cbSuccess) {
                     cbSuccess(returnedData);
