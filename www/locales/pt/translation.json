@@ -130,5 +130,12 @@
         "label-multedit": "Selecione o campo para Alteração.",
         "paginator-text-pt1": "Carregar mais ",
         "search": "Pesquisar..."
+    },
+    "server-messages": {
+        "remove-categoria-used-movimento": "Categoria não pode ser deletada porque está vinculada a um Lançamento!",
+        "remove-conta-used-cartao": "Conta não pode ser deletada porque está vinculada a um Cartão!",
+        "remove-conta-used-movimento": "Conta não pode ser deletada porque está vinculada a um Lançamento!",
+        "remove-pessoa-used-movimento": "Pessoa não pode ser deletada porque está vinculada a um Lançamento!",
+        "remove-cartao-used-movimento": "Cartão não pode ser deletado porque está vinculado a um Lançamento!"
     }
 }
