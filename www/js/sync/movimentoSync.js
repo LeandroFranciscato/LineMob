@@ -1,8 +1,14 @@
 /* global daoUtil, sync */
 
 var movimentoSync = {
-    insert: function () {
-        daoUtil.getInserted(new Movimento(), function (movimentos) {
+    insertUpdate: function (type) {
+        var getFunction;
+        if (type === "insert") {
+            getFunction = window["daoUtil"]["getInserted"];
+        } else {
+            getFunction = window["daoUtil"]["getUpdated"];
+        }
+        getFunction(new Movimento(), function (movimentos) {
             if (!movimentos.length) {
                 return;
             }
@@ -38,7 +44,11 @@ var movimentoSync = {
                                                 cartao = res;
                                                 movimento.idExternoCartao = cartao.idExterno;
                                             }
-                                            sync.insertRequest(movimento);
+                                            if (type === "insert") {
+                                                sync.insertRequest(movimento);
+                                            } else {
+                                                sync.updateRequest(movimento);
+                                            }
                                         });
                                     } else {
                                         sync.setRunning(-1);

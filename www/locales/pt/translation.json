@@ -19,9 +19,9 @@
         "es": "Espanhol"
     },
     "background-mode": {
-      "title": "App executando",
-      "text": "Linemob",
-      "title-sync": "App sincronizando"      
+        "title": "App executando",
+        "text": "Linemob",
+        "title-sync": "App sincronizando"
     },
     "alerts-crud": {
         "title-editing": "Editando...",
@@ -32,7 +32,7 @@
         "body-delete-success": "Deletado com sucesso!",
         "body-edit-success": "Alterado com sucesso!",
         "body-insert-success": "Cadastrado com sucesso!"
-    },    
+    },
     "config-controller": {
         "plural": "OPÇÕES",
         "alert-lng-req": "Idioma deve ser informado."
@@ -136,6 +136,11 @@
         "remove-conta-used-cartao": "Conta não pode ser deletada porque está vinculada a um Cartão!",
         "remove-conta-used-movimento": "Conta não pode ser deletada porque está vinculada a um Lançamento!",
         "remove-pessoa-used-movimento": "Pessoa não pode ser deletada porque está vinculada a um Lançamento!",
-        "remove-cartao-used-movimento": "Cartão não pode ser deletado porque está vinculado a um Lançamento!"
+        "remove-cartao-used-movimento": "Cartão não pode ser deletado porque está vinculado a um Lançamento!",
+        "insert-cartao-without-conta": "Conta do cartão não cadastrada!",
+        "insert-movimento-without-conta": "Conta do lançamento não cadastrada!",
+        "insert-movimento-without-pessoa": "Pessoa do lançamento não cadastrada!",
+        "insert-movimento-without-categoria": "Categoria do lançamento não cadastrada!",
+        "insert-movimento-without-cartao": "Cartão do lançamento não cadastrado!"
     }
 }

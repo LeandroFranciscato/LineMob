@@ -1,8 +1,14 @@
 /* global daoUtil, sync */
 
 var cartaoSync = {
-    insert: function () {
-        daoUtil.getInserted(new Cartao(), function (cartoes) {
+    insertUpdate: function (type) {
+        var getFunction;
+        if (type === "insert") {
+            getFunction = window["daoUtil"]["getInserted"];
+        } else {
+            getFunction = window["daoUtil"]["getUpdated"];
+        }
+        getFunction(new Cartao(), function (cartoes) {
             if (!cartoes.length) {
                 return;
             }
@@ -15,7 +21,11 @@ var cartaoSync = {
                     conta = res;
                     if (conta.idExterno) {
                         cartao.idExternoConta = conta.idExterno;
-                        sync.insertRequest(cartao);
+                        if (type === "insert") {
+                            sync.insertRequest(cartao);
+                        } else {
+                            sync.updateRequest(cartao);
+                        }
                     } else {
                         sync.setRunning(-1);
                     }

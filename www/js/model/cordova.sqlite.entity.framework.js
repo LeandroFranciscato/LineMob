@@ -140,6 +140,16 @@ var daoUtil = {
             });
         });
     },
+    getByIdExterno: function (entity, cb) {
+        var sql = "select * from " + entity.tableName + " where deleted <> '1' and idExterno = ?";
+        dbUtil.executeSql(sql, [entity.idExterno], function (res) {
+            daoUtil.sucessGets(entity, res, function (retorno) {
+                if (cb) {
+                    cb(retorno[0]);
+                }
+            });
+        });
+    },
     getByRange: function (entity, orderByColumn, start, end, cb) {
         var sql = "select * from " + entity.tableName + " where deleted <> '1' ";
 

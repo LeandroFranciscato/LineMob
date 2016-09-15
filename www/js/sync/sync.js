@@ -11,54 +11,61 @@ var sync = {
             sync.insertEntity(new Conta());
             sync.deleteEntity(new Conta());
             sync.updateEntity(new Conta());
+            sync.getRequest(new Conta());
 
             sync.insertEntity(new Pessoa());
             sync.deleteEntity(new Pessoa());
             sync.updateEntity(new Pessoa());
+            sync.getRequest(new Pessoa());
 
             sync.insertEntity(new Categoria());
             sync.deleteEntity(new Categoria());
             sync.updateEntity(new Categoria());
+            sync.getRequest(new Categoria());
 
-            cartaoSync.insert();
+            cartaoSync.insertUpdate("insert");
             sync.deleteEntity(new Cartao());
+            cartaoSync.insertUpdate("update");
+            sync.getRequest(new Cartao());
 
-            movimentoSync.insert();
+            movimentoSync.insertUpdate("insert");
             sync.deleteEntity(new Movimento());
+            movimentoSync.insertUpdate("update");
+            sync.getRequest(new Movimento());
         }
     },
     insertEntity: function (entity) {
-        daoUtil.getInserted(entity, function (entityes) {
-            if (!entityes.length) {
+        daoUtil.getInserted(entity, function (entities) {
+            if (!entities.length) {
                 return;
             }
-            sync.setRunning(entityes.length);
-            for (var i = 0; i < entityes.length; i++) {
-                var theEntity = entityes[i];
+            sync.setRunning(entities.length);
+            for (var i = 0; i < entities.length; i++) {
+                var theEntity = entities[i];
                 sync.insertRequest(theEntity);
             }
         });
     },
     deleteEntity: function (entity) {
-        daoUtil.getDeleted(entity, function (entityes) {
-            if (!entityes.length) {
+        daoUtil.getDeleted(entity, function (entities) {
+            if (!entities.length) {
                 return;
             }
-            sync.setRunning(entityes.length);
-            for (var i = 0; i < entityes.length; i++) {
-                var theEntity = entityes[i];
+            sync.setRunning(entities.length);
+            for (var i = 0; i < entities.length; i++) {
+                var theEntity = entities[i];
                 sync.deleteRequest(theEntity);
             }
         });
     },
     updateEntity: function (entity) {
-        daoUtil.getUpdated(entity, function (entityes) {
-            if (!entityes.length) {
+        daoUtil.getUpdated(entity, function (entities) {
+            if (!entities.length) {
                 return;
             }
-            sync.setRunning(entityes.length);
-            for (var i = 0; i < entityes.length; i++) {
-                var theEntity = entityes[i];
+            sync.setRunning(entities.length);
+            for (var i = 0; i < entities.length; i++) {
+                var theEntity = entities[i];
                 sync.updateRequest(theEntity);
             }
         });
@@ -130,7 +137,7 @@ var sync = {
                             callbackError();
                         }
                     }
-                },1);
+                }, 1);
             } else {
                 sync.setRunning(-1);
                 if (callbackError) {
@@ -144,8 +151,43 @@ var sync = {
             }
         });
     },
+    getRequest: function (entity, callbackSuccess, callbackError) {
+        sync.ajax("GET", "JSON", entity.tableName, {}, function (responseentities) {
+            if (responseentities.length) {
+                sync.setRunning(responseentities.length);
+                responseentities.forEach(function (theEntity) {                    
+                    theEntity.tableName = entity.tableName;
+                    theEntity.idExterno = theEntity.id;
+                    theEntity.id = "";
+                    daoUtil.getByIdExterno(theEntity, function (res) {
+                        sync.setRunning(-1);
+                        var modelEntity;
+                        if (!res) {
+                            modelEntity = {};
+                            for (var key in theEntity) {
+                                if (key == "@type") {
+                                    continue;
+                                }
+                                modelEntity[key] = theEntity[key];
+                            }
+                            Object.setPrototypeOf(modelEntity, Object.getPrototypeOf(entity));
+                            daoUtil.insert(modelEntity);
+                        }
+                    });
+                });
+            } else {
+                if (callbackError) {
+                    callbakError();
+                }
+            }
+        }, function (errorThrown) {
+            if (callbackError) {
+                callbackError(errorThrown);
+            }
+        });
+    },
     ajax: function (httpType, responseType, url, dataInput, cbSuccess, cbError) {
-        url = "http://10.1.1.13:8080/LinemobAPI/" + url;
+        url = "http://10.0.0.102:8080/LinemobAPI/" + url;
         $.ajax({
             crossDomain: true,
             type: httpType,
