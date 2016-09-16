@@ -99,10 +99,10 @@ var daoUtil = {
     },
     markToDelete: function (entity, cb) {
         this.getById(entity, function (entityComplete) {
-            if (entityComplete.idExterno == "") {
-                daoUtil.delete(entityComplete, function (res) {
+            if (!entityComplete.idExterno) {
+                daoUtil.delete(entityComplete, function (rowsAffected) {
                     if (cb) {
-                        cb(res.rowsAffected);
+                        cb(rowsAffected);
                     }
                 });
             } else {
@@ -131,7 +131,7 @@ var daoUtil = {
         });
     },
     getById: function (entity, cb) {
-        var sql = "select * from " + entity.tableName + " where deleted <> '1' and id = ?";
+        var sql = "select * from " + entity.tableName + " where id = ?";
         dbUtil.executeSql(sql, [entity.id], function (res) {
             daoUtil.sucessGets(entity, res, function (retorno) {
                 if (cb) {
@@ -141,7 +141,7 @@ var daoUtil = {
         });
     },
     getByIdExterno: function (entity, cb) {
-        var sql = "select * from " + entity.tableName + " where deleted <> '1' and idExterno = ?";
+        var sql = "select * from " + entity.tableName + " where idExterno = ?";
         dbUtil.executeSql(sql, [entity.idExterno], function (res) {
             daoUtil.sucessGets(entity, res, function (retorno) {
                 if (cb) {

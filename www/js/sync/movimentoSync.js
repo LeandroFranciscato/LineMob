@@ -13,8 +13,7 @@ var movimentoSync = {
                 return;
             }
             sync.setRunning(movimentos.length);
-            for (var i = 0; i < movimentos.length; i++) {
-                var movimento = movimentos[i];
+            movimentos.forEach(function (movimento) {
 
                 var conta = new Conta();
                 conta.id = movimento.idConta;
@@ -62,6 +61,74 @@ var movimentoSync = {
                         sync.setRunning(-1);
                     }
                 });
+            });
+        });
+    },
+    getRequest: function (callbackSuccess, callbackError) {
+        var movimento = new Movimento();
+        sync.ajax("GET", "JSON", movimento.tableName, {}, function (responseMovimentos) {
+            if (responseMovimentos.length) {
+                sync.setRunning(responseMovimentos.length);
+                responseMovimentos.forEach(function (theMovimento) {
+                    theMovimento.tableName = movimento.tableName;
+                    theMovimento.idExterno = theMovimento.id;
+                    theMovimento.id = "";
+
+                    var conta = new Conta();
+                    conta.idExterno = theMovimento.idExternoConta;
+                    daoUtil.getByIdExterno(conta, function (res) {
+                        if (res) {
+                            theMovimento.idConta = res.id;
+
+                            var pessoa = new Pessoa();
+                            pessoa.idExterno = theMovimento.idExternoPessoa;
+                            daoUtil.getByIdExterno(pessoa, function (res) {
+                                if (res) {
+                                    theMovimento.idPessoa = res.id;
+
+                                    var categoria = new Categoria();
+                                    categoria.idExterno = theMovimento.idExternoCategoria;
+                                    daoUtil.getByIdExterno(categoria, function (res) {
+                                        if (res) {
+                                            theMovimento.idCategoria = res.id;
+
+                                            var cartao = new Cartao();
+                                            cartao.idExterno = theMovimento.idExternoCartao;
+                                            daoUtil.getByIdExterno(cartao, function (res) {
+                                                if (res) {
+                                                    theMovimento.idCartao = res.id;
+                                                }
+
+                                                daoUtil.getByIdExterno(theMovimento, function (res) {
+                                                    sync.setRunning(-1);
+                                                    var modelEntity;
+                                                    if (!res) {
+                                                        modelEntity = sync.modelFromJson(movimento);
+                                                        daoUtil.insert(modelEntity);
+                                                    }
+                                                });
+                                            });
+                                        } else {
+                                            sync.setRunning(-1);
+                                        }
+                                    });
+                                } else {
+                                    sync.setRunning(-1);
+                                }
+                            });
+                        } else {
+                            sync.setRunning(-1);
+                        }
+                    });
+                });
+            } else {
+                if (callbackError) {
+                    callbakError();
+                }
+            }
+        }, function (errorThrown) {
+            if (callbackError) {
+                callbackError(errorThrown);
             }
         });
     }

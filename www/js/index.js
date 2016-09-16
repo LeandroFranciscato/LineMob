@@ -166,7 +166,6 @@ var app = {
             color: "e53935"
         });
         cordova.plugins.backgroundMode.enable();
-        sync.run();
         cordova.plugins.backgroundMode.onactivate = function () {
             sync.run();
         };

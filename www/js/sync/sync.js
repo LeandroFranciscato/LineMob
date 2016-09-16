@@ -12,26 +12,31 @@ var sync = {
             sync.deleteEntity(new Conta());
             sync.updateEntity(new Conta());
             sync.getRequest(new Conta());
+            sync.deletedByAnother(new Conta());
 
             sync.insertEntity(new Pessoa());
             sync.deleteEntity(new Pessoa());
             sync.updateEntity(new Pessoa());
             sync.getRequest(new Pessoa());
+            sync.deletedByAnother(new Pessoa());
 
             sync.insertEntity(new Categoria());
             sync.deleteEntity(new Categoria());
             sync.updateEntity(new Categoria());
             sync.getRequest(new Categoria());
+            sync.deletedByAnother(new Categoria());
 
             cartaoSync.insertUpdate("insert");
             sync.deleteEntity(new Cartao());
             cartaoSync.insertUpdate("update");
-            sync.getRequest(new Cartao());
+            cartaoSync.getRequest();
+            sync.deletedByAnother(new Cartao());
 
             movimentoSync.insertUpdate("insert");
             sync.deleteEntity(new Movimento());
             movimentoSync.insertUpdate("update");
-            sync.getRequest(new Movimento());
+            movimentoSync.getRequest();
+            sync.deletedByAnother(new Movimento());
         }
     },
     insertEntity: function (entity) {
@@ -152,10 +157,10 @@ var sync = {
         });
     },
     getRequest: function (entity, callbackSuccess, callbackError) {
-        sync.ajax("GET", "JSON", entity.tableName, {}, function (responseentities) {
-            if (responseentities.length) {
-                sync.setRunning(responseentities.length);
-                responseentities.forEach(function (theEntity) {                    
+        sync.ajax("GET", "JSON", entity.tableName, {}, function (responseEntities) {
+            if (responseEntities.length) {
+                sync.setRunning(responseEntities.length);
+                responseEntities.forEach(function (theEntity) {
                     theEntity.tableName = entity.tableName;
                     theEntity.idExterno = theEntity.id;
                     theEntity.id = "";
@@ -163,14 +168,7 @@ var sync = {
                         sync.setRunning(-1);
                         var modelEntity;
                         if (!res) {
-                            modelEntity = {};
-                            for (var key in theEntity) {
-                                if (key == "@type") {
-                                    continue;
-                                }
-                                modelEntity[key] = theEntity[key];
-                            }
-                            Object.setPrototypeOf(modelEntity, Object.getPrototypeOf(entity));
+                            modelEntity = sync.modelFromJson(entity);
                             daoUtil.insert(modelEntity);
                         }
                     });
@@ -186,15 +184,45 @@ var sync = {
             }
         });
     },
+    deletedByAnother: function (entity, callbackSuccess, callbackError) {
+        daoUtil.getAll(entity, "", function (entities) {
+            sync.setRunning(entities.length);
+
+            entities.forEach(function (theEntity) {
+                var url = theEntity.tableName + "/" + theEntity.idExterno;
+                sync.ajax("GET", "JSON", url, {}, function (responseJson) {
+                    sync.setRunning(-1);
+                    if (!responseJson) {
+                        daoUtil.delete(theEntity);
+                        if (callbackSuccess) {
+                            callbackSuccess();
+                        }
+                    }
+                }, function (err) {
+                    sync.setRunning(-1);
+                    if (callbackError) {
+                        callbackError();
+                    }
+                });
+            });
+        });
+    },
     ajax: function (httpType, responseType, url, dataInput, cbSuccess, cbError) {
         url = "http://10.0.0.102:8080/LinemobAPI/" + url;
         $.ajax({
+            async: false,
             crossDomain: true,
             type: httpType,
             dataType: responseType,
             url: url,
             data: (dataInput) ? JSON.stringify(dataInput) : {},
-            headers: {"Usuario": "Leandro", "Token": "testepwd", "Content-Type": "application/json"},
+            //headers: {"Usuario": "Leandro", "Token": "testepwd", "Content-Type": "application/json"},
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Usuario", "Leandro");
+                xhr.setRequestHeader("Token", "testepwd");
+                xhr.setRequestHeader("Content-Type", "application/json");
+
+            },
             success: function (returnedData, textStatus, jqXHR) {
                 if (cbSuccess) {
                     cbSuccess(returnedData);
@@ -220,6 +248,17 @@ var sync = {
                 color: "e53935"
             });
         }
+    },
+    modelFromJson: function (entity) {
+        var modelEntity = {};
+        for (var key in entity) {
+            if (key === "@type") {
+                continue;
+            }
+            modelEntity[key] = entity[key];
+        }
+        Object.setPrototypeOf(modelEntity, Object.getPrototypeOf(entity));
+        return modelEntity;
     },
     notify: function (titulo, mensagem, cbActionClick) {
         var idNotification = Math.random();
