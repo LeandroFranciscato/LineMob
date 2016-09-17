@@ -1,4 +1,4 @@
-/* global logUtil, Mustache, alertUtil, mainController, daoUtil, Materialize, database_helper, Controller, dbUtil, i18next, iconUtil */
+/* global logUtil, Mustache, alertUtil, mainController, daoUtil, Materialize, database_helper, Controller, dbUtil, i18next, iconUtil, sync, loadController */
 
 var loginController = {
     TEMPLATE_LOGIN: "",
@@ -55,6 +55,10 @@ var loginController = {
         if ($('#checkBoxLembrar').prop('checked') === true) {
             Controller.insert(i18next.t("login-controller.alert-welcome-pt1") + $("#inputUsuario").val(), undefined, function () {
                 mainController.render();
+                loadController.show();
+                setTimeout(function () {
+                    sync.run();
+                }, 2000);
             });
         } else {
             this.validaFormulario($("#form-cadastro").serializeObject(), function () {

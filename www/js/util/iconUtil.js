@@ -16,6 +16,7 @@ var iconUtil = {
     eyeOff: "&#xE8F5;",
     category: "&#xE893;",
     activity: "&#xE227;",
+    refresh: "&#xE5D5;",
     draw: function (iconName) {
         document.write(iconName);
     }

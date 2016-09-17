@@ -129,7 +129,8 @@
         "fail-crud-msg": "Problemas... Contate-nos... ",
         "label-multedit": "Selecione o campo para Alteração.",
         "paginator-text-pt1": "Carregar mais ",
-        "search": "Pesquisar..."
+        "search": "Pesquisar...",
+        "must-be-online": "Você deve estar Online para executar esta ação!"
     },
     "server-messages": {
         "remove-categoria-used-movimento": "Categoria não pode ser deletada porque está vinculada a um Lançamento!",

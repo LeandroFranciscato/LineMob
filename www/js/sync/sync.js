@@ -1,4 +1,4 @@
-/* global daoUtil, alertUtil, logUtil, cordova, i18next, sync, cartaoSync, movimentoSync */
+/* global daoUtil, alertUtil, logUtil, cordova, i18next, sync, cartaoSync, movimentoSync, networkUtil, loadController */
 
 var sync = {
     running: 0,
@@ -6,7 +6,9 @@ var sync = {
         if (!window.localStorage.getItem("dataBaseCreated")) {
             return;
         }
-        // COLCAR VALIDAÇÃO DA EXISTENCIA DE INTERNET //
+        if (!networkUtil.isOnline()){
+            return;
+        }        
         if (this.running === 0 || !this.running) {
             sync.insertEntity(new Conta());
             sync.deleteEntity(new Conta());
@@ -275,6 +277,7 @@ var sync = {
                 title: i18next.t("background-mode.title"),
                 color: "e53935"
             });
+            loadController.hide();
         }
     },
     jsonToEntity: function (jsonObject, entityModel) {

@@ -36,13 +36,21 @@ var movimentoSync = {
                                     if (pessoa.idExterno) {
                                         movimento.idExternoPessoa = pessoa.idExterno;
 
-                                        var cartao = new Movimento();
+                                        var cartao = new Cartao();
                                         cartao.id = movimento.idCartao;
                                         daoUtil.getById(cartao, function (res) {
                                             if (res) {
                                                 cartao = res;
-                                                movimento.idExternoCartao = cartao.idExterno;
+                                                if (cartao.idExterno) {
+                                                    movimento.idExternoCartao = cartao.idExterno;
+                                                } else {
+                                                    sync.setRunning(-1);
+                                                    return;
+                                                }
+                                            } else {
+                                                movimento.idExternoCartao = null;
                                             }
+
                                             if (type === "insert") {
                                                 sync.insertRequest(movimento);
                                             } else {
@@ -92,13 +100,19 @@ var movimentoSync = {
                                         if (res) {
                                             theMovimento.idCategoria = res.id;
 
-                                            var cartao = new Movimento();
+                                            var cartao = new Cartao();
                                             cartao.idExterno = theMovimento.idExternoCartao;
                                             daoUtil.getByIdExterno(cartao, function (res) {
-                                                if (res) {
-                                                    theMovimento.idCartao = res.id;
+                                                if (theMovimento.idExternoCartao) {
+                                                    if (res) {
+                                                        theMovimento.idCartao = res.id;
+                                                    } else {
+                                                        sync.setRunning(-1);
+                                                        return;
+                                                    }
+                                                } else {
+                                                    theMovimento.idCartao = null;
                                                 }
-
                                                 daoUtil.getByIdExterno(theMovimento, function (res) {
                                                     sync.setRunning(-1);
                                                     var modelEntity;
@@ -162,10 +176,17 @@ var movimentoSync = {
                                         var cartao = new Cartao();
                                         cartao.idExterno = theMovimento.idExternoCartao;
                                         daoUtil.getByIdExterno(cartao, function (res) {
-                                            if (res) {
-                                                theMovimento.idCartao = res.id;
+                                            if (theMovimento.idExternoCartao) {
+                                                if (res) {
+                                                    theMovimento.idCartao = res.id;
+                                                } else {
+                                                    if (cb) {
+                                                        cb();
+                                                    }
+                                                }
+                                            } else {
+                                                theMovimento.idCartao = null;
                                             }
-
                                             daoUtil.update(theMovimento, function (rowsAffected) {
                                                 if (cb) {
                                                     cb(rowsAffected);

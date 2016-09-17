@@ -167,7 +167,9 @@ var app = {
         });
         cordova.plugins.backgroundMode.enable();
         cordova.plugins.backgroundMode.onactivate = function () {
-            sync.run();
+            setInterval(function () {
+                sync.run();
+            }, 10000);
         };
     }
 };

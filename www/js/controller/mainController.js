@@ -1,4 +1,4 @@
-/* global Mustache, contaController, Controller, iconUtil, i18next */
+/* global Mustache, contaController, Controller, iconUtil, i18next, sync, networkUtil, alertUtil, loadController */
 
 var mainController = {
     TEMPLATE_MAIN: "",
@@ -25,6 +25,21 @@ var mainController = {
             navCenter: {
                 title: i18next.t("app.name"),
                 icon: ""
+            },
+            navRight: {
+                display: "block",
+                iconName: iconUtil.refresh,
+                callbackClick: function () {
+                    if (!networkUtil.isOnline()) {
+                        alertUtil.confirm(i18next.t("generics.must-be-online"));
+                    } else {
+                        sync.running = 0;
+                        loadController.show();
+                        setTimeout(function () {
+                            sync.run();
+                        }, 2000);
+                    }
+                }
             },
             navSearch: {
                 display: "none"
