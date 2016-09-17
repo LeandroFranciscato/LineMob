@@ -6,9 +6,12 @@ var sync = {
         if (!window.localStorage.getItem("dataBaseCreated")) {
             return;
         }
-        if (!networkUtil.isOnline()){
+        if (!networkUtil.isOnline()) {
             return;
-        }        
+        }
+        if (!window.localStorage.getItem("user")) {
+            return;
+        }
         if (this.running === 0 || !this.running) {
             sync.insertEntity(new Conta());
             sync.deleteEntity(new Conta());
@@ -246,12 +249,10 @@ var sync = {
             dataType: responseType,
             url: url,
             data: (dataInput) ? JSON.stringify(dataInput) : {},
-            //headers: {"Usuario": "Leandro", "Token": "testepwd", "Content-Type": "application/json"},
             beforeSend: function (xhr) {
-                xhr.setRequestHeader("Usuario", "Leandro");
-                xhr.setRequestHeader("Token", "testepwd");
+                xhr.setRequestHeader("Usuario", window.localStorage.getItem("user"));
+                xhr.setRequestHeader("Token", window.localStorage.getItem("pwd"));
                 xhr.setRequestHeader("Content-Type", "application/json");
-
             },
             success: function (returnedData, textStatus, jqXHR) {
                 if (cbSuccess) {

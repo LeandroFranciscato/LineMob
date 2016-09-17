@@ -1,4 +1,4 @@
-/* global dbUtil, logUtil, contaController, loginController, mainController, daoUtil, pessoaController, configController, loadController, cartaoController, categoriaController, movimentoController, cordova, i18next, syncUtil, sync */
+/* global dbUtil, logUtil, contaController, loginController, mainController, daoUtil, pessoaController, configController, loadController, cartaoController, categoriaController, movimentoController, cordova, i18next, syncUtil, sync, signupController */
 
 var app = {
     initialize: function () {
@@ -114,11 +114,14 @@ var app = {
             loginController.TEMPLATE_LOGIN = string;
             $.get('templates/config.html', function (string) {
                 configController.TEMPLATE_CONFIG = string;
-                $.get('templates/inicio.html', function (string) {
-                    mainController.TEMPLATE_MAIN = string;
-                    if (cb) {
-                        cb();
-                    }
+                $.get('templates/signup.html', function (string) {
+                    signupController.TEMPLATE_SIGNUP = string;
+                    $.get('templates/inicio.html', function (string) {
+                        mainController.TEMPLATE_MAIN = string;
+                        if (cb) {
+                            cb();
+                        }
+                    });
                 });
             });
         });
@@ -166,10 +169,17 @@ var app = {
             color: "e53935"
         });
         cordova.plugins.backgroundMode.enable();
+
+        var interval = null;
         cordova.plugins.backgroundMode.onactivate = function () {
-            setInterval(function () {
+            sync.running = 0;
+            interval = setInterval(function () {
                 sync.run();
             }, 10000);
+        };
+        cordova.plugins.backgroundMode.ondeactivate = function () {
+            sync.running = 1;
+            clearInterval(interval);
         };
     }
 };

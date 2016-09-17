@@ -55,11 +55,13 @@
         "alert-welcome-pt1": "Bem vindo ",
         "body-alert-logout": "Esta ação fará com que todos os dados locais sejam perdidos, deseja mesmo continuar?",
         "title-alert-logout": "Saindo...",
-        "placeholder-email": "exemplo@dominio.com",
-        "field-email": "E-mail",
+        "placeholder-email": "Usuário",
+        "field-email": "Usuário",
         "field-senha": "Senha",
         "field-check": "Lembrar",
-        "btn-login": "Entrar"
+        "btn-login": "Entrar",
+        "sign-up": "Cadastrar-se",
+        "btn-signup": "Cadastrar"
     },
     "pessoa-controller": {
         "plural": "PESSOAS",

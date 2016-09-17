@@ -43,28 +43,52 @@ var loginController = {
             alertUtil.confirm(i18next.t("login-controller.alert-usuario-req"));
         } else if (!usuario.senha) {
             alertUtil.confirm(i18next.t("login-controller.alert-senha-req"));
-        } else if (usuario.senha !== "L") { //WS no futuro
-            alertUtil.confirm(i18next.t("login-controller.alert-login-fail"));
         } else {
             if (callbackSucess) {
                 callbackSucess();
             }
         }
     },
+    requestLogin: function (cbSuccess, cbError) {
+        var user = window.localStorage.setItem("user", $("#inputUsuario").val());
+        var pwd = window.localStorage.setItem("pwd", $.md5($("#inputPassword").val()));
+        loadController.show();
+        sync.ajax("GET", "TEXT", "usuario/login", {}, function () {
+            loadController.hide();
+            if (cbSuccess) {
+                cbSuccess();
+            }
+        }, function () {
+            loadController.hide();
+            window.localStorage.removeItem("user");
+            window.localStorage.removeItem("pwd");
+            if (cbError) {
+                cbError();
+            }
+        });
+    },
     insert: function () {
-        if ($('#checkBoxLembrar').prop('checked') === true) {
-            Controller.insert(i18next.t("login-controller.alert-welcome-pt1") + $("#inputUsuario").val(), undefined, function () {
-                mainController.render();
-                loadController.show();
-                setTimeout(function () {
-                    sync.run();
-                }, 2000);
+        this.validaFormulario($("#form-cadastro").serializeObject(), function () {
+            loginController.requestLogin(function () {
+                if ($('#checkBoxLembrar').prop('checked') === true) {
+                    Controller.insert(i18next.t("login-controller.alert-welcome-pt1") + $("#inputUsuario").val(), undefined, function () {
+                        mainController.render();
+                        loadController.show();
+                        setTimeout(function () {
+                            sync.run();
+                        }, 2000);
+                    });
+                } else {
+                    mainController.render();
+                    loadController.show();
+                    setTimeout(function () {
+                        sync.run();
+                    }, 2000);
+                }
+            }, function () {
+                alertUtil.confirm(i18next.t("login-controller.alert-login-fail"));
             });
-        } else {
-            this.validaFormulario($("#form-cadastro").serializeObject(), function () {
-                mainController.render();
-            });
-        }
+        });
     },
     logout: function () {
         alertUtil.confirm(
@@ -74,6 +98,8 @@ var loginController = {
                 function (btnEscolhido) {
                     if (btnEscolhido == 2) {
                         dbUtil.dropDatabase(function () {
+                            window.localStorage.removeItem("user");
+                            window.localStorage.removeItem("pwd");
                             window.localStorage.removeItem("dataBaseCreated");
                             navigator.app.exitApp();
                         });

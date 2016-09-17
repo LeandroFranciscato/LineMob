@@ -24,25 +24,15 @@
                     <script>$("#icon-eye").html(iconUtil.eyeOn);</script>
                 </i>
             </div>
-        </div>
-
-        <div class="row">
-            <div class="col s6">
-                <input id="checkBoxLembrar" type="checkbox" class="filled-in" checked="checked" />
-                <label for="checkBoxLembrar" data-i18n="login-controller.field-check"></label>
-            </div>
-            <div class="col s6 grey-text right-align" onclick="signupController.load();">
-                <h6 data-i18n="login-controller.sign-up"> </h6>
-            </div>    
-        </div>            
+        </div>                   
 
         <div class="row">
             <div class="col s12">
                 <button data-id="btnLogin" 
                         class="red darken-1 btn waves-effect waves-light" 
                         type="button"
-                        onclick="loginController.insert();"
-                        data-i18n="login-controller.btn-login">                    
+                        onclick="signupController.insert();"
+                        data-i18n="login-controller.btn-signup">                    
                 </button>
             </div>
         </div>
