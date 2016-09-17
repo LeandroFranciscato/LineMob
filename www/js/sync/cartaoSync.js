@@ -32,7 +32,7 @@ var cartaoSync = {
             });
         });
     },
-    getRequest: function (callbackSuccess, callbackError) {
+    getInsertedRequest: function (callbackSuccess, callbackError) {
         var cartao = new Cartao();
         sync.ajax("GET", "JSON", cartao.tableName, {}, function (responseCartoes) {
             if (responseCartoes.length) {
@@ -51,7 +51,7 @@ var cartaoSync = {
                                 sync.setRunning(-1);
                                 var modelEntity;
                                 if (!res) {
-                                    modelEntity = sync.modelFromJson(cartao);                                   ;
+                                    modelEntity = sync.jsonToEntity(theCartao, cartao);
                                     daoUtil.insert(modelEntity);
                                 }
                             });

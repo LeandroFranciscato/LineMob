@@ -64,7 +64,7 @@ var movimentoSync = {
             });
         });
     },
-    getRequest: function (callbackSuccess, callbackError) {
+    getInsertedRequest: function (callbackSuccess, callbackError) {
         var movimento = new Movimento();
         sync.ajax("GET", "JSON", movimento.tableName, {}, function (responseMovimentos) {
             if (responseMovimentos.length) {
@@ -103,7 +103,7 @@ var movimentoSync = {
                                                     sync.setRunning(-1);
                                                     var modelEntity;
                                                     if (!res) {
-                                                        modelEntity = sync.modelFromJson(movimento);
+                                                        modelEntity = sync.jsonToEntity(theMovimento, movimento);
                                                         daoUtil.insert(modelEntity);
                                                     }
                                                 });

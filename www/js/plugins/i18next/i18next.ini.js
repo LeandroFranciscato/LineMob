@@ -15,7 +15,7 @@ i18next.use(i18nextBrowserLanguageDetector)
         .use(i18nextXHRBackend)
         .init({
             fallbackLng: "en" //fallback quando não definir linguagem
-            , debug: true //debug do plugin
+            , debug: false //debug do plugin
             , fixLng: true //preserva o cookie quando a linguagem for definida
             , load: 'current' //define a forma correta de declarar linguagens
             , backend: {

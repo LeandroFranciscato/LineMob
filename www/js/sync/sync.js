@@ -11,32 +11,32 @@ var sync = {
             sync.insertEntity(new Conta());
             sync.deleteEntity(new Conta());
             sync.updateEntity(new Conta());
-            sync.getRequest(new Conta());
-            sync.deletedByAnother(new Conta());
+            sync.getInsertedRequest(new Conta());
+            sync.getDeletedRequest(new Conta());
 
             sync.insertEntity(new Pessoa());
             sync.deleteEntity(new Pessoa());
             sync.updateEntity(new Pessoa());
-            sync.getRequest(new Pessoa());
-            sync.deletedByAnother(new Pessoa());
+            sync.getInsertedRequest(new Pessoa());
+            sync.getDeletedRequest(new Pessoa());
 
             sync.insertEntity(new Categoria());
             sync.deleteEntity(new Categoria());
             sync.updateEntity(new Categoria());
-            sync.getRequest(new Categoria());
-            sync.deletedByAnother(new Categoria());
+            sync.getInsertedRequest(new Categoria());
+            sync.getDeletedRequest(new Categoria());
 
             cartaoSync.insertUpdate("insert");
             sync.deleteEntity(new Cartao());
             cartaoSync.insertUpdate("update");
-            cartaoSync.getRequest();
-            sync.deletedByAnother(new Cartao());
+            cartaoSync.getInsertedRequest();
+            sync.getDeletedRequest(new Cartao());
 
             movimentoSync.insertUpdate("insert");
             sync.deleteEntity(new Movimento());
             movimentoSync.insertUpdate("update");
-            movimentoSync.getRequest();
-            sync.deletedByAnother(new Movimento());
+            movimentoSync.getInsertedRequest();
+            sync.getDeletedRequest(new Movimento());
         }
     },
     insertEntity: function (entity) {
@@ -156,7 +156,7 @@ var sync = {
             }
         });
     },
-    getRequest: function (entity, callbackSuccess, callbackError) {
+    getInsertedRequest: function (entity, callbackSuccess, callbackError) {
         sync.ajax("GET", "JSON", entity.tableName, {}, function (responseEntities) {
             if (responseEntities.length) {
                 sync.setRunning(responseEntities.length);
@@ -168,7 +168,7 @@ var sync = {
                         sync.setRunning(-1);
                         var modelEntity;
                         if (!res) {
-                            modelEntity = sync.modelFromJson(entity);
+                            modelEntity = sync.jsonToEntity(theEntity, entity);
                             daoUtil.insert(modelEntity);
                         }
                     });
@@ -184,19 +184,22 @@ var sync = {
             }
         });
     },
-    deletedByAnother: function (entity, callbackSuccess, callbackError) {
+    getDeletedRequest: function (entity, callbackSuccess, callbackError) {
         daoUtil.getAll(entity, "", function (entities) {
             sync.setRunning(entities.length);
 
             entities.forEach(function (theEntity) {
                 var url = theEntity.tableName + "/" + theEntity.idExterno;
                 sync.ajax("GET", "JSON", url, {}, function (responseJson) {
-                    sync.setRunning(-1);
                     if (!responseJson) {
-                        daoUtil.delete(theEntity);
-                        if (callbackSuccess) {
-                            callbackSuccess();
-                        }
+                        daoUtil.delete(theEntity, function () {
+                            sync.setRunning(-1);
+                            if (callbackSuccess) {
+                                callbackSuccess();
+                            }
+                        });
+                    } else {
+                        sync.setRunning(-1);
                     }
                 }, function (err) {
                     sync.setRunning(-1);
@@ -210,7 +213,6 @@ var sync = {
     ajax: function (httpType, responseType, url, dataInput, cbSuccess, cbError) {
         url = "http://10.0.0.102:8080/LinemobAPI/" + url;
         $.ajax({
-            async: false,
             crossDomain: true,
             type: httpType,
             dataType: responseType,
@@ -249,15 +251,15 @@ var sync = {
             });
         }
     },
-    modelFromJson: function (entity) {
+    jsonToEntity: function (jsonObject, entityModel) {
         var modelEntity = {};
-        for (var key in entity) {
+        for (var key in jsonObject) {
             if (key === "@type") {
                 continue;
             }
-            modelEntity[key] = entity[key];
+            modelEntity[key] = jsonObject[key];
         }
-        Object.setPrototypeOf(modelEntity, Object.getPrototypeOf(entity));
+        Object.setPrototypeOf(modelEntity, Object.getPrototypeOf(entityModel));
         return modelEntity;
     },
     notify: function (titulo, mensagem, cbActionClick) {
