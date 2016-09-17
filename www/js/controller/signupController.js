@@ -38,9 +38,37 @@ var signupController = {
             }
         }
     },
+    requestSignUp: function (cbSuccess, cbError) {
+        var user = window.localStorage.setItem("user", $("#inputUsuario").val());
+        var pwd = window.localStorage.setItem("pwd", $.md5($("#inputPassword").val()));
+        loadController.show();
+        sync.ajax("GET", "TEXT", "usuario/signup", {}, function () {
+            loadController.hide();
+            if (cbSuccess) {
+                cbSuccess();
+            }
+        }, function () {
+            loadController.hide();
+            window.localStorage.removeItem("user");
+            window.localStorage.removeItem("pwd");
+            if (cbError) {
+                cbError();
+            }
+        });
+    },
     insert: function () {
         this.validaFormulario($("#form-cadastro").serializeObject(), function () {
-            // sync
+            signupController.requestSignUp(function () {
+                Controller.insert(i18next.t("login-controller.alert-welcome-pt1") + $("#inputUsuario").val(), undefined, function () {
+                    mainController.render();
+                    loadController.show();
+                    setTimeout(function () {
+                        sync.run();
+                    }, 2000);
+                });
+            }, function () {
+                alertUtil.confirm(i18next.t("server-messages.user-exists"));
+            });
         });
     }
 };

@@ -144,6 +144,7 @@
         "insert-movimento-without-conta": "Conta do lançamento não cadastrada!",
         "insert-movimento-without-pessoa": "Pessoa do lançamento não cadastrada!",
         "insert-movimento-without-categoria": "Categoria do lançamento não cadastrada!",
-        "insert-movimento-without-cartao": "Cartão do lançamento não cadastrado!"
+        "insert-movimento-without-cartao": "Cartão do lançamento não cadastrado!",
+        "user-exists": "Nome de usuário indisponível, tente outro Usuário!"
     }
 }

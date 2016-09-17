@@ -171,14 +171,12 @@ var app = {
         cordova.plugins.backgroundMode.enable();
 
         var interval = null;
-        cordova.plugins.backgroundMode.onactivate = function () {
-            sync.running = 0;
+        cordova.plugins.backgroundMode.onactivate = function () {            
             interval = setInterval(function () {
                 sync.run();
             }, 10000);
         };
-        cordova.plugins.backgroundMode.ondeactivate = function () {
-            sync.running = 1;
+        cordova.plugins.backgroundMode.ondeactivate = function () {            
             clearInterval(interval);
         };
     }
