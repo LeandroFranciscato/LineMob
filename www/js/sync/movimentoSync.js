@@ -36,7 +36,7 @@ var movimentoSync = {
                                     if (pessoa.idExterno) {
                                         movimento.idExternoPessoa = pessoa.idExterno;
 
-                                        var cartao = new Cartao();
+                                        var cartao = new Movimento();
                                         cartao.id = movimento.idCartao;
                                         daoUtil.getById(cartao, function (res) {
                                             if (res) {
@@ -92,7 +92,7 @@ var movimentoSync = {
                                         if (res) {
                                             theMovimento.idCategoria = res.id;
 
-                                            var cartao = new Cartao();
+                                            var cartao = new Movimento();
                                             cartao.idExterno = theMovimento.idExternoCartao;
                                             daoUtil.getByIdExterno(cartao, function (res) {
                                                 if (res) {
@@ -129,6 +129,71 @@ var movimentoSync = {
         }, function (errorThrown) {
             if (callbackError) {
                 callbackError(errorThrown);
+            }
+        });
+    },
+    getUpdatedRequest: function (jsonObject, cb) {
+        var movimento = new Movimento();
+        var theMovimento = sync.jsonToEntity(jsonObject, movimento);
+        theMovimento.idExterno = theMovimento.id;
+        daoUtil.getByIdExterno(theMovimento, function (res) {
+            if (res) {
+                theMovimento.id = res.id;
+
+                var conta = new Conta();
+                conta.idExterno = theMovimento.idExternoConta;
+                daoUtil.getByIdExterno(conta, function (res) {
+                    if (res) {
+                        theMovimento.idConta = res.id;
+
+                        var categoria = new Categoria();
+                        categoria.idExterno = theMovimento.idExternoCategoria;
+                        daoUtil.getByIdExterno(categoria, function (res) {
+                            if (res) {
+                                theMovimento.idCategoria = res.id;
+
+
+                                var pessoa = new Pessoa();
+                                pessoa.idExterno = theMovimento.idExternoPessoa;
+                                daoUtil.getByIdExterno(pessoa, function (res) {
+                                    if (res) {
+                                        theMovimento.idPessoa = res.id;
+
+                                        var cartao = new Cartao();
+                                        cartao.idExterno = theMovimento.idExternoCartao;
+                                        daoUtil.getByIdExterno(cartao, function (res) {
+                                            if (res) {
+                                                theMovimento.idCartao = res.id;
+                                            }
+
+                                            daoUtil.update(theMovimento, function (rowsAffected) {
+                                                if (cb) {
+                                                    cb(rowsAffected);
+                                                }
+                                            });
+                                        });
+                                    } else {
+                                        if (cb) {
+                                            cb();
+                                        }
+                                    }
+                                });
+                            } else {
+                                if (cb) {
+                                    cb();
+                                }
+                            }
+                        });
+                    } else {
+                        if (cb) {
+                            cb();
+                        }
+                    }
+                });
+            } else {
+                if (cb) {
+                    cb();
+                }
             }
         });
     }

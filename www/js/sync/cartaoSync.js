@@ -70,5 +70,36 @@ var cartaoSync = {
                 callbackError(errorThrown);
             }
         });
+    },
+    getUpdatedRequest: function (jsonObject, cb) {
+        var cartao = new Cartao();
+        var theCartao = sync.jsonToEntity(jsonObject, cartao);
+        theCartao.idExterno = theCartao.id;
+        daoUtil.getByIdExterno(theCartao, function (res) {
+            if (res) {
+                theCartao.id = res.id;
+
+                var conta = new Conta();
+                conta.idExterno = theCartao.idExternoConta;
+                daoUtil.getByIdExterno(conta, function (res) {
+                    if (res) {
+                        theCartao.idConta = res.id;
+                        daoUtil.update(theCartao, function (rowsAffected) {
+                            if (cb) {
+                                cb(rowsAffected);
+                            }
+                        });
+                    } else {
+                        if (cb) {
+                            cb();
+                        }
+                    }
+                });
+            } else {
+                if (cb) {
+                    cb();
+                }
+            }
+        });
     }
 };

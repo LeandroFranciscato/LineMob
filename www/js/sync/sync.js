@@ -12,31 +12,31 @@ var sync = {
             sync.deleteEntity(new Conta());
             sync.updateEntity(new Conta());
             sync.getInsertedRequest(new Conta());
-            sync.getDeletedRequest(new Conta());
+            sync.getDeletedUpdatedRequest(new Conta());
 
             sync.insertEntity(new Pessoa());
             sync.deleteEntity(new Pessoa());
             sync.updateEntity(new Pessoa());
             sync.getInsertedRequest(new Pessoa());
-            sync.getDeletedRequest(new Pessoa());
+            sync.getDeletedUpdatedRequest(new Pessoa());
 
             sync.insertEntity(new Categoria());
             sync.deleteEntity(new Categoria());
             sync.updateEntity(new Categoria());
             sync.getInsertedRequest(new Categoria());
-            sync.getDeletedRequest(new Categoria());
+            sync.getDeletedUpdatedRequest(new Categoria());
 
             cartaoSync.insertUpdate("insert");
             sync.deleteEntity(new Cartao());
             cartaoSync.insertUpdate("update");
             cartaoSync.getInsertedRequest();
-            sync.getDeletedRequest(new Cartao());
+            sync.getDeletedUpdatedRequest(new Cartao());
 
             movimentoSync.insertUpdate("insert");
             sync.deleteEntity(new Movimento());
             movimentoSync.insertUpdate("update");
             movimentoSync.getInsertedRequest();
-            sync.getDeletedRequest(new Movimento());
+            sync.getDeletedUpdatedRequest(new Movimento());
         }
     },
     insertEntity: function (entity) {
@@ -184,7 +184,7 @@ var sync = {
             }
         });
     },
-    getDeletedRequest: function (entity, callbackSuccess, callbackError) {
+    getDeletedUpdatedRequest: function (entity, callbackSuccess, callbackError) {
         daoUtil.getAll(entity, "", function (entities) {
             sync.setRunning(entities.length);
 
@@ -199,7 +199,19 @@ var sync = {
                             }
                         });
                     } else {
-                        sync.setRunning(-1);
+                        if (entity.tableName === "cartao") {
+                            cartaoSync.getUpdatedRequest(responseJson, function () {
+                                sync.setRunning(-1);
+                            });
+                        } else if (entity.tableName === "movimento") {
+                            movimentoSync.getUpdatedRequest(responseJson, function () {
+                                sync.setRunning(-1);
+                            });
+                        } else {
+                            sync.getUpdatedRequest(responseJson, entity, function () {
+                                sync.setRunning(-1);
+                            });
+                        }
                     }
                 }, function (err) {
                     sync.setRunning(-1);
@@ -208,6 +220,20 @@ var sync = {
                     }
                 });
             });
+        });
+    },
+    getUpdatedRequest: function (jsonObject, entityModel, cb) {
+        var theEntity = sync.jsonToEntity(jsonObject, entityModel);
+        theEntity.idExterno = theEntity.id;
+        daoUtil.getByIdExterno(theEntity, function (res) {
+            if (res) {
+                theEntity.id = res.id;
+                daoUtil.update(theEntity, function (rowsAffected) {
+                    if (cb) {
+                        cb(rowsAffected);
+                    }
+                });
+            }
         });
     },
     ajax: function (httpType, responseType, url, dataInput, cbSuccess, cbError) {
