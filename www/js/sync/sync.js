@@ -1,4 +1,4 @@
-/* global daoUtil, alertUtil, logUtil, cordova, i18next, sync, cartaoSync, movimentoSync, networkUtil, loadController */
+/* global daoUtil, alertUtil, logUtil, cordova, i18next, sync, cartaoSync, movimentoSync, networkUtil, loadController, notifyUtil */
 
 var sync = {
     running: 0,
@@ -174,7 +174,11 @@ var sync = {
                         var modelEntity;
                         if (!res) {
                             modelEntity = sync.jsonToEntity(theEntity, entity);
-                            daoUtil.insert(modelEntity);
+                            daoUtil.insert(modelEntity, function(){
+                                notifyUtil.notify("Teste","testesteste",new Date(), function(){
+                                    alert('vorto é?');
+                                });
+                            });
                         }
                     });
                 });
@@ -242,7 +246,7 @@ var sync = {
         });
     },
     ajax: function (httpType, responseType, url, dataInput, cbSuccess, cbError) {
-        url = "http://10.0.0.102:8080/LinemobAPI/" + url;
+        url = "http://10.1.1.5:8080/LinemobAPI/" + url;
         $.ajax({
             crossDomain: true,
             type: httpType,
@@ -291,21 +295,5 @@ var sync = {
         }
         Object.setPrototypeOf(modelEntity, Object.getPrototypeOf(entityModel));
         return modelEntity;
-    },
-    notify: function (titulo, mensagem, cbActionClick) {
-        var idNotification = Math.random();
-        cordova.plugins.notification.local.schedule({
-            id: idNotification,
-            title: titulo,
-            text: mensagem,
-            icon: "/platforms/android/res/drawable-mdpi/icon.png"
-        });
-        cordova.plugins.notification.local.on("click", function (notification) {
-            if (notification.id == idNotification) {
-                if (cbActionClick) {
-                    cbActionClick();
-                }
-            }
-        });
     }
 };
