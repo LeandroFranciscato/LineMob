@@ -50,7 +50,7 @@ var contaController = {
                 icon: (data) ? iconUtil.edit : iconUtil.add
             },
             inputToFocus: "#nome"
-        }, data, function () {
+        }, data, function () {            
             if (cb) {
                 cb();
             }

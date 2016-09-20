@@ -18,15 +18,9 @@
             </div>        
             
             <div class="input-field col s6">                        
-                <input type="tel" id="valor-saldo-inicial" name="valorSaldoInicial" value="{{valorSaldoInicial}}" placeholder="" data-i18n="[placeholder]conta-controller.field-valorSaldoInicial">
+                <input type="tel" id="valor-saldo-inicial" class="value" name="valorSaldoInicial" value="{{valorSaldoInicial}}" placeholder="" data-i18n="[placeholder]conta-controller.field-valorSaldoInicial">
                 <label for="valor-saldo-inicial" class="active" data-i18n="conta-controller.field-valorSaldoInicial"></label>
-            </div>
-            
-            <script>
-                $(document).ready(function(){
-                    $("#valor-saldo-inicial").mask("000000000.00", {reverse: true});                    
-                });
-            </script>
+            </div>            
         </div>              
     </form>
 </div>

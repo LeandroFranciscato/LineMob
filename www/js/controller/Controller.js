@@ -180,6 +180,7 @@ var Controller = {
 
         /*front-end controllers*/
         this.renderHtml(data, this.options.template, this.options.objectToBind);       
+        this.initializePlugins();
         this.setFocus();
         this.hideLeftMenu();
         this.setRightIcon();
@@ -189,8 +190,7 @@ var Controller = {
         this.setLeftNav();
         var currentOptions = Controller.options;
         this.setSearchNav(currentOptions);
-        this.setPaginator(data, currentOptions);
-        this.initializePlugins();
+        this.setPaginator(data, currentOptions);        
         
         if (cb) {
             cb();
@@ -205,6 +205,7 @@ var Controller = {
     initializePlugins: function () {
         i18nextInitialize();
         loadScroll();
+        $(".value").mask("000000000.00", {reverse: true});
     },
     setFocus: function () {
         $(this.options.inputToFocus).focus();
