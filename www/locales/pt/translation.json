@@ -46,7 +46,8 @@
         "field-nome": "Nome da Conta",
         "field-dataFundacao": "Data Fundação",
         "field-valorSaldoInicial": "Valor Saldo Inicial",
-        "field-select-conta": "Selecione a Conta"
+        "field-select-conta": "Selecione a Conta",
+        "title-new": "Nova Conta cadastrada"
     },
     "login-controller": {
         "alert-usuario-req": "Usuário deve ser informado.",
@@ -70,7 +71,9 @@
         "alert-apelido-req": "Apelido deve ser informado.",
         "field-nome": "Nome",
         "field-apelido": "Apelido",
-        "field-select-pessoa": "Selecione a Pessoa"
+        "field-select-pessoa": "Selecione a Pessoa",
+        "title-new": "Nova Pessoa cadastrada"
+
     },
     "cartao-controller": {
         "plural": "CARTÕES",
@@ -90,7 +93,8 @@
         "field-valorLimite": "Limite",
         "field-idConta": "Conta",
         "field-select-cartao": "Selecione o Cartão",
-        "field-option-cartao-nulo": "Sem Cartão"
+        "field-option-cartao-nulo": "Sem Cartão",
+        "title-new": "Novo Cartão cadastrado"
     },
     "categoria-controller": {
         "plural": "CATEGORIAS",
@@ -98,7 +102,8 @@
         "alert-nome-req": "Nome deve ser informado.",
         "field-nome": "Nome",
         "field-nome-sub-categoria": "SubCategoria",
-        "field-select-categoria": "Selecione a Categoria"
+        "field-select-categoria": "Selecione a Categoria",
+        "title-new": "Nova Categoria cadastrada"
     },
     "movimento-controller": {
         "plural": "LANÇAMENTOS",
@@ -121,7 +126,8 @@
         "field-idConta": "Conta",
         "field-idCategoria": "Categoria",
         "field-idPessoa": "Pessoa",
-        "field-idCartao": "Cartão"
+        "field-idCartao": "Cartão",
+        "title-new": "Novo Lançamento cadastrado"
     },
     "generics": {
         "no": "Não",
@@ -132,9 +138,7 @@
         "label-multedit": "Selecione o campo para Alteração.",
         "paginator-text-pt1": "Carregar mais ",
         "search": "Pesquisar...",
-        "must-be-online": "Você deve estar Online para executar esta ação!",
-        "sync-done": "Nova Sincronização!",
-        "msg-sync-done": "Clique para ver!"
+        "must-be-online": "Você deve estar Online para executar esta ação!"
     },
     "server-messages": {
         "remove-categoria-used-movimento": "Categoria não pode ser deletada porque está vinculada a um Lançamento!",

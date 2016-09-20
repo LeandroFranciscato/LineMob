@@ -1,4 +1,4 @@
-/* global cordova */
+/* global cordova, i18next */
 
 var notifyUtil = {
     notificationsArray: [],
@@ -51,5 +51,25 @@ var notifyUtil = {
         }
         window.localStorage.setItem("idNotify", id);
         return id;
+    },
+    getTitleNew: function (entity) {
+        if (entity.tableName === "pessoa") {
+            return i18next.t("pessoa-controller.title-new");
+        } else if (entity.tableName === "categoria") {
+            return i18next.t("categoria-controller.title-new");
+        } else if (entity.tableName === "cartao") {
+            return i18next.t("cartao-controller.title-new");
+        } else if (entity.tableName === "conta") {
+            return i18next.t("conta-controller.title-new");
+        } else if (entity.tableName === "movimento") {
+            return i18next.t("movimento-controller.title-new");
+        }
+    },
+    getMessageNew: function (entity) {
+        if (entity.tableName === "movimento") {
+            return entity.descricao;
+        } else {
+            return entity.nome;
+        }
     }
 };

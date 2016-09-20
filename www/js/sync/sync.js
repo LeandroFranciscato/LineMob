@@ -175,8 +175,8 @@ var sync = {
                             modelEntity = sync.jsonToEntity(theEntity, entity);
                             daoUtil.insert(modelEntity, function () {
                                 notifyUtil.addScheduleNotification(
-                                        i18next.t("generics.sync-done"),
-                                        i18next.t("generics.msg-sync-done"),
+                                        notifyUtil.getTitleNew(modelEntity),
+                                        notifyUtil.getMessageNew(modelEntity),
                                         new Date(),
                                         function () {
                                             daoUtil.getByIdExterno(modelEntity, function (res) {
