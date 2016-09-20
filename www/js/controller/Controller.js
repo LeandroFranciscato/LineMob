@@ -345,7 +345,7 @@ var Controller = {
                     } else {
                         $("#nav-pre-footer").css("display", "none");
                         loadScroll();
-                        //myScroll.scrollTo(0, myScroll.maxScrollY, 0);
+                        myScroll.scrollTo(0, myScroll.maxScrollY, 0);
                     }
                 });
             } else {

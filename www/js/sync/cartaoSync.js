@@ -1,4 +1,4 @@
-/* global daoUtil, sync */
+/* global daoUtil, sync, notifyUtil, cartaoController */
 
 var cartaoSync = {
     insertUpdate: function (type) {
@@ -52,7 +52,17 @@ var cartaoSync = {
                                 var modelEntity;
                                 if (!res) {
                                     modelEntity = sync.jsonToEntity(theCartao, cartao);
-                                    daoUtil.insert(modelEntity);
+                                    daoUtil.insert(modelEntity, function () {
+                                        notifyUtil.addScheduleNotification(
+                                                notifyUtil.getTitleNew(modelEntity),
+                                                notifyUtil.getMessageNew(modelEntity),
+                                                new Date(),
+                                                function () {
+                                                    daoUtil.getByIdExterno(modelEntity, function (res) {                                                        
+                                                        cartaoController.loadNewOrSingleEdit(res);
+                                                    });
+                                                });
+                                    });
                                 }
                             });
                         } else {

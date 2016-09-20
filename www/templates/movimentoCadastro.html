@@ -17,7 +17,7 @@
 
         <div class="row">
             <div class="input-field col s6">
-                <input type="number" id="valor" name="valor" value="{{valor}}" placeholder="" data-i18n="[placeholder]movimento-controller.field-valor">
+                <input type="tel" id="valor" name="valor" value="{{valor}}" placeholder="" data-i18n="[placeholder]movimento-controller.field-valor">
                 <label for="valor" class="active" data-i18n="movimento-controller.field-valor"></label>
             </div>
             <div class="input-field col s6">
@@ -107,5 +107,10 @@
                 </select>                
             </div>           
         </div>
+        <script>
+            $(document).ready(function () {                                
+                $("#valor").mask("000000000.00", {reverse: true});      
+            });
+        </script>
     </form>
 </div>
