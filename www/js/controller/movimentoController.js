@@ -10,7 +10,7 @@ var movimentoController = {
             controllerOrigin: this,
             entity: new Movimento(),
             orderBy: "id desc",
-            template: this.TEMPLATE_LISTA,
+            template: movimentoController.TEMPLATE_LISTA,
             navLeft: {
                 icon: iconUtil.back,
                 callbackClick: function () {

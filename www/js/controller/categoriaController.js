@@ -9,7 +9,7 @@ var categoriaController = {
             controllerOrigin: this,
             entity: new Categoria(),
             orderBy: "nome",
-            template: this.TEMPLATE_LISTA,
+            template: categoriaController.TEMPLATE_LISTA,
             navLeft: {
                 icon: iconUtil.back,
                 callbackClick: function () {
@@ -36,7 +36,7 @@ var categoriaController = {
         Controller.loadNewOrSingleEdit({
             controllerOrigin: categoriaController,
             entity: new Categoria(),
-            template: this.TEMPLATE_CADASTRO,
+            template: categoriaController.TEMPLATE_CADASTRO,
             navLeft: {
                 icon: iconUtil.back,
                 callbackClick: function () {
@@ -58,7 +58,7 @@ var categoriaController = {
         Controller.loadMultipleEdit({
             controllerOrigin: categoriaController,
             entity: new Categoria(),
-            template: this.TEMPLATE_EDICAO,
+            template: categoriaController.TEMPLATE_EDICAO,
             navLeft: {
                 icon: iconUtil.back,
                 callbackClick: function () {

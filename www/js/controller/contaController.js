@@ -11,7 +11,7 @@ var contaController = {
             controllerOrigin: this,
             entity: new Conta(),
             orderBy: "nome",
-            template: this.TEMPLATE_LISTA,
+            template: contaController.TEMPLATE_LISTA,
             navLeft: {
                 icon: iconUtil.back,
                 callbackClick: function () {
@@ -38,7 +38,7 @@ var contaController = {
         Controller.loadNewOrSingleEdit({
             controllerOrigin: contaController,
             entity: new Conta(),
-            template: this.TEMPLATE_CADASTRO,
+            template: contaController.TEMPLATE_CADASTRO,
             navLeft: {
                 icon: iconUtil.back,
                 callbackClick: function () {
@@ -60,7 +60,7 @@ var contaController = {
         Controller.loadMultipleEdit({
             controllerOrigin: contaController,
             entity: new Conta(),
-            template: this.TEMPLATE_EDICAO,
+            template: contaController.TEMPLATE_EDICAO,
             navLeft: {
                 icon: iconUtil.back,
                 callbackClick: function () {

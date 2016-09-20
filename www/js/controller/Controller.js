@@ -179,8 +179,7 @@ var Controller = {
         this.setOptions(this.options, options);
 
         /*front-end controllers*/
-        this.renderHtml(data, this.options.template, this.options.objectToBind);
-        this.initializePlugins();
+        this.renderHtml(data, this.options.template, this.options.objectToBind);       
         this.setFocus();
         this.hideLeftMenu();
         this.setRightIcon();
@@ -191,7 +190,8 @@ var Controller = {
         var currentOptions = Controller.options;
         this.setSearchNav(currentOptions);
         this.setPaginator(data, currentOptions);
-
+        this.initializePlugins();
+        
         if (cb) {
             cb();
         }
@@ -345,7 +345,7 @@ var Controller = {
                     } else {
                         $("#nav-pre-footer").css("display", "none");
                         loadScroll();
-                        myScroll.scrollTo(0, myScroll.maxScrollY, 0);
+                        //myScroll.scrollTo(0, myScroll.maxScrollY, 0);
                     }
                 });
             } else {

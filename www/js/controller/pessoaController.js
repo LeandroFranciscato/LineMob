@@ -10,7 +10,7 @@ var pessoaController = {
             controllerOrigin: this,
             entity: new Pessoa(),
             orderBy: "nome",
-            template: this.TEMPLATE_LISTA,
+            template: pessoaController.TEMPLATE_LISTA,
             navLeft: {
                 icon: iconUtil.back,
                 callbackClick: function () {
@@ -37,7 +37,7 @@ var pessoaController = {
         Controller.loadNewOrSingleEdit({
             controllerOrigin: pessoaController,
             entity: new Pessoa(),
-            template: this.TEMPLATE_CADASTRO,
+            template: pessoaController.TEMPLATE_CADASTRO,
             navLeft: {
                 icon: iconUtil.back,
                 callbackClick: function () {
@@ -59,7 +59,7 @@ var pessoaController = {
         Controller.loadMultipleEdit({
             controllerOrigin: pessoaController,
             entity: new Pessoa(),
-            template: this.TEMPLATE_EDICAO,
+            template: pessoaController.TEMPLATE_EDICAO,
             navLeft: {
                 icon: iconUtil.back,
                 callbackClick: function () {

@@ -170,15 +170,25 @@ var sync = {
                     theEntity.idExterno = theEntity.id;
                     theEntity.id = "";
                     daoUtil.getByIdExterno(theEntity, function (res) {
-                        sync.setRunning(-1);
                         var modelEntity;
                         if (!res) {
                             modelEntity = sync.jsonToEntity(theEntity, entity);
-                            daoUtil.insert(modelEntity, function(){
-                                notifyUtil.notify("Teste","testesteste",new Date(), function(){
-                                    alert('vorto é?');
-                                });
+                            daoUtil.insert(modelEntity, function () {
+                                notifyUtil.addScheduleNotification(
+                                        i18next.t("generics.sync-done"),
+                                        i18next.t("generics.msg-sync-done"),
+                                        new Date(),
+                                        function () {
+                                            daoUtil.getByIdExterno(modelEntity, function (res) {
+                                                var loadNewOrSingleEdit = window[modelEntity.tableName + "Controller"]["loadNewOrSingleEdit"];
+                                                loadNewOrSingleEdit(res);
+                                            });
+                                        });
+                                sync.setRunning(-1);
                             });
+
+                        } else {
+                            sync.setRunning(-1);
                         }
                     });
                 });
@@ -246,7 +256,7 @@ var sync = {
         });
     },
     ajax: function (httpType, responseType, url, dataInput, cbSuccess, cbError) {
-        url = "http://10.1.1.5:8080/LinemobAPI/" + url;
+        url = "http://10.0.0.102:8080/LinemobAPI/" + url;
         $.ajax({
             crossDomain: true,
             type: httpType,
@@ -283,6 +293,9 @@ var sync = {
                 color: "e53935"
             });
             loadController.hide();
+            if (notifyUtil.notificationsArray.length) {
+                notifyUtil.bulkNotify();
+            }
         }
     },
     jsonToEntity: function (jsonObject, entityModel) {
