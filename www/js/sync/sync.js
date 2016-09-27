@@ -17,31 +17,34 @@ var sync = {
             sync.deleteEntity(new Conta());
             sync.updateEntity(new Conta());
             sync.getInsertedRequest(new Conta());
-            sync.getDeletedUpdatedRequest(new Conta());
 
             sync.insertEntity(new Pessoa());
             sync.deleteEntity(new Pessoa());
             sync.updateEntity(new Pessoa());
             sync.getInsertedRequest(new Pessoa());
-            sync.getDeletedUpdatedRequest(new Pessoa());
 
             sync.insertEntity(new Categoria());
             sync.deleteEntity(new Categoria());
             sync.updateEntity(new Categoria());
             sync.getInsertedRequest(new Categoria());
-            sync.getDeletedUpdatedRequest(new Categoria());
 
             cartaoSync.insertUpdate("insert");
             sync.deleteEntity(new Cartao());
             cartaoSync.insertUpdate("update");
             cartaoSync.getInsertedRequest();
-            sync.getDeletedUpdatedRequest(new Cartao());
 
             movimentoSync.insertUpdate("insert");
             sync.deleteEntity(new Movimento());
             movimentoSync.insertUpdate("update");
             movimentoSync.getInsertedRequest();
-            sync.getDeletedUpdatedRequest(new Movimento());
+
+            if (window.localStorage.getItem("syncAll")){
+                sync.getDeletedUpdatedRequest(new Conta());
+                sync.getDeletedUpdatedRequest(new Pessoa());
+                sync.getDeletedUpdatedRequest(new Categoria());
+                sync.getDeletedUpdatedRequest(new Cartao());
+                sync.getDeletedUpdatedRequest(new Movimento());
+            }
         }
     },
     insertEntity: function (entity) {
@@ -256,7 +259,7 @@ var sync = {
         });
     },
     ajax: function (httpType, responseType, url, dataInput, cbSuccess, cbError) {
-        url = "http://10.1.1.5:8080/LinemobAPI/" + url;
+        url = "https://45.62.231.35:8181/LinemobAPI/" + url;
         $.ajax({
             crossDomain: true,
             type: httpType,
@@ -287,7 +290,7 @@ var sync = {
                 title: i18next.t("background-mode.title-sync"),
                 color: "455a64"
             });
-        } else {
+        } else {            
             cordova.plugins.backgroundMode.configure({
                 title: i18next.t("background-mode.title"),
                 color: "e53935"
@@ -295,6 +298,9 @@ var sync = {
             loadController.hide();
             if (notifyUtil.notificationsArray.length) {
                 notifyUtil.bulkNotify();
+            }
+            if (window.localStorage.getItem("syncAll")){
+                window.localStorage.setItem("syncAll", undefined);
             }
         }
     },

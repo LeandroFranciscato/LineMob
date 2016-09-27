@@ -32,10 +32,10 @@ var mainController = {
                 callbackClick: function () {
                     if (!networkUtil.isOnline()) {
                         alertUtil.confirm(i18next.t("generics.must-be-online"));
-                    } else {
-                        sync.running = 0;
-                        loadController.show();
+                    } else {                                                
+                        loadController.show();                        
                         setTimeout(function () {
+                            window.localStorage.setItem("syncAll",1);
                             sync.run();
                         }, 2000);
                     }
