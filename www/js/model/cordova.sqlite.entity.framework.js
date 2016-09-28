@@ -131,13 +131,15 @@ var daoUtil = {
             });
         });
     },
-    getByGreatVersao: function (entity, versao, cb) {
-        var sql = "select * from " + entity.tableName + " where deleted <> '1' and versao > " + versao;
-        dbUtil.executeSql(sql, [], function (res) {
-            daoUtil.sucessGets(entity, res, function (retorno) {
-                if (cb) {
-                    cb(retorno);
-                }
+    getByGreatVersao: function (entity, cb) {
+        daoUtil.getVersao("max", entity, function (versao) {
+            var sql = "select * from " + entity.tableName + " where deleted <> '1' and versao > " + versao;
+            dbUtil.executeSql(sql, [], function (res) {
+                daoUtil.sucessGets(entity, res, function (retorno) {
+                    if (cb) {
+                        cb(retorno);
+                    }
+                });
             });
         });
     },
@@ -188,8 +190,8 @@ var daoUtil = {
             });
         });
     },
-    getMaxVersao: function (entity, cb) {
-        var sql = "select max(versao) versao from " + entity.tableName + " where deleted <> '1' ";
+    getVersao: function (type, entity, cb) {
+        var sql = "select " + type + "(versao) versao from " + entity.tableName + " where deleted <> '1' ";
         dbUtil.executeSql(sql, [], function (res) {
             daoUtil.sucessGets(null, res, function (retorno) {
                 if (cb) {

@@ -18,9 +18,9 @@ var sync = {
              sync.updateEntity(new Conta());
              sync.getInsertedRequest(new Conta());
              */
-            sync.insertEntity(new Pessoa());
-            /*sync.deleteEntity(new Pessoa());
-             */sync.updateEntity(new Pessoa());
+            //sync.insertEntity(new Pessoa());
+            //sync.deleteEntity(new Pessoa());
+            //sync.updateEntity(new Pessoa());
             sync.getInsertedRequest(new Pessoa());
             /*
              sync.insertEntity(new Categoria());
@@ -54,7 +54,10 @@ var sync = {
             sync.setRunning(entities.length);
             for (var i = 0; i < entities.length; i++) {
                 var theEntity = entities[i];
-                sync.insertRequest(theEntity);
+                daoUtil.getVersao("max", theEntity, function (versao) {
+                    theEntity.versao = versao;
+                    sync.insertRequest(theEntity);
+                });
             }
         });
     },
@@ -78,7 +81,10 @@ var sync = {
             sync.setRunning(entities.length);
             for (var i = 0; i < entities.length; i++) {
                 var theEntity = entities[i];
-                sync.updateRequest(theEntity);
+                daoUtil.getVersao("max", theEntity, function (versao) {
+                    theEntity.versao = versao;
+                    sync.updateRequest(theEntity);
+                });
             }
         });
     },
@@ -166,7 +172,7 @@ var sync = {
         });
     },
     getInsertedRequest: function (entity, callbackSuccess, callbackError) {
-        daoUtil.getMaxVersao(entity, function (versao) {
+        daoUtil.getVersao("max", entity, function (versao) {
             var url = entity.tableName + "/" + versao + "/1";
             sync.ajax("GET", "JSON", url, {}, function (responseEntities) {
                 if (responseEntities.length) {
@@ -175,18 +181,22 @@ var sync = {
                         theEntity.tableName = entity.tableName;
                         theEntity.idExterno = theEntity.id;
                         theEntity.id = "";
-                        daoUtil.getByIdExterno(theEntity, function (res) {                            
+                        daoUtil.getByIdExterno(theEntity, function (res) {
                             var customFunction;
+                            var acao;
                             if (res) {
-                                customFunction = window["daoUtil"]["update"];
+                                acao = "update";
+                                theEntity.id = res.id;
+                                customFunction = window["daoUtil"]["update"];                                
                             } else {
+                                acao = "insert";
                                 customFunction = window["daoUtil"]["insert"];
                             }
                             var modelEntity;
-                            modelEntity = sync.jsonToEntity(theEntity, entity); 
+                            modelEntity = sync.jsonToEntity(theEntity, entity);
                             customFunction(modelEntity, function () {
                                 notifyUtil.addScheduleNotification(
-                                        notifyUtil.getTitleNew(modelEntity),
+                                        notifyUtil.getTitleNew(modelEntity, acao),
                                         notifyUtil.getMessageNew(modelEntity),
                                         new Date(),
                                         function () {
@@ -264,7 +274,7 @@ var sync = {
         });
     },
     ajax: function (httpType, responseType, url, dataInput, cbSuccess, cbError) {
-        url = "http://10.0.0.102:8080/LinemobAPI/" + url;
+        url = "http://10.1.1.6:8080/LinemobAPI/" + url;
         $.ajax({
             crossDomain: true,
             type: httpType,

@@ -47,7 +47,8 @@
         "field-dataFundacao": "Data Fundação",
         "field-valorSaldoInicial": "Valor Saldo Inicial",
         "field-select-conta": "Selecione a Conta",
-        "title-new": "Nova Conta cadastrada"
+        "title-insert": "Nova Conta cadastrada",
+        "title-update": "Conta Atualizada"
     },
     "login-controller": {
         "alert-usuario-req": "Usuário deve ser informado.",
@@ -72,8 +73,8 @@
         "field-nome": "Nome",
         "field-apelido": "Apelido",
         "field-select-pessoa": "Selecione a Pessoa",
-        "title-new": "Nova Pessoa cadastrada"
-
+        "title-insert": "Nova Pessoa cadastrada",
+        "title-update": "Pessoa Atualizada"
     },
     "cartao-controller": {
         "plural": "CARTÕES",
@@ -94,7 +95,8 @@
         "field-idConta": "Conta",
         "field-select-cartao": "Selecione o Cartão",
         "field-option-cartao-nulo": "Sem Cartão",
-        "title-new": "Novo Cartão cadastrado"
+        "title-insert": "Novo Cartão cadastrado",
+        "title-update": "Cartão Atualizado"
     },
     "categoria-controller": {
         "plural": "CATEGORIAS",
@@ -103,7 +105,8 @@
         "field-nome": "Nome",
         "field-nome-sub-categoria": "SubCategoria",
         "field-select-categoria": "Selecione a Categoria",
-        "title-new": "Nova Categoria cadastrada"
+        "title-insert": "Nova Categoria cadastrada",
+        "title-update": "Categoria Cadastrada"
     },
     "movimento-controller": {
         "plural": "LANÇAMENTOS",
@@ -127,7 +130,8 @@
         "field-idCategoria": "Categoria",
         "field-idPessoa": "Pessoa",
         "field-idCartao": "Cartão",
-        "title-new": "Novo Lançamento cadastrado"
+        "title-insert": "Novo Lançamento cadastrado",
+        "title-update": "Lançamento Atualizado"
     },
     "generics": {
         "no": "Não",

@@ -52,17 +52,17 @@ var notifyUtil = {
         window.localStorage.setItem("idNotify", id);
         return id;
     },
-    getTitleNew: function (entity) {
+    getTitleNew: function (entity, acao) {
         if (entity.tableName === "pessoa") {
-            return i18next.t("pessoa-controller.title-new");
+            return i18next.t("pessoa-controller.title-" + acao);
         } else if (entity.tableName === "categoria") {
-            return i18next.t("categoria-controller.title-new");
+            return i18next.t("categoria-controller.title-" + acao);
         } else if (entity.tableName === "cartao") {
-            return i18next.t("cartao-controller.title-new");
+            return i18next.t("cartao-controller.title-" + acao);
         } else if (entity.tableName === "conta") {
-            return i18next.t("conta-controller.title-new");
+            return i18next.t("conta-controller.title-" + acao);
         } else if (entity.tableName === "movimento") {
-            return i18next.t("movimento-controller.title-new");
+            return i18next.t("movimento-controller.title-" + acao);
         }
     },
     getMessageNew: function (entity) {
