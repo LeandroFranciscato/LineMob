@@ -13,38 +13,37 @@ var sync = {
             return;
         }
         if (this.running === 0 || !this.running) {
-            sync.insertEntity(new Conta());
-            sync.deleteEntity(new Conta());
-            sync.updateEntity(new Conta());
-            sync.getInsertedRequest(new Conta());
-
+            /*  sync.insertEntity(new Conta());
+             sync.deleteEntity(new Conta());
+             sync.updateEntity(new Conta());
+             sync.getInsertedRequest(new Conta());
+             */
             sync.insertEntity(new Pessoa());
-            sync.deleteEntity(new Pessoa());
-            sync.updateEntity(new Pessoa());
+            /*sync.deleteEntity(new Pessoa());
+             */sync.updateEntity(new Pessoa());
             sync.getInsertedRequest(new Pessoa());
-
-            sync.insertEntity(new Categoria());
-            sync.deleteEntity(new Categoria());
-            sync.updateEntity(new Categoria());
-            sync.getInsertedRequest(new Categoria());
-
-            cartaoSync.insertUpdate("insert");
-            sync.deleteEntity(new Cartao());
-            cartaoSync.insertUpdate("update");
-            cartaoSync.getInsertedRequest();
-
-            movimentoSync.insertUpdate("insert");
-            sync.deleteEntity(new Movimento());
-            movimentoSync.insertUpdate("update");
-            movimentoSync.getInsertedRequest();
-
-            if (window.localStorage.getItem("syncAll")){
-                sync.getDeletedUpdatedRequest(new Conta());
-                sync.getDeletedUpdatedRequest(new Pessoa());
-                sync.getDeletedUpdatedRequest(new Categoria());
-                sync.getDeletedUpdatedRequest(new Cartao());
-                sync.getDeletedUpdatedRequest(new Movimento());
-            }
+            /*
+             sync.insertEntity(new Categoria());
+             sync.deleteEntity(new Categoria());
+             sync.updateEntity(new Categoria());
+             sync.getInsertedRequest(new Categoria());
+             
+             cartaoSync.insertUpdate("insert");
+             sync.deleteEntity(new Cartao());
+             cartaoSync.insertUpdate("update");
+             cartaoSync.getInsertedRequest();
+             
+             movimentoSync.insertUpdate("insert");
+             sync.deleteEntity(new Movimento());
+             movimentoSync.insertUpdate("update");
+             movimentoSync.getInsertedRequest();
+             
+             if (window.localStorage.getItem("syncAll")){
+             sync.getDeletedUpdatedRequest(new Conta());             
+             sync.getDeletedUpdatedRequest(new Categoria());
+             sync.getDeletedUpdatedRequest(new Cartao());
+             sync.getDeletedUpdatedRequest(new Movimento());
+             }*/
         }
     },
     insertEntity: function (entity) {
@@ -86,6 +85,7 @@ var sync = {
     insertRequest: function (entity, callbackSuccess, callbackError) {
         sync.ajax("POST", "TEXT", entity.tableName, entity, function (idExterno) {
             entity.idExterno = idExterno;
+            entity.versao++;
             daoUtil.update(entity, function (rowsAffected) {
                 sync.setRunning(-1);
                 if (rowsAffected != 0) {
@@ -139,6 +139,7 @@ var sync = {
         sync.ajax("PUT", "TEXT", urlPath, entity, function (remoteRowsAffected) {
             if (remoteRowsAffected == 1) {
                 entity.updated = 0;
+                entity.versao++;
                 daoUtil.update(entity, function (rowsAffected) {
                     sync.setRunning(-1);
                     if (rowsAffected != 0) {
@@ -165,18 +166,25 @@ var sync = {
         });
     },
     getInsertedRequest: function (entity, callbackSuccess, callbackError) {
-        sync.ajax("GET", "JSON", entity.tableName, {}, function (responseEntities) {
-            if (responseEntities.length) {
-                sync.setRunning(responseEntities.length);
-                responseEntities.forEach(function (theEntity) {
-                    theEntity.tableName = entity.tableName;
-                    theEntity.idExterno = theEntity.id;
-                    theEntity.id = "";
-                    daoUtil.getByIdExterno(theEntity, function (res) {
-                        var modelEntity;
-                        if (!res) {
-                            modelEntity = sync.jsonToEntity(theEntity, entity);
-                            daoUtil.insert(modelEntity, function () {
+        daoUtil.getMaxVersao(entity, function (versao) {
+            var url = entity.tableName + "/" + versao + "/1";
+            sync.ajax("GET", "JSON", url, {}, function (responseEntities) {
+                if (responseEntities.length) {
+                    sync.setRunning(responseEntities.length);
+                    responseEntities.forEach(function (theEntity) {
+                        theEntity.tableName = entity.tableName;
+                        theEntity.idExterno = theEntity.id;
+                        theEntity.id = "";
+                        daoUtil.getByIdExterno(theEntity, function (res) {                            
+                            var customFunction;
+                            if (res) {
+                                customFunction = window["daoUtil"]["update"];
+                            } else {
+                                customFunction = window["daoUtil"]["insert"];
+                            }
+                            var modelEntity;
+                            modelEntity = sync.jsonToEntity(theEntity, entity); 
+                            customFunction(modelEntity, function () {
                                 notifyUtil.addScheduleNotification(
                                         notifyUtil.getTitleNew(modelEntity),
                                         notifyUtil.getMessageNew(modelEntity),
@@ -189,21 +197,18 @@ var sync = {
                                         });
                                 sync.setRunning(-1);
                             });
-
-                        } else {
-                            sync.setRunning(-1);
-                        }
+                        });
                     });
-                });
-            } else {
-                if (callbackError) {
-                    callbakError();
+                } else {
+                    if (callbackError) {
+                        callbakError();
+                    }
                 }
-            }
-        }, function (errorThrown) {
-            if (callbackError) {
-                callbackError(errorThrown);
-            }
+            }, function (errorThrown) {
+                if (callbackError) {
+                    callbackError(errorThrown);
+                }
+            });
         });
     },
     getDeletedUpdatedRequest: function (entity, callbackSuccess, callbackError) {
@@ -259,7 +264,7 @@ var sync = {
         });
     },
     ajax: function (httpType, responseType, url, dataInput, cbSuccess, cbError) {
-        url = "https://45.62.231.35:8181/LinemobAPI/" + url;
+        url = "http://10.0.0.102:8080/LinemobAPI/" + url;
         $.ajax({
             crossDomain: true,
             type: httpType,
@@ -290,7 +295,7 @@ var sync = {
                 title: i18next.t("background-mode.title-sync"),
                 color: "455a64"
             });
-        } else {            
+        } else {
             cordova.plugins.backgroundMode.configure({
                 title: i18next.t("background-mode.title"),
                 color: "e53935"
@@ -299,7 +304,7 @@ var sync = {
             if (notifyUtil.notificationsArray.length) {
                 notifyUtil.bulkNotify();
             }
-            if (window.localStorage.getItem("syncAll")){
+            if (window.localStorage.getItem("syncAll")) {
                 window.localStorage.setItem("syncAll", undefined);
             }
         }

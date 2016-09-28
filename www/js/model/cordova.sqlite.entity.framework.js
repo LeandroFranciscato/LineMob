@@ -6,6 +6,7 @@ var Entity = function (tableName) {
     this.idExterno = "";
     this.deleted = "0";
     this.updated = "0";
+    this.versao = "0";
 
     this.getFields = function (cb, showId, hideIdExterno) {
         var fields = [];
@@ -130,6 +131,16 @@ var daoUtil = {
             });
         });
     },
+    getByGreatVersao: function (entity, versao, cb) {
+        var sql = "select * from " + entity.tableName + " where deleted <> '1' and versao > " + versao;
+        dbUtil.executeSql(sql, [], function (res) {
+            daoUtil.sucessGets(entity, res, function (retorno) {
+                if (cb) {
+                    cb(retorno);
+                }
+            });
+        });
+    },
     getById: function (entity, cb) {
         var sql = "select * from " + entity.tableName + " where id = ?";
         dbUtil.executeSql(sql, [entity.id], function (res) {
@@ -173,6 +184,19 @@ var daoUtil = {
             daoUtil.sucessGets(null, res, function (retorno) {
                 if (cb) {
                     cb(retorno[0].qtde);
+                }
+            });
+        });
+    },
+    getMaxVersao: function (entity, cb) {
+        var sql = "select max(versao) versao from " + entity.tableName + " where deleted <> '1' ";
+        dbUtil.executeSql(sql, [], function (res) {
+            daoUtil.sucessGets(null, res, function (retorno) {
+                if (cb) {
+                    if (!retorno[0].versao) {
+                        retorno[0].versao = 0;
+                    }
+                    cb(retorno[0].versao);
                 }
             });
         });

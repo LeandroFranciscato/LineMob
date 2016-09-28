@@ -3,6 +3,10 @@
         <div class="invisible">                       
             <input type="text" class="" id="id" name="id" value="{{id}}">
         </div>
+        
+        <div class="invisible">                       
+            <input type="text" class="" id="versao" name="versao" value="{{versao}}">
+        </div>
 
         <div class="row">
             <div class="input-field col s12">
@@ -17,5 +21,9 @@
                 <label for="apelido" class="active" data-i18n="pessoa-controller.field-apelido"></label>
             </div>
         </div>                    
+        
+        <div class="row grey-text">
+            <center>{{#idExterno}}_Id:{{/idExterno}} {{idExterno}}</center> 
+        </div>
     </form>
 </div>
