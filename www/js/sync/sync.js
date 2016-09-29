@@ -18,10 +18,15 @@ var sync = {
              sync.updateEntity(new Conta());
              sync.getInsertedRequest(new Conta());
              */
-            //sync.insertEntity(new Pessoa());
-            //sync.deleteEntity(new Pessoa());
-            //sync.updateEntity(new Pessoa());
-            sync.getInsertedRequest(new Pessoa());
+
+            sync.getDeletedRequest(new Pessoa(), function () {
+                sync.getInsertedRequest(new Pessoa(), function () {
+                    sync.insertEntity(new Pessoa());
+                    sync.updateEntity(new Pessoa());
+                    sync.deleteEntity(new Pessoa());
+                });
+            });
+
             /*
              sync.insertEntity(new Categoria());
              sync.deleteEntity(new Categoria());
@@ -38,12 +43,12 @@ var sync = {
              movimentoSync.insertUpdate("update");
              movimentoSync.getInsertedRequest();
              
-             if (window.localStorage.getItem("syncAll")){
+             
              sync.getDeletedUpdatedRequest(new Conta());             
              sync.getDeletedUpdatedRequest(new Categoria());
              sync.getDeletedUpdatedRequest(new Cartao());
              sync.getDeletedUpdatedRequest(new Movimento());
-             }*/
+             */
         }
     },
     insertEntity: function (entity) {
@@ -52,25 +57,12 @@ var sync = {
                 return;
             }
             sync.setRunning(entities.length);
-            for (var i = 0; i < entities.length; i++) {
-                var theEntity = entities[i];
+            entities.forEach(function (theEntity) {
                 daoUtil.getVersao("max", theEntity, function (versao) {
                     theEntity.versao = versao;
                     sync.insertRequest(theEntity);
                 });
-            }
-        });
-    },
-    deleteEntity: function (entity) {
-        daoUtil.getDeleted(entity, function (entities) {
-            if (!entities.length) {
-                return;
-            }
-            sync.setRunning(entities.length);
-            for (var i = 0; i < entities.length; i++) {
-                var theEntity = entities[i];
-                sync.deleteRequest(theEntity);
-            }
+            });
         });
     },
     updateEntity: function (entity) {
@@ -79,13 +71,26 @@ var sync = {
                 return;
             }
             sync.setRunning(entities.length);
-            for (var i = 0; i < entities.length; i++) {
-                var theEntity = entities[i];
+            entities.forEach(function (theEntity) {
                 daoUtil.getVersao("max", theEntity, function (versao) {
                     theEntity.versao = versao;
                     sync.updateRequest(theEntity);
                 });
+            });
+        });
+    },
+    deleteEntity: function (entity) {
+        daoUtil.getDeleted(entity, function (entities) {
+            if (!entities.length) {
+                return;
             }
+            sync.setRunning(entities.length);
+            entities.forEach(function (theEntity) {
+                var versaoDelete = window.localStorage.getItem("versaoDelete" + theEntity.tableName);
+                theEntity.versao = (versaoDelete) ? versaoDelete - 1 : -1;
+                window.localStorage.setItem("versaoDelete" + theEntity.tableName, theEntity.versao);
+                sync.deleteRequest(theEntity);
+            });
         });
     },
     insertRequest: function (entity, callbackSuccess, callbackError) {
@@ -104,35 +109,6 @@ var sync = {
                     }
                 }
             });
-        }, function (errorThrown) {
-            sync.setRunning(-1);
-            if (callbackError) {
-                callbackError(errorThrown);
-            }
-        });
-    },
-    deleteRequest: function (entity, callbackSuccess, callbackError) {
-        var urlPath = entity.tableName + "/" + entity.idExterno;
-        sync.ajax("DELETE", "TEXT", urlPath, {}, function (remoteRowsAffected) {
-            if (remoteRowsAffected == 1) {
-                daoUtil.delete(entity, function (rowsAffected) {
-                    sync.setRunning(-1);
-                    if (rowsAffected != 0) {
-                        if (callbackSuccess) {
-                            callbackSuccess();
-                        }
-                    } else {
-                        if (callbackError) {
-                            callbackError();
-                        }
-                    }
-                });
-            } else {
-                sync.setRunning(-1);
-                if (callbackError) {
-                    callbackError();
-                }
-            }
         }, function (errorThrown) {
             sync.setRunning(-1);
             if (callbackError) {
@@ -171,9 +147,38 @@ var sync = {
             }
         });
     },
+    deleteRequest: function (entity, callbackSuccess, callbackError) {
+        var urlPath = entity.tableName + "/" + entity.idExterno + "/del";
+        sync.ajax("PUT", "TEXT", urlPath, entity, function (remoteRowsAffected) {
+            if (remoteRowsAffected == 1) {
+                daoUtil.delete(entity, function (rowsAffected) {
+                    sync.setRunning(-1);
+                    if (rowsAffected != 0) {
+                        if (callbackSuccess) {
+                            callbackSuccess();
+                        }
+                    } else {
+                        if (callbackError) {
+                            callbackError();
+                        }
+                    }
+                });
+            } else {
+                sync.setRunning(-1);
+                if (callbackError) {
+                    callbackError();
+                }
+            }
+        }, function (errorThrown) {
+            sync.setRunning(-1);
+            if (callbackError) {
+                callbackError(errorThrown);
+            }
+        });
+    },
     getInsertedRequest: function (entity, callbackSuccess, callbackError) {
         daoUtil.getVersao("max", entity, function (versao) {
-            var url = entity.tableName + "/" + versao + "/1";
+            var url = entity.tableName + "/" + versao + "/1/0";
             sync.ajax("GET", "JSON", url, {}, function (responseEntities) {
                 if (responseEntities.length) {
                     sync.setRunning(responseEntities.length);
@@ -187,11 +192,10 @@ var sync = {
                             if (res) {
                                 acao = "update";
                                 theEntity.id = res.id;
-                                customFunction = window["daoUtil"]["update"];                                
                             } else {
                                 acao = "insert";
-                                customFunction = window["daoUtil"]["insert"];
                             }
+                            customFunction = window["daoUtil"][acao];
                             var modelEntity;
                             modelEntity = sync.jsonToEntity(theEntity, entity);
                             customFunction(modelEntity, function () {
@@ -210,8 +214,8 @@ var sync = {
                         });
                     });
                 } else {
-                    if (callbackError) {
-                        callbakError();
+                    if (callbackSuccess) {
+                        callbackSuccess();
                     }
                 }
             }, function (errorThrown) {
@@ -221,60 +225,45 @@ var sync = {
             });
         });
     },
-    getDeletedUpdatedRequest: function (entity, callbackSuccess, callbackError) {
-        daoUtil.getAll(entity, "", function (entities) {
-            sync.setRunning(entities.length);
-
-            entities.forEach(function (theEntity) {
-                var url = theEntity.tableName + "/" + theEntity.idExterno;
-                sync.ajax("GET", "JSON", url, {}, function (responseJson) {
-                    if (!responseJson) {
-                        daoUtil.delete(theEntity, function () {
-                            sync.setRunning(-1);
-                            if (callbackSuccess) {
-                                callbackSuccess();
-                            }
+    getDeletedRequest: function (entity, callbackSuccess, callbackError) {
+        var versao = window.localStorage.getItem("versaoDelete" + entity.tableName);
+        versao = (versao) ? versao : 0;
+        var url = entity.tableName + "/" + versao + "/1/1";
+        sync.ajax("GET", "JSON", url, {}, function (responseEntities) {
+            if (responseEntities.length) {
+                sync.setRunning(responseEntities.length);
+                responseEntities.forEach(function (theEntity) {
+                    theEntity.tableName = entity.tableName;
+                    theEntity.idExterno = theEntity.id;
+                    theEntity.id = "";
+                    daoUtil.getByIdExterno(theEntity, function (res) {
+                        daoUtil.delete(res, function () {
+                            notifyUtil.addScheduleNotification(
+                                    notifyUtil.getTitleNew(theEntity, "delete"),
+                                    notifyUtil.getMessageNew(theEntity),
+                                    new Date(),
+                                    function () {
+                                        var loadList = window[theEntity.tableName + "Controller"]["loadList"];
+                                        loadList();
+                                    });
+                            window.localStorage.setItem("versaoDelete" + theEntity.tableName, theEntity.versao);
                         });
-                    } else {
-                        if (entity.tableName === "cartao") {
-                            cartaoSync.getUpdatedRequest(responseJson, function () {
-                                sync.setRunning(-1);
-                            });
-                        } else if (entity.tableName === "movimento") {
-                            movimentoSync.getUpdatedRequest(responseJson, function () {
-                                sync.setRunning(-1);
-                            });
-                        } else {
-                            sync.getUpdatedRequest(responseJson, entity, function () {
-                                sync.setRunning(-1);
-                            });
-                        }
-                    }
-                }, function (err) {
-                    sync.setRunning(-1);
-                    if (callbackError) {
-                        callbackError();
-                    }
+                        sync.setRunning(-1);
+                    });
                 });
-            });
-        });
-    },
-    getUpdatedRequest: function (jsonObject, entityModel, cb) {
-        var theEntity = sync.jsonToEntity(jsonObject, entityModel);
-        theEntity.idExterno = theEntity.id;
-        daoUtil.getByIdExterno(theEntity, function (res) {
-            if (res) {
-                theEntity.id = res.id;
-                daoUtil.update(theEntity, function (rowsAffected) {
-                    if (cb) {
-                        cb(rowsAffected);
-                    }
-                });
+            } else {
+                if (callbackSuccess) {
+                    callbackSuccess();
+                }
+            }
+        }, function (errorThrown) {
+            if (callbackError) {
+                callbackError(errorThrown);
             }
         });
     },
     ajax: function (httpType, responseType, url, dataInput, cbSuccess, cbError) {
-        url = "http://10.1.1.6:8080/LinemobAPI/" + url;
+        url = "http://10.0.0.102:8080/LinemobAPI/" + url;
         $.ajax({
             crossDomain: true,
             type: httpType,
@@ -313,9 +302,6 @@ var sync = {
             loadController.hide();
             if (notifyUtil.notificationsArray.length) {
                 notifyUtil.bulkNotify();
-            }
-            if (window.localStorage.getItem("syncAll")) {
-                window.localStorage.setItem("syncAll", undefined);
             }
         }
     },

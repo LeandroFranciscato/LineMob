@@ -34,8 +34,7 @@ var mainController = {
                         alertUtil.confirm(i18next.t("generics.must-be-online"));
                     } else {                                                
                         loadController.show();                        
-                        setTimeout(function () {
-                            window.localStorage.setItem("syncAll",1);
+                        setTimeout(function () {                            
                             sync.run();
                         }, 2000);
                     }

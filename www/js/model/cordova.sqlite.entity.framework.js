@@ -191,7 +191,7 @@ var daoUtil = {
         });
     },
     getVersao: function (type, entity, cb) {
-        var sql = "select " + type + "(versao) versao from " + entity.tableName + " where deleted <> '1' ";
+        var sql = "select " + type + "(versao) versao from " + entity.tableName;
         dbUtil.executeSql(sql, [], function (res) {
             daoUtil.sucessGets(null, res, function (retorno) {
                 if (cb) {

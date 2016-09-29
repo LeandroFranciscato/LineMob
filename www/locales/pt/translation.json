@@ -47,8 +47,9 @@
         "field-dataFundacao": "Data Fundação",
         "field-valorSaldoInicial": "Valor Saldo Inicial",
         "field-select-conta": "Selecione a Conta",
-        "title-insert": "Nova Conta cadastrada",
-        "title-update": "Conta Atualizada"
+        "title-insert": "Nova Conta Cadastrada",
+        "title-update": "Conta Atualizada",
+        "title-delete": "Conta Deletada"
     },
     "login-controller": {
         "alert-usuario-req": "Usuário deve ser informado.",
@@ -73,8 +74,9 @@
         "field-nome": "Nome",
         "field-apelido": "Apelido",
         "field-select-pessoa": "Selecione a Pessoa",
-        "title-insert": "Nova Pessoa cadastrada",
-        "title-update": "Pessoa Atualizada"
+        "title-insert": "Nova Pessoa Cadastrada",
+        "title-update": "Pessoa Atualizada",
+        "title-delete": "Pessoa Deletada"
     },
     "cartao-controller": {
         "plural": "CARTÕES",
@@ -95,8 +97,9 @@
         "field-idConta": "Conta",
         "field-select-cartao": "Selecione o Cartão",
         "field-option-cartao-nulo": "Sem Cartão",
-        "title-insert": "Novo Cartão cadastrado",
-        "title-update": "Cartão Atualizado"
+        "title-insert": "Novo Cartão Cadastrado",
+        "title-update": "Cartão Atualizado",
+        "title-delete": "Cartão Deletado"
     },
     "categoria-controller": {
         "plural": "CATEGORIAS",
@@ -106,7 +109,8 @@
         "field-nome-sub-categoria": "SubCategoria",
         "field-select-categoria": "Selecione a Categoria",
         "title-insert": "Nova Categoria cadastrada",
-        "title-update": "Categoria Cadastrada"
+        "title-update": "Categoria Atualizada",
+        "title-delete": "Categoria Deletada"
     },
     "movimento-controller": {
         "plural": "LANÇAMENTOS",
@@ -130,8 +134,9 @@
         "field-idCategoria": "Categoria",
         "field-idPessoa": "Pessoa",
         "field-idCartao": "Cartão",
-        "title-insert": "Novo Lançamento cadastrado",
-        "title-update": "Lançamento Atualizado"
+        "title-insert": "Novo Lançamento Cadastrado",
+        "title-update": "Lançamento Atualizado",
+        "title-delete": "Lançamento Deletado"
     },
     "generics": {
         "no": "Não",
