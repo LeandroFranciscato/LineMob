@@ -169,16 +169,11 @@ var app = {
             color: "e53935"
         });
         cordova.plugins.backgroundMode.enable();
-            
+        
         var interval = null;
-        cordova.plugins.backgroundMode.onactivate = function () {
-            interval = setInterval(function () {
-                sync.run();
-            }, 5000);
-        };
-        cordova.plugins.backgroundMode.ondeactivate = function () {            
-            clearInterval(interval);
-        };
+        interval = setInterval(function () {
+            sync.run();
+        }, 10000);
     }
 };
 app.initialize();

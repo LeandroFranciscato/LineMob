@@ -19,10 +19,10 @@ var sync = {
              sync.getInsertedRequest(new Conta());
              */
 
-            sync.getDeletedRequest(new Pessoa(), function () {
-                sync.getInsertedRequest(new Pessoa(), function () {
-                    sync.insertEntity(new Pessoa());
-                    sync.updateEntity(new Pessoa());
+            sync.getInsertedRequest(new Pessoa(), function () {
+                sync.insertEntity(new Pessoa());
+                sync.updateEntity(new Pessoa());
+                sync.getDeletedRequest(new Pessoa(), function () {
                     sync.deleteEntity(new Pessoa());
                 });
             });
@@ -237,18 +237,23 @@ var sync = {
                     theEntity.idExterno = theEntity.id;
                     theEntity.id = "";
                     daoUtil.getByIdExterno(theEntity, function (res) {
-                        daoUtil.delete(res, function () {
-                            notifyUtil.addScheduleNotification(
-                                    notifyUtil.getTitleNew(theEntity, "delete"),
-                                    notifyUtil.getMessageNew(theEntity),
-                                    new Date(),
-                                    function () {
-                                        var loadList = window[theEntity.tableName + "Controller"]["loadList"];
-                                        loadList();
-                                    });
+                        if (!res) {
                             window.localStorage.setItem("versaoDelete" + theEntity.tableName, theEntity.versao);
-                        });
-                        sync.setRunning(-1);
+                            sync.setRunning(-1);
+                        } else {
+                            daoUtil.delete(res, function () {
+                                notifyUtil.addScheduleNotification(
+                                        notifyUtil.getTitleNew(theEntity, "delete"),
+                                        notifyUtil.getMessageNew(theEntity),
+                                        new Date(),
+                                        function () {
+                                            var loadList = window[theEntity.tableName + "Controller"]["loadList"];
+                                            loadList();
+                                        });
+                                window.localStorage.setItem("versaoDelete" + theEntity.tableName, theEntity.versao);
+                                sync.setRunning(-1);
+                            });
+                        }
                     });
                 });
             } else {

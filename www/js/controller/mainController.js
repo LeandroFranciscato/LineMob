@@ -26,20 +26,6 @@ var mainController = {
                 title: i18next.t("app.name"),
                 icon: ""
             },
-            navRight: {
-                display: "block",
-                iconName: iconUtil.refresh,
-                callbackClick: function () {
-                    if (!networkUtil.isOnline()) {
-                        alertUtil.confirm(i18next.t("generics.must-be-online"));
-                    } else {                                                
-                        loadController.show();                        
-                        setTimeout(function () {                            
-                            sync.run();
-                        }, 2000);
-                    }
-                }
-            },
             navSearch: {
                 display: "none"
             }

@@ -72,18 +72,10 @@ var loginController = {
             loginController.requestLogin(function () {
                 if ($('#checkBoxLembrar').prop('checked') === true) {
                     Controller.insert(i18next.t("login-controller.alert-welcome-pt1") + $("#inputUsuario").val(), undefined, function () {
-                        mainController.render();
-                        loadController.show();
-                        setTimeout(function () {
-                            sync.run();
-                        }, 2000);
+                        mainController.render();                        
                     });
                 } else {
-                    mainController.render();
-                    loadController.show();
-                    setTimeout(function () {
-                        sync.run();
-                    }, 2000);
+                    mainController.render();                    
                 }
             }, function () {
                 alertUtil.confirm(i18next.t("login-controller.alert-login-fail"));
@@ -98,9 +90,7 @@ var loginController = {
                 function (btnEscolhido) {
                     if (btnEscolhido == 2) {
                         dbUtil.dropDatabase(function () {
-                            window.localStorage.removeItem("user");
-                            window.localStorage.removeItem("pwd");
-                            window.localStorage.removeItem("dataBaseCreated");
+                            window.localStorage.clear();
                             navigator.app.exitApp();
                         });
                     }
