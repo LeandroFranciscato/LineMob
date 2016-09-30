@@ -14,102 +14,83 @@ var cartaoSync = {
             }
             sync.setRunning(cartoes.length);
             cartoes.forEach(function (cartao) {
-                var conta = new Conta();
-                conta.id = cartao.idConta;
-                daoUtil.getById(conta, function (res) {
-                    conta = res;
-                    if (conta.idExterno) {
-                        cartao.idExternoConta = conta.idExterno;
-                        if (type === "insert") {
-                            sync.insertRequest(cartao);
+                daoUtil.getVersao("max", cartao, function (versao) {
+                    cartao.versao = versao;
+                    var conta = new Conta();
+                    conta.id = cartao.idConta;
+                    daoUtil.getById(conta, function (res) {
+                        conta = res;
+                        if (conta.idExterno) {
+                            cartao.idExternoConta = conta.idExterno;
+                            if (type === "insert") {
+                                sync.insertRequest(cartao);
+                            } else {
+                                sync.updateRequest(cartao);
+                            }
                         } else {
-                            sync.updateRequest(cartao);
+                            sync.setRunning(-1);
                         }
-                    } else {
-                        sync.setRunning(-1);
-                    }
+                    });
                 });
             });
         });
     },
     getInsertedRequest: function (callbackSuccess, callbackError) {
         var cartao = new Cartao();
-        sync.ajax("GET", "JSON", cartao.tableName, {}, function (responseCartoes) {
-            if (responseCartoes.length) {
-                sync.setRunning(responseCartoes.length);
-                responseCartoes.forEach(function (theCartao) {
-                    theCartao.tableName = cartao.tableName;
-                    theCartao.idExterno = theCartao.id;
-                    theCartao.id = "";
+        daoUtil.getVersao("max", cartao, function (versao) {
+            var url = cartao.tableName + "/" + versao + "/1/0";
+            sync.ajax("GET", "JSON", url, {}, function (responseCartoes) {
+                if (responseCartoes.length) {
+                    sync.setRunning(responseCartoes.length);
+                    responseCartoes.forEach(function (theCartao) {
+                        theCartao.tableName = cartao.tableName;
+                        theCartao.idExterno = theCartao.id;
+                        theCartao.id = "";
 
-                    var conta = new Conta();
-                    conta.idExterno = theCartao.idExternoConta;
-                    daoUtil.getByIdExterno(conta, function (res) {
-                        if (res) {
-                            theCartao.idConta = res.id;
-                            daoUtil.getByIdExterno(theCartao, function (res) {
-                                sync.setRunning(-1);
-                                var modelEntity;
-                                if (!res) {
-                                    modelEntity = sync.jsonToEntity(theCartao, cartao);
-                                    daoUtil.insert(modelEntity, function () {
+                        var conta = new Conta();
+                        conta.idExterno = theCartao.idExternoConta;
+                        daoUtil.getByIdExterno(conta, function (res) {
+                            if (res) {
+                                theCartao.idConta = res.id;
+                                daoUtil.getByIdExterno(theCartao, function (res) {
+                                    var customFunction;
+                                    var acao;
+                                    if (res) {
+                                        acao = "update";
+                                        theCartao.id = res.id;
+                                    } else {
+                                        acao = "insert";
+                                    }
+                                    customFunction = window["daoUtil"][acao];
+                                    var modelCartao = sync.jsonToEntity(theCartao, cartao);
+                                    customFunction(modelCartao, function () {
                                         notifyUtil.addScheduleNotification(
-                                                notifyUtil.getTitleNew(modelEntity),
-                                                notifyUtil.getMessageNew(modelEntity),
+                                                notifyUtil.getTitleNew(modelCartao, acao),
+                                                notifyUtil.getMessageNew(modelCartao),
                                                 new Date(),
                                                 function () {
-                                                    daoUtil.getByIdExterno(modelEntity, function (res) {                                                        
+                                                    daoUtil.getByIdExterno(modelCartao, function (res) {
                                                         cartaoController.loadNewOrSingleEdit(res);
                                                     });
                                                 });
+                                        sync.setRunning(-1);
                                     });
-                                }
-                            });
-                        } else {
-                            sync.setRunning(-1);
-                        }
-                    });
-                });
-            } else {
-                if (callbackError) {
-                    callbakError();
-                }
-            }
-        }, function (errorThrown) {
-            if (callbackError) {
-                callbackError(errorThrown);
-            }
-        });
-    },
-    getUpdatedRequest: function (jsonObject, cb) {
-        var cartao = new Cartao();
-        var theCartao = sync.jsonToEntity(jsonObject, cartao);
-        theCartao.idExterno = theCartao.id;
-        daoUtil.getByIdExterno(theCartao, function (res) {
-            if (res) {
-                theCartao.id = res.id;
-
-                var conta = new Conta();
-                conta.idExterno = theCartao.idExternoConta;
-                daoUtil.getByIdExterno(conta, function (res) {
-                    if (res) {
-                        theCartao.idConta = res.id;
-                        daoUtil.update(theCartao, function (rowsAffected) {
-                            if (cb) {
-                                cb(rowsAffected);
+                                });
+                            } else {
+                                sync.setRunning(-1);
                             }
                         });
-                    } else {
-                        if (cb) {
-                            cb();
-                        }
+                    });
+                } else {
+                    if (callbackSuccess) {
+                        callbackSuccess();
                     }
-                });
-            } else {
-                if (cb) {
-                    cb();
                 }
-            }
+            }, function (errorThrown) {
+                if (callbackError) {
+                    callbackError(errorThrown);
+                }
+            });
         });
     }
 };

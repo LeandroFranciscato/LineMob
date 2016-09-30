@@ -13,11 +13,6 @@ var sync = {
             return;
         }
         if (this.running === 0 || !this.running) {
-            /*  sync.insertEntity(new Conta());
-             sync.deleteEntity(new Conta());
-             sync.updateEntity(new Conta());
-             sync.getInsertedRequest(new Conta());
-             */
 
             sync.getInsertedRequest(new Pessoa(), function () {
                 sync.insertEntity(new Pessoa());
@@ -25,46 +20,35 @@ var sync = {
                 sync.getDeletedRequest(new Pessoa(), function () {
                     sync.deleteEntity(new Pessoa());
                 });
-            });
-            
-            sync.getInsertedRequest(new Conta(), function () {
-                sync.insertEntity(new Conta());
-                sync.updateEntity(new Conta());
-                sync.getDeletedRequest(new Conta(), function () {
-                    sync.deleteEntity(new Conta());
+                sync.getInsertedRequest(new Conta(), function () {
+                    sync.insertEntity(new Conta());
+                    sync.updateEntity(new Conta());
+                    sync.getDeletedRequest(new Conta(), function () {
+                        sync.deleteEntity(new Conta());
+                    });
+                    sync.getInsertedRequest(new Categoria(), function () {
+                        sync.insertEntity(new Categoria());
+                        sync.updateEntity(new Categoria());
+                        sync.getDeletedRequest(new Categoria(), function () {
+                            sync.deleteEntity(new Categoria());
+                        });
+                        cartaoSync.getInsertedRequest(function () {
+                            cartaoSync.insertUpdate("insert");
+                            cartaoSync.insertUpdate("update");
+                            sync.getDeletedRequest(new Cartao(), function () {
+                                sync.deleteEntity(new Cartao());
+                            });
+                            movimentoSync.getInsertedRequest(function () {
+                                movimentoSync.insertUpdate("insert");
+                                movimentoSync.insertUpdate("update");
+                                sync.getDeletedRequest(new Cartao(), function () {
+                                    sync.deleteEntity(new Cartao());
+                                });
+                            });
+                        });
+                    });
                 });
             });
-            
-            sync.getInsertedRequest(new Categoria(), function () {
-                sync.insertEntity(new Categoria());
-                sync.updateEntity(new Categoria());
-                sync.getDeletedRequest(new Categoria(), function () {
-                    sync.deleteEntity(new Categoria());
-                });
-            });
-
-            /*
-             sync.insertEntity(new Categoria());
-             sync.deleteEntity(new Categoria());
-             sync.updateEntity(new Categoria());
-             sync.getInsertedRequest(new Categoria());
-             
-             cartaoSync.insertUpdate("insert");
-             sync.deleteEntity(new Cartao());
-             cartaoSync.insertUpdate("update");
-             cartaoSync.getInsertedRequest();
-             
-             movimentoSync.insertUpdate("insert");
-             sync.deleteEntity(new Movimento());
-             movimentoSync.insertUpdate("update");
-             movimentoSync.getInsertedRequest();
-             
-             
-             sync.getDeletedUpdatedRequest(new Conta());             
-             sync.getDeletedUpdatedRequest(new Categoria());
-             sync.getDeletedUpdatedRequest(new Cartao());
-             sync.getDeletedUpdatedRequest(new Movimento());
-             */
         }
     },
     insertEntity: function (entity) {
@@ -180,10 +164,24 @@ var sync = {
                     }
                 });
             } else {
-                sync.setRunning(-1);
-                if (callbackError) {
-                    callbackError();
-                }
+                entity.deleted = 0;
+                daoUtil.update(entity, function (res) {
+                    notifyUtil.addScheduleNotification(
+                            notifyUtil.getTitleNew(entity, "delete"),
+                            notifyUtil.getMessageNew(i18next.t(remoteRowsAffected)),
+                            new Date(),
+                            function () {
+                                daoUtil.getByIdExterno(entity, function (res) {
+                                    var loadNewOrSingleEdit = window[entity.tableName + "Controller"]["loadNewOrSingleEdit"];
+                                    loadNewOrSingleEdit(res);   
+                                    alertUtil.confirm(remoteRowsAffected);
+                                });
+                            });
+                    sync.setRunning(-1);
+                    if (callbackError) {
+                        callbackError();
+                    }
+                });
             }
         }, function (errorThrown) {
             sync.setRunning(-1);
@@ -284,7 +282,7 @@ var sync = {
         });
     },
     ajax: function (httpType, responseType, url, dataInput, cbSuccess, cbError) {
-        url = "http://10.0.0.102:8080/LinemobAPI/" + url;
+        url = "http://10.1.1.6:8080/LinemobAPI/" + url;
         $.ajax({
             crossDomain: true,
             type: httpType,

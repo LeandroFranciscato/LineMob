@@ -3,6 +3,10 @@
         <div class="invisible">                       
             <input type="text" class="" id="id" name="id" value="{{id}}">
         </div>
+        
+        <div class="invisible">                       
+            <input type="text" class="" id="versao" name="versao" value="{{versao}}">
+        </div>
 
         <div class="row">
             <div class="input-field col s6">
@@ -112,5 +116,9 @@
                 $("#valor").mask("000000000.00", {reverse: true});      
             });
         </script>
+        <div class="row grey-text">
+            <center>{{#idExterno}}_Id:{{/idExterno}} {{idExterno}}</center> 
+            <center>{{#versao}}_vs:{{/versao}} {{versao}}</center> 
+        </div>
     </form>
 </div>

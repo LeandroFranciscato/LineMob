@@ -66,10 +66,16 @@ var notifyUtil = {
         }
     },
     getMessageNew: function (entity) {
-        if (entity.tableName === "movimento") {
-            return entity.descricao;
-        } else {
+        if (entity.tableName === "pessoa") {
+            return entity.nome + " / " + entity.apelido;
+        } else if (entity.tableName === "categoria") {
+            return (entity.nomeSubCategoria) ? entity.nome + " / " + entity.nomeSubCategoria : entity.nome;
+        } else if (entity.tableName === "cartao") {
             return entity.nome;
+        } else if (entity.tableName === "conta") {
+            return entity.nome;
+        } else if (entity.tableName === "movimento") {
+            return i18next.t("generics.currency-symbol") + " " + entity.valor + " : " + entity.descricao;
         }
     }
 };

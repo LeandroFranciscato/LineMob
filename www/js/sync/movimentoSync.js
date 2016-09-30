@@ -14,123 +14,49 @@ var movimentoSync = {
             }
             sync.setRunning(movimentos.length);
             movimentos.forEach(function (movimento) {
-
-                var conta = new Conta();
-                conta.id = movimento.idConta;
-                daoUtil.getById(conta, function (res) {
-                    conta = res;
-                    if (conta.idExterno) {
-                        movimento.idExternoConta = conta.idExterno;
-
-                        var categoria = new Categoria();
-                        categoria.id = movimento.idCategoria;
-                        daoUtil.getById(categoria, function (res) {
-                            categoria = res;
-                            if (categoria.idExterno) {
-                                movimento.idExternoCategoria = categoria.idExterno;
-
-                                var pessoa = new Pessoa();
-                                pessoa.id = movimento.idPessoa;
-                                daoUtil.getById(pessoa, function (res) {
-                                    pessoa = res;
-                                    if (pessoa.idExterno) {
-                                        movimento.idExternoPessoa = pessoa.idExterno;
-
-                                        var cartao = new Cartao();
-                                        cartao.id = movimento.idCartao;
-                                        daoUtil.getById(cartao, function (res) {
-                                            if (res) {
-                                                cartao = res;
-                                                if (cartao.idExterno) {
-                                                    movimento.idExternoCartao = cartao.idExterno;
-                                                } else {
-                                                    sync.setRunning(-1);
-                                                    return;
-                                                }
-                                            } else {
-                                                movimento.idExternoCartao = null;
-                                            }
-
-                                            if (type === "insert") {
-                                                sync.insertRequest(movimento);
-                                            } else {
-                                                sync.updateRequest(movimento);
-                                            }
-                                        });
-                                    } else {
-                                        sync.setRunning(-1);
-                                    }
-                                });
-                            } else {
-                                sync.setRunning(-1);
-                            }
-                        });
-                    } else {
-                        sync.setRunning(-1);
-                    }
-                });
-            });
-        });
-    },
-    getInsertedRequest: function (callbackSuccess, callbackError) {
-        var movimento = new Movimento();
-        sync.ajax("GET", "JSON", movimento.tableName, {}, function (responseMovimentos) {
-            if (responseMovimentos.length) {
-                sync.setRunning(responseMovimentos.length);
-                responseMovimentos.forEach(function (theMovimento) {
-                    theMovimento.tableName = movimento.tableName;
-                    theMovimento.idExterno = theMovimento.id;
-                    theMovimento.id = "";
-
+                daoUtil.getVersao("max", movimento, function (versao) {
+                    movimento.versao = versao;
                     var conta = new Conta();
-                    conta.idExterno = theMovimento.idExternoConta;
-                    daoUtil.getByIdExterno(conta, function (res) {
-                        if (res) {
-                            theMovimento.idConta = res.id;
+                    conta.id = movimento.idConta;
+                    daoUtil.getById(conta, function (res) {
+                        conta = res;
+                        if (conta.idExterno) {
+                            movimento.idExternoConta = conta.idExterno;
 
-                            var pessoa = new Pessoa();
-                            pessoa.idExterno = theMovimento.idExternoPessoa;
-                            daoUtil.getByIdExterno(pessoa, function (res) {
-                                if (res) {
-                                    theMovimento.idPessoa = res.id;
+                            var categoria = new Categoria();
+                            categoria.id = movimento.idCategoria;
+                            daoUtil.getById(categoria, function (res) {
+                                categoria = res;
+                                if (categoria.idExterno) {
+                                    movimento.idExternoCategoria = categoria.idExterno;
 
-                                    var categoria = new Categoria();
-                                    categoria.idExterno = theMovimento.idExternoCategoria;
-                                    daoUtil.getByIdExterno(categoria, function (res) {
-                                        if (res) {
-                                            theMovimento.idCategoria = res.id;
+                                    var pessoa = new Pessoa();
+                                    pessoa.id = movimento.idPessoa;
+                                    daoUtil.getById(pessoa, function (res) {
+                                        pessoa = res;
+                                        if (pessoa.idExterno) {
+                                            movimento.idExternoPessoa = pessoa.idExterno;
 
                                             var cartao = new Cartao();
-                                            cartao.idExterno = theMovimento.idExternoCartao;
-                                            daoUtil.getByIdExterno(cartao, function (res) {
-                                                if (theMovimento.idExternoCartao) {
-                                                    if (res) {
-                                                        theMovimento.idCartao = res.id;
+                                            cartao.id = movimento.idCartao;
+                                            daoUtil.getById(cartao, function (res) {
+                                                if (res) {
+                                                    cartao = res;
+                                                    if (cartao.idExterno) {
+                                                        movimento.idExternoCartao = cartao.idExterno;
                                                     } else {
                                                         sync.setRunning(-1);
                                                         return;
                                                     }
                                                 } else {
-                                                    theMovimento.idCartao = null;
+                                                    movimento.idExternoCartao = null;
                                                 }
-                                                daoUtil.getByIdExterno(theMovimento, function (res) {
-                                                    sync.setRunning(-1);
-                                                    var modelEntity;
-                                                    if (!res) {
-                                                        modelEntity = sync.jsonToEntity(theMovimento, movimento);
-                                                        daoUtil.insert(modelEntity, function () {
-                                                            notifyUtil.addScheduleNotification(
-                                                                    notifyUtil.getTitleNew(modelEntity),
-                                                                    notifyUtil.getMessageNew(modelEntity),
-                                                                    new Date(),
-                                                                    function () {
-                                                                        daoUtil.getByIdExterno(modelEntity, function (res) {                                                                            
-                                                                            movimentoController.loadNewOrSingleEdit(res);
-                                                                        });
-                                                                    });
-                                                        });
-                                                    }
-                                                });
+
+                                                if (type === "insert") {
+                                                    sync.insertRequest(movimento);
+                                                } else {
+                                                    sync.updateRequest(movimento);
+                                                }
                                             });
                                         } else {
                                             sync.setRunning(-1);
@@ -145,37 +71,26 @@ var movimentoSync = {
                         }
                     });
                 });
-            } else {
-                if (callbackError) {
-                    callbakError();
-                }
-            }
-        }, function (errorThrown) {
-            if (callbackError) {
-                callbackError(errorThrown);
-            }
+            });
         });
     },
-    getUpdatedRequest: function (jsonObject, cb) {
+    getInsertedRequest: function (callbackSuccess, callbackError) {
         var movimento = new Movimento();
-        var theMovimento = sync.jsonToEntity(jsonObject, movimento);
-        theMovimento.idExterno = theMovimento.id;
-        daoUtil.getByIdExterno(theMovimento, function (res) {
-            if (res) {
-                theMovimento.id = res.id;
+        daoUtil.getVersao("max", movimento, function (versao) {
+            var url = movimento.tableName + "/" + versao + "/1/0";
+            sync.ajax("GET", "JSON", url, {}, function (responseMovimentos) {
+                if (responseMovimentos.length) {
+                    sync.setRunning(responseMovimentos.length);
+                    responseMovimentos.forEach(function (theMovimento) {
+                        theMovimento.tableName = movimento.tableName;
+                        theMovimento.idExterno = theMovimento.id;
+                        theMovimento.id = "";
 
-                var conta = new Conta();
-                conta.idExterno = theMovimento.idExternoConta;
-                daoUtil.getByIdExterno(conta, function (res) {
-                    if (res) {
-                        theMovimento.idConta = res.id;
-
-                        var categoria = new Categoria();
-                        categoria.idExterno = theMovimento.idExternoCategoria;
-                        daoUtil.getByIdExterno(categoria, function (res) {
+                        var conta = new Conta();
+                        conta.idExterno = theMovimento.idExternoConta;
+                        daoUtil.getByIdExterno(conta, function (res) {
                             if (res) {
-                                theMovimento.idCategoria = res.id;
-
+                                theMovimento.idConta = res.id;
 
                                 var pessoa = new Pessoa();
                                 pessoa.idExterno = theMovimento.idExternoPessoa;
@@ -183,49 +98,73 @@ var movimentoSync = {
                                     if (res) {
                                         theMovimento.idPessoa = res.id;
 
-                                        var cartao = new Cartao();
-                                        cartao.idExterno = theMovimento.idExternoCartao;
-                                        daoUtil.getByIdExterno(cartao, function (res) {
-                                            if (theMovimento.idExternoCartao) {
-                                                if (res) {
-                                                    theMovimento.idCartao = res.id;
-                                                } else {
-                                                    if (cb) {
-                                                        cb();
+                                        var categoria = new Categoria();
+                                        categoria.idExterno = theMovimento.idExternoCategoria;
+                                        daoUtil.getByIdExterno(categoria, function (res) {
+                                            if (res) {
+                                                theMovimento.idCategoria = res.id;
+
+                                                var cartao = new Cartao();
+                                                cartao.idExterno = theMovimento.idExternoCartao;
+                                                daoUtil.getByIdExterno(cartao, function (res) {
+                                                    if (theMovimento.idExternoCartao) {
+                                                        if (res) {
+                                                            theMovimento.idCartao = res.id;
+                                                        } else {
+                                                            sync.setRunning(-1);
+                                                            return;
+                                                        }
+                                                    } else {
+                                                        theMovimento.idCartao = null;
                                                     }
-                                                }
+                                                    daoUtil.getByIdExterno(theMovimento, function (res) {
+                                                        var customFunction;
+                                                        var acao;
+                                                        if (res) {
+                                                            acao = "update";
+                                                            theMovimento.id = res.id;
+                                                        } else {
+                                                            acao = "insert";
+                                                        }
+                                                        customFunction = window["daoUtil"][acao];
+                                                        var modelMovimento = sync.jsonToEntity(theMovimento, movimento);
+                                                        customFunction(modelMovimento, function () {
+                                                            notifyUtil.addScheduleNotification(
+                                                                    notifyUtil.getTitleNew(modelMovimento, acao),
+                                                                    notifyUtil.getMessageNew(modelMovimento),
+                                                                    new Date(),
+                                                                    function () {
+                                                                        daoUtil.getByIdExterno(modelMovimento, function (res) {
+                                                                            movimentoController.loadNewOrSingleEdit(res);
+                                                                        });
+                                                                    });
+                                                            sync.setRunning(-1);
+                                                        });
+                                                    });
+                                                });
                                             } else {
-                                                theMovimento.idCartao = null;
+                                                sync.setRunning(-1);
                                             }
-                                            daoUtil.update(theMovimento, function (rowsAffected) {
-                                                if (cb) {
-                                                    cb(rowsAffected);
-                                                }
-                                            });
                                         });
                                     } else {
-                                        if (cb) {
-                                            cb();
-                                        }
+                                        sync.setRunning(-1);
                                     }
                                 });
                             } else {
-                                if (cb) {
-                                    cb();
-                                }
+                                sync.setRunning(-1);
                             }
                         });
-                    } else {
-                        if (cb) {
-                            cb();
-                        }
+                    });
+                } else {
+                    if (callbackSuccess) {
+                        callbackSuccess();
                     }
-                });
-            } else {
-                if (cb) {
-                    cb();
                 }
-            }
+            }, function (errorThrown) {
+                if (callbackError) {
+                    callbackError(errorThrown);
+                }
+            });
         });
     }
 };
