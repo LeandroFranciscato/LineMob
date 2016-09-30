@@ -149,7 +149,8 @@
         "search": "Pesquisar...",
         "must-be-online": "Você deve estar Online para executar esta ação!",
         "currency": "Real",
-        "currency-symbol": "R$"
+        "currency-symbol": "R$",
+        "error-deleting-server": "Erro deletando "
     },
     "server-messages": {
         "remove-categoria-used-movimento": "Categoria não pode ser deletada porque está vinculada a um Lançamento!",

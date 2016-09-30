@@ -165,16 +165,16 @@ var sync = {
                 });
             } else {
                 entity.deleted = 0;
-                daoUtil.update(entity, function (res) {
+                daoUtil.update(entity, function (rowsAffected) {
                     notifyUtil.addScheduleNotification(
-                            notifyUtil.getTitleNew(entity, "delete"),
-                            notifyUtil.getMessageNew(i18next.t(remoteRowsAffected)),
+                            i18next.t("generics.error-deleting-server") + entity.tableName,
+                            i18next.t(remoteRowsAffected),
                             new Date(),
                             function () {
                                 daoUtil.getByIdExterno(entity, function (res) {
                                     var loadNewOrSingleEdit = window[entity.tableName + "Controller"]["loadNewOrSingleEdit"];
-                                    loadNewOrSingleEdit(res);   
-                                    alertUtil.confirm(remoteRowsAffected);
+                                    loadNewOrSingleEdit(res);
+                                    alertUtil.confirm(i18next.t(remoteRowsAffected));
                                 });
                             });
                     sync.setRunning(-1);
