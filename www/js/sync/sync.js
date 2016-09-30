@@ -26,6 +26,22 @@ var sync = {
                     sync.deleteEntity(new Pessoa());
                 });
             });
+            
+            sync.getInsertedRequest(new Conta(), function () {
+                sync.insertEntity(new Conta());
+                sync.updateEntity(new Conta());
+                sync.getDeletedRequest(new Conta(), function () {
+                    sync.deleteEntity(new Conta());
+                });
+            });
+            
+            sync.getInsertedRequest(new Categoria(), function () {
+                sync.insertEntity(new Categoria());
+                sync.updateEntity(new Categoria());
+                sync.getDeletedRequest(new Categoria(), function () {
+                    sync.deleteEntity(new Categoria());
+                });
+            });
 
             /*
              sync.insertEntity(new Categoria());

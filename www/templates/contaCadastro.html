@@ -3,6 +3,10 @@
         <div class="invisible">                       
             <input type="text" class="" id="id" name="id" value="{{id}}">
         </div>
+        
+        <div class="invisible">                       
+            <input type="text" class="" id="versao" name="versao" value="{{versao}}">
+        </div>
 
         <div class="row">
             <div class="input-field col s12">
@@ -16,11 +20,14 @@
                 <input type="date" id="data-fundacao" name="dataFundacao" value="{{dataFundacao}}">
                 <label for="data-fundacao" class="active" data-i18n="conta-controller.field-dataFundacao"></label>
             </div>        
-            
+
             <div class="input-field col s6">                        
                 <input type="tel" id="valor-saldo-inicial" class="value" name="valorSaldoInicial" value="{{valorSaldoInicial}}" placeholder="" data-i18n="[placeholder]conta-controller.field-valorSaldoInicial">
                 <label for="valor-saldo-inicial" class="active" data-i18n="conta-controller.field-valorSaldoInicial"></label>
             </div>            
-        </div>              
+        </div>      
+        <div class="row grey-text">
+            <center>{{#idExterno}}_Id:{{/idExterno}} {{idExterno}}</center> 
+        </div>        
     </form>
 </div>
