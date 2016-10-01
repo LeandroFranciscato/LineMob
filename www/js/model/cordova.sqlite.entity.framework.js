@@ -120,7 +120,7 @@ var daoUtil = {
         var sql = "select * from " + entity.tableName + " where deleted <> '1' ";
 
         if (orderByColumn) {
-            sql += " order by " + orderByColumn;
+            sql += " order by " + orderByColumn + " COLLATE NOCASE ";
         }
 
         dbUtil.executeSql(sql, [], function (res) {
@@ -167,7 +167,7 @@ var daoUtil = {
         var sql = "select * from " + entity.tableName + " where deleted <> '1' ";
 
         if (orderByColumn) {
-            sql += " order by " + orderByColumn;
+            sql += " order by " + orderByColumn + " COLLATE NOCASE ";
         }
 
         sql += " limit ?, ?";
@@ -219,7 +219,7 @@ var daoUtil = {
             sql += ")";
 
             if (orderbyColumn) {
-                sql += " order by " + orderbyColumn;
+                sql += " order by " + orderbyColumn + " COLLATE NOCASE ";
             }
 
             dbUtil.executeSql(sql, [], function (res) {

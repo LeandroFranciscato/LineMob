@@ -13,41 +13,53 @@ var sync = {
             return;
         }
         if (this.running === 0 || !this.running) {
-
+            /*ESTE CALLBACK TORNOU-SE NECESSÁRIO DEVIDO A 
+             * NECESSIDADE DE ATUALIZAR O DEVICE ANTES DE
+             * ENVIAR ATUALIZAÇÕES PARA O SERVIDOR*/
             sync.getInsertedRequest(new Pessoa(), function () {
-                sync.insertEntity(new Pessoa());
-                sync.updateEntity(new Pessoa());
                 sync.getDeletedRequest(new Pessoa(), function () {
-                    sync.deleteEntity(new Pessoa());
-                });
-                sync.getInsertedRequest(new Conta(), function () {
-                    sync.insertEntity(new Conta());
-                    sync.updateEntity(new Conta());
-                    sync.getDeletedRequest(new Conta(), function () {
-                        sync.deleteEntity(new Conta());
-                    });
-                    sync.getInsertedRequest(new Categoria(), function () {
-                        sync.insertEntity(new Categoria());
-                        sync.updateEntity(new Categoria());
-                        sync.getDeletedRequest(new Categoria(), function () {
-                            sync.deleteEntity(new Categoria());
-                        });
-                        cartaoSync.getInsertedRequest(function () {
-                            cartaoSync.insertUpdate("insert");
-                            cartaoSync.insertUpdate("update");
-                            sync.getDeletedRequest(new Cartao(), function () {
-                                sync.deleteEntity(new Cartao());
-                            });
-                            movimentoSync.getInsertedRequest(function () {
-                                movimentoSync.insertUpdate("insert");
-                                movimentoSync.insertUpdate("update");
-                                sync.getDeletedRequest(new Cartao(), function () {
-                                    sync.deleteEntity(new Cartao());
+                    sync.getInsertedRequest(new Conta(), function () {
+                        sync.getDeletedRequest(new Conta(), function () {
+                            sync.getInsertedRequest(new Categoria(), function () {
+                                sync.getDeletedRequest(new Categoria(), function () {
+                                    cartaoSync.getInsertedRequest(function () {
+                                        sync.getDeletedRequest(new Cartao(), function () {
+                                            movimentoSync.getInsertedRequest(function () {
+                                                sync.getDeletedRequest(new Movimento(), function () {
+
+                                                    sync.insertEntity(new Pessoa());
+                                                    sync.updateEntity(new Pessoa());
+                                                    sync.deleteEntity(new Pessoa());
+
+                                                    sync.insertEntity(new Conta());
+                                                    sync.updateEntity(new Conta());
+                                                    sync.deleteEntity(new Conta());
+
+                                                    sync.insertEntity(new Categoria());
+                                                    sync.updateEntity(new Categoria());
+                                                    sync.deleteEntity(new Categoria());
+
+                                                    cartaoSync.insertUpdate("insert");
+                                                    cartaoSync.insertUpdate("update");
+                                                    sync.deleteEntity(new Cartao());
+
+                                                    movimentoSync.insertUpdate("insert");
+                                                    movimentoSync.insertUpdate("update");
+                                                    sync.deleteEntity(new Movimento());
+
+                                                });
+                                            });
+                                        });
+                                    });
                                 });
                             });
                         });
                     });
+
+
+
                 });
+
             });
         }
     },
@@ -149,8 +161,8 @@ var sync = {
     },
     deleteRequest: function (entity, callbackSuccess, callbackError) {
         var urlPath = entity.tableName + "/" + entity.idExterno + "/del";
-        sync.ajax("PUT", "TEXT", urlPath, entity, function (remoteRowsAffected) {
-            if (remoteRowsAffected == 1) {
+        sync.ajax("PUT", "TEXT", urlPath, entity, function (serverResponse) {
+            if (serverResponse == 1) {
                 daoUtil.delete(entity, function (rowsAffected) {
                     sync.setRunning(-1);
                     if (rowsAffected != 0) {
@@ -168,15 +180,16 @@ var sync = {
                 daoUtil.update(entity, function (rowsAffected) {
                     notifyUtil.addScheduleNotification(
                             i18next.t("generics.error-deleting-server") + entity.tableName,
-                            i18next.t(remoteRowsAffected),
+                            i18next.t(serverResponse),
                             new Date(),
                             function () {
                                 daoUtil.getByIdExterno(entity, function (res) {
                                     var loadNewOrSingleEdit = window[entity.tableName + "Controller"]["loadNewOrSingleEdit"];
                                     loadNewOrSingleEdit(res);
-                                    alertUtil.confirm(i18next.t(remoteRowsAffected));
+                                    alertUtil.confirm(i18next.t(serverResponse));
                                 });
-                            });
+                            }
+                    );
                     sync.setRunning(-1);
                     if (callbackError) {
                         callbackError();
@@ -213,16 +226,34 @@ var sync = {
                             var modelEntity;
                             modelEntity = sync.jsonToEntity(theEntity, entity);
                             customFunction(modelEntity, function () {
-                                notifyUtil.addScheduleNotification(
-                                        notifyUtil.getTitleNew(modelEntity, acao),
-                                        notifyUtil.getMessageNew(modelEntity),
-                                        new Date(),
-                                        function () {
-                                            daoUtil.getByIdExterno(modelEntity, function (res) {
-                                                var loadNewOrSingleEdit = window[modelEntity.tableName + "Controller"]["loadNewOrSingleEdit"];
-                                                loadNewOrSingleEdit(res);
-                                            });
-                                        });
+                                if (res && (res.updated == 1 || res.deleted == 1)) {
+                                    var textoStatusServer = i18next.t("generics.sync-conflict") + res.tableName;
+                                    var textoStatusLocal = (res.updated == 1) ? i18next.t("generics.you-updated-but") : i18next.t("generics.you-deleted-but");
+                                    notifyUtil.addScheduleNotification(
+                                            textoStatusServer,
+                                            textoStatusLocal,
+                                            new Date(),
+                                            function () {
+                                                daoUtil.getByIdExterno(modelEntity, function (res) {
+                                                    var loadNewOrSingleEdit = window[modelEntity.tableName + "Controller"]["loadNewOrSingleEdit"];
+                                                    loadNewOrSingleEdit(res);
+                                                    alertUtil.confirm(textoStatusLocal);
+                                                });
+                                            }
+                                    );
+                                } else {
+                                    notifyUtil.addScheduleNotification(
+                                            notifyUtil.getTitleNew(modelEntity, acao),
+                                            notifyUtil.getMessageNew(modelEntity),
+                                            new Date(),
+                                            function () {
+                                                daoUtil.getByIdExterno(modelEntity, function (res) {
+                                                    var loadNewOrSingleEdit = window[modelEntity.tableName + "Controller"]["loadNewOrSingleEdit"];
+                                                    loadNewOrSingleEdit(res);
+                                                });
+                                            }
+                                    );
+                                }
                                 sync.setRunning(-1);
                             });
                         });
@@ -238,7 +269,8 @@ var sync = {
                 }
             });
         });
-    },
+    }
+    ,
     getDeletedRequest: function (entity, callbackSuccess, callbackError) {
         var versao = window.localStorage.getItem("versaoDelete" + entity.tableName);
         versao = (versao) ? versao : 0;
@@ -256,14 +288,30 @@ var sync = {
                             sync.setRunning(-1);
                         } else {
                             daoUtil.delete(res, function () {
-                                notifyUtil.addScheduleNotification(
-                                        notifyUtil.getTitleNew(theEntity, "delete"),
-                                        notifyUtil.getMessageNew(theEntity),
-                                        new Date(),
-                                        function () {
-                                            var loadList = window[theEntity.tableName + "Controller"]["loadList"];
-                                            loadList();
-                                        });
+                                if (res && (res.updated == 1 || res.deleted == 1)) {
+                                    var textoStatusServer = i18next.t("generics.sync-conflict") + res.tableName;
+                                    var textoStatusLocal = (res.updated == 1) ? i18next.t("generics.you-updated-but-another-delete") : i18next.t("generics.you-deleted-but-another-deleted");
+                                    notifyUtil.addScheduleNotification(
+                                            textoStatusServer,
+                                            textoStatusLocal,
+                                            new Date(),
+                                            function () {
+                                                var loadList = window[theEntity.tableName + "Controller"]["loadList"];
+                                                loadList();
+                                                alertUtil.confirm(textoStatusLocal);
+                                            }
+                                    );
+                                } else {
+                                    notifyUtil.addScheduleNotification(
+                                            notifyUtil.getTitleNew(theEntity, "delete"),
+                                            notifyUtil.getMessageNew(theEntity),
+                                            new Date(),
+                                            function () {
+                                                var loadList = window[theEntity.tableName + "Controller"]["loadList"];
+                                                loadList();
+                                            }
+                                    );
+                                }
                                 window.localStorage.setItem("versaoDelete" + theEntity.tableName, theEntity.versao);
                                 sync.setRunning(-1);
                             });
@@ -282,7 +330,7 @@ var sync = {
         });
     },
     ajax: function (httpType, responseType, url, dataInput, cbSuccess, cbError) {
-        url = "http://10.1.1.6:8080/LinemobAPI/" + url;
+        url = "http://10.0.0.100:8080/LinemobAPI/" + url;
         $.ajax({
             crossDomain: true,
             type: httpType,
