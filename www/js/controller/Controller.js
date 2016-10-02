@@ -10,6 +10,7 @@ var Controller = {
             inicial: 0,
             final: 10,
             orderBy: undefined,
+            isDescent: false,
             template: "",
             navLeft: {},
             navCenter: {},
@@ -29,7 +30,7 @@ var Controller = {
                             cb();
                         }
                     });
-                });
+                }, this.options.isDescent);
     },
     loadSearchedList: function (options, searchText, cb) {
         this.options = {
@@ -38,6 +39,7 @@ var Controller = {
             inicial: 0,
             final: 10,
             orderBy: undefined,
+            isDescent: false,
             template: "",
             navCenter: {},
             navLeft: {},
@@ -53,7 +55,7 @@ var Controller = {
                     cb();
                 }
             });
-        });
+        }, this.options.isDescent);
     },
     loadNewOrSingleEdit: function (options, data, cb) {
         this.options = {
@@ -179,7 +181,7 @@ var Controller = {
         this.setOptions(this.options, options);
 
         /*front-end controllers*/
-        this.renderHtml(data, this.options.template, this.options.objectToBind);       
+        this.renderHtml(data, this.options.template, this.options.objectToBind);
         this.initializePlugins();
         this.setFocus();
         this.hideLeftMenu();
@@ -190,8 +192,8 @@ var Controller = {
         this.setLeftNav();
         var currentOptions = Controller.options;
         this.setSearchNav(currentOptions);
-        this.setPaginator(data, currentOptions);        
-        
+        this.setPaginator(data, currentOptions);
+
         if (cb) {
             cb();
         }
@@ -500,7 +502,7 @@ var Controller = {
                         entity.tableName = Controller.options.entity.tableName;
                         entity.id = ids[i];
                         entity[campo] = valorCampo;
-                        
+
                         daoUtil.updateDinamicColumn(entity, campo, function (rowsAffected) {
                             if (rowsAffected != 1) {
                                 alertUtil.confirm(i18next.t("generics.fail-crud-msg") + entity.id);
@@ -562,6 +564,7 @@ var Controller = {
             tituloNavCenter: "NOVO",
             columnToReRender: "",
             orderByReRender: "",
+            isDescentReRender: false,
             callbackAction: "",
             labelSelect: "",
             data: {}
@@ -610,7 +613,7 @@ var Controller = {
                                         modalOptions.callbackAction();
                                     }
                                 });
-                            });
+                            }, modalOptions.isDescentReRender);
                         } else {
                             alertUtil.confirm(i18next.t("generics.fail-crud-msg"));
                         }

@@ -116,11 +116,12 @@ var daoUtil = {
             }
         });
     },
-    getAll: function (entity, orderByColumn, cb) {
+    getAll: function (entity, orderByColumn, cb, isDescent) {
         var sql = "select * from " + entity.tableName + " where deleted <> '1' ";
 
         if (orderByColumn) {
-            sql += " order by " + orderByColumn + " COLLATE NOCASE ";
+            sql += " order by " + orderByColumn + " collate nocase " ;
+            sql += (isDescent) ? "desc" : "asc";
         }
 
         dbUtil.executeSql(sql, [], function (res) {
@@ -128,18 +129,6 @@ var daoUtil = {
                 if (cb) {
                     cb(retorno);
                 }
-            });
-        });
-    },
-    getByGreatVersao: function (entity, cb) {
-        daoUtil.getVersao("max", entity, function (versao) {
-            var sql = "select * from " + entity.tableName + " where deleted <> '1' and versao > " + versao;
-            dbUtil.executeSql(sql, [], function (res) {
-                daoUtil.sucessGets(entity, res, function (retorno) {
-                    if (cb) {
-                        cb(retorno);
-                    }
-                });
             });
         });
     },
@@ -163,11 +152,12 @@ var daoUtil = {
             });
         });
     },
-    getByRange: function (entity, orderByColumn, start, end, cb) {
+    getByRange: function (entity, orderByColumn, start, end, cb, isDescent) {
         var sql = "select * from " + entity.tableName + " where deleted <> '1' ";
 
         if (orderByColumn) {
-            sql += " order by " + orderByColumn + " COLLATE NOCASE ";
+            sql += " order by " + orderByColumn + " collate nocase " ;
+            sql += (isDescent) ? "desc" : "asc";
         }
 
         sql += " limit ?, ?";
@@ -191,7 +181,7 @@ var daoUtil = {
         });
     },
     getVersao: function (type, entity, cb) {
-        var sql = "select " + type + "(versao) versao from " + entity.tableName;
+        var sql = "select " + type + "(cast(versao as integer)) versao from " + entity.tableName;
         dbUtil.executeSql(sql, [], function (res) {
             daoUtil.sucessGets(null, res, function (retorno) {
                 if (cb) {
@@ -203,7 +193,7 @@ var daoUtil = {
             });
         });
     },
-    getByLIke: function (entity, likeText, orderbyColumn, cb) {
+    getByLIke: function (entity, likeText, orderbyColumn, cb, isDescent) {
         entity.getFields(function (fields, values) {
             var sql;
             for (var i = 0; i < fields.length; i++) {
@@ -219,7 +209,8 @@ var daoUtil = {
             sql += ")";
 
             if (orderbyColumn) {
-                sql += " order by " + orderbyColumn + " COLLATE NOCASE ";
+                sql += " order by " + orderbyColumn + " collate nocase " ;
+                sql += (isDescent) ? "desc" : "asc";
             }
 
             dbUtil.executeSql(sql, [], function (res) {

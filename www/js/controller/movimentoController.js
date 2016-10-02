@@ -9,7 +9,8 @@ var movimentoController = {
         Controller.loadList({
             controllerOrigin: this,
             entity: new Movimento(),
-            orderBy: "id desc",
+            orderBy: "id",
+            isDescent: true,
             template: movimentoController.TEMPLATE_LISTA,
             navLeft: {
                 icon: iconUtil.back,
