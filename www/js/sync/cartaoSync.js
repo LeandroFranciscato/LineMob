@@ -84,13 +84,13 @@ var cartaoSync = {
                         });
                     });
                 } else {
-                    sync.setRunning(1);
+                    sync.setRunning(-1);
                     if (callbackSuccess) {
                         callbackSuccess();
                     }
                 }
             }, function (errorThrown) {
-                sync.setRunning(1);
+                sync.setRunning(-1);
                 if (callbackError) {
                     callbackError(errorThrown);
                 }

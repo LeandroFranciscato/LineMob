@@ -153,6 +153,7 @@ var Controller = {
             inicial: 0,
             final: 10,
             orderBy: undefined,
+            isDescent: false,
             template: "",
             objectToBind: this.SCROLLER,
             navLeft: {

@@ -252,6 +252,15 @@ var daoUtil = {
             });
         });
     },
+    getCustom: function (sql, cb) {        
+        dbUtil.executeSql(sql, [], function (res) {
+            daoUtil.sucessGets(null, res, function (retorno) {
+                if (cb) {
+                    cb(retorno);
+                }
+            });
+        });
+    },
     sucessGets: function (entity, res, cb) {
         if (res && res.rows && res.rows.item) {
             var retorno = [];
