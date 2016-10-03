@@ -173,7 +173,7 @@ var app = {
         var interval = null;
         interval = setInterval(function () {
             sync.run();
-        }, 10000);
+        }, 60000);
     }
 };
 app.initialize();

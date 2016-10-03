@@ -204,11 +204,13 @@ var sync = {
         });
     },
     getInsertedRequest: function (entity, callbackSuccess, callbackError) {
+        sync.setRunning(1);
         daoUtil.getVersao("max", entity, function (versao) {
             var url = entity.tableName + "/" + versao + "/1/0";
             sync.ajax("GET", "JSON", url, {}, function (responseEntities) {
                 if (responseEntities.length) {
                     sync.setRunning(responseEntities.length);
+                    sync.setRunning(-1);
                     responseEntities.forEach(function (theEntity) {
                         theEntity.tableName = entity.tableName;
                         theEntity.idExterno = theEntity.id;
@@ -259,11 +261,13 @@ var sync = {
                         });
                     });
                 } else {
+                    sync.setRunning(-1);
                     if (callbackSuccess) {
                         callbackSuccess();
                     }
                 }
             }, function (errorThrown) {
+                sync.setRunning(-1);
                 if (callbackError) {
                     callbackError(errorThrown);
                 }
@@ -272,12 +276,14 @@ var sync = {
     }
     ,
     getDeletedRequest: function (entity, callbackSuccess, callbackError) {
+        sync.setRunning(1);
         var versao = window.localStorage.getItem("versaoDelete" + entity.tableName);
         versao = (versao) ? versao : 0;
         var url = entity.tableName + "/" + versao + "/1/1";
         sync.ajax("GET", "JSON", url, {}, function (responseEntities) {
             if (responseEntities.length) {
                 sync.setRunning(responseEntities.length);
+                sync.setRunning(-1);
                 responseEntities.forEach(function (theEntity) {
                     theEntity.tableName = entity.tableName;
                     theEntity.idExterno = theEntity.id;
@@ -319,11 +325,13 @@ var sync = {
                     });
                 });
             } else {
+                sync.setRunning(-1);
                 if (callbackSuccess) {
                     callbackSuccess();
                 }
             }
         }, function (errorThrown) {
+            sync.setRunning(-1);
             if (callbackError) {
                 callbackError(errorThrown);
             }

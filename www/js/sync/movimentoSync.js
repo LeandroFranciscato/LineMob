@@ -75,12 +75,14 @@ var movimentoSync = {
         });
     },
     getInsertedRequest: function (callbackSuccess, callbackError) {
+        sync.setRunning(1);
         var movimento = new Movimento();
         daoUtil.getVersao("max", movimento, function (versao) {
             var url = movimento.tableName + "/" + versao + "/1/0";
             sync.ajax("GET", "JSON", url, {}, function (responseMovimentos) {
                 if (responseMovimentos.length) {
                     sync.setRunning(responseMovimentos.length);
+                    sync.setRunning(-1);
                     responseMovimentos.forEach(function (theMovimento) {
                         theMovimento.tableName = movimento.tableName;
                         theMovimento.idExterno = theMovimento.id;
@@ -156,11 +158,13 @@ var movimentoSync = {
                         });
                     });
                 } else {
+                    sync.setRunning(-1);
                     if (callbackSuccess) {
                         callbackSuccess();
                     }
                 }
             }, function (errorThrown) {
+                sync.setRunning(-1);
                 if (callbackError) {
                     callbackError(errorThrown);
                 }

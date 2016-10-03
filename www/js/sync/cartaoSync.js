@@ -36,12 +36,14 @@ var cartaoSync = {
         });
     },
     getInsertedRequest: function (callbackSuccess, callbackError) {
+        sync.setRunning(1);
         var cartao = new Cartao();
         daoUtil.getVersao("max", cartao, function (versao) {
             var url = cartao.tableName + "/" + versao + "/1/0";
             sync.ajax("GET", "JSON", url, {}, function (responseCartoes) {
                 if (responseCartoes.length) {
                     sync.setRunning(responseCartoes.length);
+                    sync.setRunning(-1);
                     responseCartoes.forEach(function (theCartao) {
                         theCartao.tableName = cartao.tableName;
                         theCartao.idExterno = theCartao.id;
@@ -82,11 +84,13 @@ var cartaoSync = {
                         });
                     });
                 } else {
+                    sync.setRunning(1);
                     if (callbackSuccess) {
                         callbackSuccess();
                     }
                 }
             }, function (errorThrown) {
+                sync.setRunning(1);
                 if (callbackError) {
                     callbackError(errorThrown);
                 }
