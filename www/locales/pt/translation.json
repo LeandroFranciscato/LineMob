@@ -10,7 +10,8 @@
         "category": "Categorias",
         "activity": "Lançamentos",
         "config": "Opções",
-        "exit": "Sair"
+        "exit": "Sair",
+        "reports": "Relatórios"
     },
     "language-select": {
         "label": "Idioma do App",
@@ -137,6 +138,9 @@
         "title-insert": "Novo Lançamento Cadastrado",
         "title-update": "Lançamento Atualizado",
         "title-delete": "Lançamento Deletado"
+    },
+    "reports-controller": {
+        "account-balance": "Saldo de Conta"
     },
     "generics": {
         "no": "Não",
