@@ -12,18 +12,17 @@
         </div>    
         
         <div class="row">
-            <label class="label-select" data-i18n="conta-controller.field-select-conta" for="select-conta"></label>
+            <label class="label-cartao" data-i18n="cartao-controller.field-select-cartao" for="select-cartao"></label>
             <div class="input-field col s12">                
-                <select id="select-conta" 
+                <select id="select-cartao" 
                         class="browser-default"
-                        name="idConta">
-                    <option value="" disabled selected data-i18n="conta-controller.field-select-conta"></option>                    
-                    {{#conta}}
+                        name="idCartao">
+                    <option value="" disabled selected data-i18n="cartao-controller.field-select-cartao"></option>                    
+                    {{#cartao}}
                     <option value="{{id}}" {{selected}}>{{nome}}</option>
-                    {{/conta}}                                                            
+                    {{/cartao}}                                                            
                 </select>                
             </div>           
-
         </div>
     </form>
 </div>

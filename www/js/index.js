@@ -135,9 +135,15 @@ var app = {
                 reportsController.TEMPLATE_ACCOUNT_BALANCE = string;
                 $.get('templates/reports/accountBalanceFilter.html', function (string) {
                     reportsController.TEMPLATE_ACCOUNT_BALANCE_FILTER = string;
-                    if (cb) {
-                        cb();
-                    }
+                    $.get('templates/reports/credCard.html', function (string) {
+                        reportsController.TEMPLATE_CRED_CARD = string;
+                        $.get('templates/reports/credCardFilter.html', function (string) {
+                            reportsController.TEMPLATE_CRED_CARD_FILTER = string;
+                            if (cb) {
+                                cb();
+                            }
+                        });
+                    });
                 });
             });
         });

@@ -146,8 +146,9 @@
         "account-balance": "Saldo Bancario",
         "account-balance-filter": "Sld Banc (Filtro)",
         "account-balance-description": "Mostra o saldo das contas bancarias de acordo com o período filtrado.",
-        "account-balance-dt-inicio": "Dt. Início",
-        "account-balance-dt-final": "Dt. Final"
+        "cred-card-invoice" : "Fatura Cartão",
+        "cred-card-invoice-filter": "Fatura (Filtro)",
+        "cred-card-invoice-description" : "Mostra os lançamentos que compõem a fatura do cartão de crédito, de acordo com o período filtrado."
     },
     "generics": {
         "no": "Não",
@@ -168,7 +169,13 @@
         "you-updated-but": "Você atualizou este registro, mas outro usuário atualizou antes. Infelizmente você perdeu suas alterações. =[ ",
         "you-deleted-but": "Você deletou este registro, mas outro usuário atualizou antes. Então ele ainda existe aqui. =] ",
         "you-updated-but-another-updated": "Você atualizou um registro, mas outro usuário deletou antes. Então ele não existe mais aqui. =[ ",
-        "you-deleted-but-another-deleted": "Outro usuário também deletou um registro que você havia deletado. Tudo certo, só registrando. =]"
+        "you-deleted-but-another-deleted": "Outro usuário também deletou um registro que você havia deletado. Tudo certo, só registrando. =]",
+        "dt-inicio": "Dt. Início",
+        "dt-final": "Dt. Final",
+        "name": "Nome",
+        "date": "Data",
+        "value": "Valor",
+        "balance": "Saldo"
     },
     "server-messages": {
         "remove-categoria-used-movimento": "Categoria não pode ser deletada porque está vinculada a um Lançamento!",

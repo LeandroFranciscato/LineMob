@@ -1,3 +1,4 @@
+
 /* global Controller, mainController, iconUtil, i18next, daoUtil, alertUtil */
 
 /*
@@ -10,6 +11,8 @@ var reportsController = {
     TEMPLATE_CHOOSE_REPORTS: "",
     TEMPLATE_ACCOUNT_BALANCE_FILTER: "",
     TEMPLATE_ACCOUNT_BALANCE: "",
+    TEMPLATE_CRED_CARD: "",
+    TEMPLATE_CRED_CARD_FILTER: "",
     load: function () {
         Controller.render({
             controllerOrigin: reportsController,
@@ -81,7 +84,6 @@ var reportsController = {
         daoUtil.getCustom(
                 "select cast(valorSaldoInicial as decimal) valor, " +
                 "       nome, " +
-                "       dataFundacao data, " +
                 "       id ," +
                 "       (select ifnull(sum(case natureza when 'C' then cast(valor as decimal) else cast(valor*-1 as decimal) end),0) saldo_inicial " +
                 "          from movimento" +
@@ -95,7 +97,7 @@ var reportsController = {
                         conta.saldo = conta.valor + saldo;
                         conta.valorExibicao = conta.valor.toFixed(2);
                         conta.saldoExibicao = conta.saldo.toFixed(2);
-                        conta.data = reportsController.dateFormat(conta.data);
+                        conta.data = reportsController.dateFormat(dataInicio);
                         saldo += conta.valor;
                         conta.movimentos = [];
                         daoUtil.getCustom(
@@ -129,6 +131,117 @@ var reportsController = {
                                             },
                                             navCenter: {
                                                 title: i18next.t("reports-controller.account-balance"),
+                                                icon: ""
+                                            },
+                                            navSearch: {
+                                                display: "none"
+                                            }
+                                        }, data, function () {
+
+                                        });
+                                    }
+                                }
+                        );
+                    });
+                }
+        );
+    },
+    loadFilterCredCard: function () {
+        var data = {};
+        var cartao = new Cartao();
+        daoUtil.getAll(cartao, "nome", function (res) {
+            if (data) {
+                data.cartao = res;
+            }
+
+            Controller.render({
+                controllerOrigin: reportsController,
+                template: reportsController.TEMPLATE_CRED_CARD_FILTER,
+                navLeft: {
+                    icon: iconUtil.back,
+                    callbackClick: function () {
+                        reportsController.load();
+                    }
+                },
+                navCenter: {
+                    title: i18next.t("reports-controller.cred-card-invoice-filter"),
+                    icon: ""
+                },
+                navRight: {
+                    display: "block",
+                    iconName: iconUtil.print,
+                    callbackClick: function () {
+                        var dataInicio = $("#dataInicio").val();
+                        var dataFinal = $("#dataFinal").val();
+                        var cartaoId = $("#select-cartao").val();
+                        if (!dataInicio || !dataFinal) {
+                            alertUtil.confirm(i18next.t("generics.date-range-required"));
+                            return;
+                        }
+                        reportsController.loadCredCard(dataInicio, dataFinal, cartaoId);
+                    }
+                },
+                navSearch: {
+                    display: "none"
+                }
+            }, data, function () {
+
+            });
+        });
+    },
+    loadCredCard: function (dataInicio, dataFinal, cartaoId) {
+        var stringFiltroCartao = (cartaoId) ? " where id = " + cartaoId : "";
+        var data = {};
+        data.cartoes = [];
+        daoUtil.getCustom(
+                "select nome, " +
+                "       id ," +
+                "       (select ifnull(sum(case natureza when 'C' then cast(valor as decimal) else cast(valor*-1 as decimal) end),0) saldo_inicial " +
+                "          from movimento" +
+                "         where movimento.idCartao = cartao.id" +
+                "           and dataVencimento <= '" + dataInicio + "') saldoLancamentos" +
+                "  from cartao " + stringFiltroCartao, function (cartoesRes) {
+
+                    cartoesRes.forEach(function (cartao) {
+                        var saldo = 0;
+                        cartao.valor = cartao.saldoLancamentos;
+                        cartao.saldo = cartao.valor + saldo;
+                        cartao.valorExibicao = cartao.valor.toFixed(2);
+                        cartao.saldoExibicao = cartao.saldo.toFixed(2);
+                        cartao.data = reportsController.dateFormat(dataInicio);
+                        saldo += cartao.valor;
+                        cartao.movimentos = [];
+                        daoUtil.getCustom(
+                                "select case natureza when 'C' then cast(valor as decimal) else cast(valor*-1 as decimal) end valor, " +
+                                "       dataVencimento data, " +
+                                "       descricao " +
+                                "  from movimento " +
+                                " where dataVencimento > '" + dataInicio + "'" +
+                                "   and dataVencimento <= '" + dataFinal + "'" +
+                                "   and idCartao = " + cartao.id +
+                                " order by dataVencimento", function (movimentosRes) {
+                                    movimentosRes.forEach(function (movimento) {
+                                        movimento.saldo = movimento.valor + saldo;
+                                        movimento.valorExibicao = movimento.valor.toFixed(2);
+                                        movimento.saldoExibicao = movimento.saldo.toFixed(2);
+                                        movimento.data = reportsController.dateFormat(movimento.data);
+                                        cartao.movimentos.push(movimento);
+                                        saldo += movimento.valor;
+                                    });
+                                    data.cartoes.push(cartao);
+
+                                    if (cartoesRes.length === data.cartoes.length) {
+                                        Controller.render({
+                                            controllerOrigin: reportsController,
+                                            template: reportsController.TEMPLATE_CRED_CARD,
+                                            navLeft: {
+                                                icon: iconUtil.back,
+                                                callbackClick: function () {
+                                                    reportsController.loadFilterCredCard();
+                                                }
+                                            },
+                                            navCenter: {
+                                                title: i18next.t("reports-controller.cred-card-invoice"),
                                                 icon: ""
                                             },
                                             navSearch: {
