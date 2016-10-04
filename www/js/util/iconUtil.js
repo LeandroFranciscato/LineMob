@@ -18,6 +18,7 @@ var iconUtil = {
     activity: "&#xE227;",
     refresh: "&#xE5D5;",
     print: "&#xE8AD;",
+    reports: "&#xE873;",
     draw: function (iconName) {
         document.write(iconName);
     }

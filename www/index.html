@@ -145,6 +145,14 @@
                                 </i>
                             </span>
                         </a>
+                        <a class="collection-item" onclick="reportsController.load()">
+                            <span data-i18n="left-menu.reports"> </span>
+                            <span class="badge">
+                                <i class="material-icons">
+                                    <script>iconUtil.draw(iconUtil.reports);</script>
+                                </i>
+                            </span>
+                        </a>
                         <a class="collection-item" onclick="configController.load()">
                             <span data-i18n="left-menu.config"> </span>
                             <span class="badge">
@@ -152,15 +160,7 @@
                                     <script>iconUtil.draw(iconUtil.config);</script>
                                 </i>
                             </span>
-                        </a>
-                        <a class="collection-item" onclick="reportsController.load()">
-                            <span data-i18n="left-menu.reports"> </span>
-                            <span class="badge">
-                                <i class="material-icons">
-                                    <script>iconUtil.draw(iconUtil.exit);</script>
-                                </i>
-                            </span>
-                        </a>
+                        </a>                        
                         <a class="collection-item" onclick="loginController.logout()">
                             <span data-i18n="left-menu.exit"> </span>
                             <span class="badge">
