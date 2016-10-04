@@ -131,9 +131,15 @@ var app = {
     loadTemplateReports: function (cb) {
         $.get('templates/reports/accountBalance.html', function (string) {
             reportsController.TEMPLATE_ACCOUNT_BALANCE = string;
-            if (cb) {
-                cb();
-            }
+            $.get('templates/reports/chooseReports.html', function (string) {
+                reportsController.TEMPLATE_CHOOSE_REPORTS = string;
+                $.get('templates/reports/filterAccountBalance.html', function (string) {
+                    reportsController.TEMPLATE_FILTER_ACCOUNT_BALANCE = string;
+                    if (cb) {
+                        cb();
+                    }
+                });
+            });
         });
     },
     createTables: function (cb) {

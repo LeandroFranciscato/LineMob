@@ -1,8 +1,8 @@
 <ul class="collection" id="ul-list">
     <li id="ul-header" class="collection-item">
         <div class="li-lista-header row">                        
-            <div class="col s3 titulo-lista left-align">Descrição</div>
-            <div class="col s3 titulo-lista right-align">Data</div>
+            <div class="col s4 titulo-lista left-align">Descrição</div>
+            <div class="col s2 titulo-lista right-align">Data</div>
             <div class="col s3 titulo-lista right-align">Valor</div>            
             <div class="col s3 titulo-lista right-align">Saldo</div>            
         </div>
@@ -10,8 +10,8 @@
     {{#contas}}
     <li class="collection-item">
         <div class="li-lista row smaller">                        
-            <div class="col s3 left-align"><B>{{nome}}</B></div>
-            <div class="col s3 right-align"><B>{{data}}</B></div>
+            <div class="col s4 left-align"><B>{{nome}}</B></div>
+            <div class="col s2 right-align"><B>{{data}}</B></div>
             <div class="col s3 right-align"><B>{{valorExibicao}}</B></div>            
             <div class="col s3 right-align"><B>{{saldoExibicao}}</B></div>            
         </div>
@@ -19,8 +19,8 @@
         {{#movimentos}}
         <li class="collection-item">
             <div class="li-lista row smaller">                        
-                <h6 class="col s3 left-align">{{descricao}}</h6>
-                <div class="col s3 right-align">{{data}}</div>
+                <h6 class="col s4 left-align">{{descricao}}</h6>
+                <div class="col s2 right-align">{{data}}</div>
                 <div class="col s3 right-align">{{valorExibicao}}</div>            
                 <div class="col s3 right-align">{{saldoExibicao}}</div>            
             </div>
