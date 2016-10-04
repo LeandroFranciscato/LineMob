@@ -32,40 +32,50 @@ var reportsController = {
         });
     },
     loadFilterAccountBalance: function () {
-        Controller.render({
-            controllerOrigin: reportsController,
-            template: reportsController.TEMPLATE_ACCOUNT_BALANCE_FILTER,
-            navLeft: {
-                icon: iconUtil.back,
-                callbackClick: function () {
-                    reportsController.load();
-                }
-            },
-            navCenter: {
-                title: i18next.t("reports-controller.account-balance-filter"),
-                icon: ""
-            },
-            navRight: {
-                display: "block",
-                iconName: iconUtil.print,
-                callbackClick: function () {
-                    var dataInicio = $("#dataInicio").val();
-                    var dataFinal = $("#dataFinal").val();
-                    if (!dataInicio || !dataFinal) {
-                        alertUtil.confirm(i18next.t("generics.all-fields-required"));
-                        return;
-                    }
-                    reportsController.loadAccountBalance(dataInicio, dataFinal);
-                }
-            },
-            navSearch: {
-                display: "none"
+        var data = {};
+        var conta = new Conta();
+        daoUtil.getAll(conta, "nome", function (res) {
+            if (data) {
+                data.conta = res;
             }
-        }, {}, function () {
 
+            Controller.render({
+                controllerOrigin: reportsController,
+                template: reportsController.TEMPLATE_ACCOUNT_BALANCE_FILTER,
+                navLeft: {
+                    icon: iconUtil.back,
+                    callbackClick: function () {
+                        reportsController.load();
+                    }
+                },
+                navCenter: {
+                    title: i18next.t("reports-controller.account-balance-filter"),
+                    icon: ""
+                },
+                navRight: {
+                    display: "block",
+                    iconName: iconUtil.print,
+                    callbackClick: function () {
+                        var dataInicio = $("#dataInicio").val();
+                        var dataFinal = $("#dataFinal").val();
+                        var contaId = $("#select-conta").val();
+                        if (!dataInicio || !dataFinal) {
+                            alertUtil.confirm(i18next.t("generics.date-range-required"));
+                            return;
+                        }
+                        reportsController.loadAccountBalance(dataInicio, dataFinal, contaId);
+                    }
+                },
+                navSearch: {
+                    display: "none"
+                }
+            }, data, function () {
+
+            });
         });
     },
-    loadAccountBalance: function (dataInicio, dataFinal) {       
+    loadAccountBalance: function (dataInicio, dataFinal, contaId) {
+        var stringFiltroConta = (contaId) ? " where id = " + contaId : "";
         var data = {};
         data.contas = [];
         daoUtil.getCustom(
@@ -77,7 +87,7 @@ var reportsController = {
                 "          from movimento" +
                 "         where movimento.idConta = conta.id" +
                 "           and dataVencimento <= '" + dataInicio + "') saldoLancamentos" +
-                "  from conta", function (contasRes) {
+                "  from conta " + stringFiltroConta, function (contasRes) {
 
                     contasRes.forEach(function (conta) {
                         var saldo = 0;
@@ -106,8 +116,8 @@ var reportsController = {
                                         saldo += movimento.valor;
                                     });
                                     data.contas.push(conta);
-                                    
-                                    if (contasRes.length === data.contas.length) {                                      
+
+                                    if (contasRes.length === data.contas.length) {
                                         Controller.render({
                                             controllerOrigin: reportsController,
                                             template: reportsController.TEMPLATE_ACCOUNT_BALANCE,

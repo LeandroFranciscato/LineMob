@@ -144,7 +144,7 @@
         "single": "Relatório",
         "description": "Descrição",
         "account-balance": "Saldo Bancario",
-        "account-balance-filter": "Saldo Bancario - Filtro",
+        "account-balance-filter": "Sld Banc (Filtro)",
         "account-balance-description": "Mostra o saldo das contas bancarias de acordo com o período filtrado.",
         "account-balance-dt-inicio": "Dt. Início",
         "account-balance-dt-final": "Dt. Final"
@@ -155,6 +155,7 @@
         "record-s-question": " registro(s)?",
         "field-required": "Campo deve ser preenchido.",
         "all-fields-required": "Todos os campos devem ser informados.",
+        "date-range-required": "Data Inicial e Final devem ser informadas.",
         "fail-crud-msg": "Problemas... Contate-nos... ",
         "label-multedit": "Selecione o campo para Alteração.",
         "paginator-text-pt1": "Carregar mais ",
