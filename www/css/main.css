@@ -193,3 +193,7 @@ body {
 .label-select {
     margin-left: 10px !Important;
 }
+
+.smaller{
+    font-size: smaller;
+}

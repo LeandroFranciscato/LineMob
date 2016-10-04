@@ -7,20 +7,25 @@
             <div class="col s3 titulo-lista right-align">Saldo</div>            
         </div>
     </li>  
+    {{#contas}}
     <li class="collection-item">
-        <div class="li-lista row">                        
-            <div class="col s3 left-align">Conta</div>
-            <div class="col s3 right-align">26/09/2016</div>
-            <div class="col s3 right-align">150,00</div>            
-            <div class="col s3 right-align">150,00</div>            
+        <div class="li-lista row smaller">                        
+            <div class="col s3 left-align"><B>{{nome}}</B></div>
+            <div class="col s3 right-align"><B>{{data}}</B></div>
+            <div class="col s3 right-align"><B>{{valorExibicao}}</B></div>            
+            <div class="col s3 right-align"><B>{{saldoExibicao}}</B></div>            
         </div>
     </li> 
-    <li class="collection-item">
-        <div class="li-lista row">                        
-            <h6 class="col s3 left-align">Club dos 30</h6>
-            <div class="col s3 right-align">30/09/2016</div>
-            <div class="col s3 right-align">(176,00)</div>            
-            <div class="col s3 right-align">(176,00)</div>            
-        </div>
-    </li>     
+        {{#movimentos}}
+        <li class="collection-item">
+            <div class="li-lista row smaller">                        
+                <h6 class="col s3 left-align">{{descricao}}</h6>
+                <div class="col s3 right-align">{{data}}</div>
+                <div class="col s3 right-align">{{valorExibicao}}</div>            
+                <div class="col s3 right-align">{{saldoExibicao}}</div>            
+            </div>
+        </li>    
+        {{/movimentos}}
+    {{/contas}}
+
 </ul>
