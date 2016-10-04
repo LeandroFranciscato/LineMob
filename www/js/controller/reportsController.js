@@ -8,7 +8,7 @@
  */
 var reportsController = {
     TEMPLATE_CHOOSE_REPORTS: "",
-    TEMPLATE_FILTER_ACCOUNT_BALANCE: "",
+    TEMPLATE_ACCOUNT_BALANCE_FILTER: "",
     TEMPLATE_ACCOUNT_BALANCE: "",
     load: function () {
         Controller.render({
@@ -21,7 +21,7 @@ var reportsController = {
                 }
             },
             navCenter: {
-                title: i18next.t("reports-controller.account-balance") + "bla",
+                title: i18next.t("reports-controller.plural"),
                 icon: ""
             },
             navSearch: {
@@ -34,7 +34,7 @@ var reportsController = {
     loadFilterAccountBalance: function () {
         Controller.render({
             controllerOrigin: reportsController,
-            template: reportsController.TEMPLATE_FILTER_ACCOUNT_BALANCE,
+            template: reportsController.TEMPLATE_ACCOUNT_BALANCE_FILTER,
             navLeft: {
                 icon: iconUtil.back,
                 callbackClick: function () {
@@ -42,17 +42,17 @@ var reportsController = {
                 }
             },
             navCenter: {
-                title: i18next.t("reports-controller.account-balance") + "bla2",
+                title: i18next.t("reports-controller.account-balance-filter"),
                 icon: ""
             },
             navRight: {
                 display: "block",
-                iconName: iconUtil.check,
+                iconName: iconUtil.print,
                 callbackClick: function () {
                     var dataInicio = $("#dataInicio").val();
                     var dataFinal = $("#dataFinal").val();
                     if (!dataInicio || !dataFinal) {
-                        alertUtil.confirm("Informe bla bla bla");
+                        alertUtil.confirm(i18next.t("generics.all-fields-required"));
                         return;
                     }
                     reportsController.loadAccountBalance(dataInicio, dataFinal);
@@ -65,9 +65,7 @@ var reportsController = {
 
         });
     },
-    loadAccountBalance: function (dataInicio, dataFinal) {
-
-        // Montando o relatório
+    loadAccountBalance: function (dataInicio, dataFinal) {       
         var data = {};
         data.contas = [];
         daoUtil.getCustom(
@@ -108,9 +106,8 @@ var reportsController = {
                                         saldo += movimento.valor;
                                     });
                                     data.contas.push(conta);
-                                    if (contasRes.length === data.contas.length) {
-
-                                        // Render
+                                    
+                                    if (contasRes.length === data.contas.length) {                                      
                                         Controller.render({
                                             controllerOrigin: reportsController,
                                             template: reportsController.TEMPLATE_ACCOUNT_BALANCE,

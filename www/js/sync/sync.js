@@ -55,11 +55,7 @@ var sync = {
                             });
                         });
                     });
-
-
-
                 });
-
             });
         }
     },
@@ -273,8 +269,7 @@ var sync = {
                 }
             });
         });
-    }
-    ,
+    },
     getDeletedRequest: function (entity, callbackSuccess, callbackError) {
         sync.setRunning(1);
         var versao = window.localStorage.getItem("versaoDelete" + entity.tableName);
@@ -340,7 +335,6 @@ var sync = {
     ajax: function (httpType, responseType, url, dataInput, cbSuccess, cbError) {
         url = "https://45.62.231.35:8181/LinemobAPI/" + url;
         $.ajax({
-            timeout: 3000,
             crossDomain: true,
             type: httpType,
             dataType: responseType,
@@ -360,7 +354,7 @@ var sync = {
                 if (cbError) {
                     cbError(errorThrown);
                 }
-            }           
+            }
         });
     },
     setRunning: function (qtdeTasks) {

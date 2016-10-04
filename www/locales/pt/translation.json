@@ -140,13 +140,21 @@
         "title-delete": "Lançamento Deletado"
     },
     "reports-controller": {
-        "account-balance": "Saldo de Conta"
+        "plural": "Relatórios",
+        "single": "Relatório",
+        "description": "Descrição",
+        "account-balance": "Saldo Bancario",
+        "account-balance-filter": "Saldo Bancario - Filtro",
+        "account-balance-description": "Mostra o saldo das contas bancarias de acordo com o período filtrado.",
+        "account-balance-dt-inicio": "Dt. Início",
+        "account-balance-dt-final": "Dt. Final"
     },
     "generics": {
         "no": "Não",
         "yes": "Sim",
         "record-s-question": " registro(s)?",
         "field-required": "Campo deve ser preenchido.",
+        "all-fields-required": "Todos os campos devem ser informados.",
         "fail-crud-msg": "Problemas... Contate-nos... ",
         "label-multedit": "Selecione o campo para Alteração.",
         "paginator-text-pt1": "Carregar mais ",

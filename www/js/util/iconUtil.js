@@ -17,6 +17,7 @@ var iconUtil = {
     category: "&#xE893;",
     activity: "&#xE227;",
     refresh: "&#xE5D5;",
+    print: "&#xE8AD;",
     draw: function (iconName) {
         document.write(iconName);
     }
