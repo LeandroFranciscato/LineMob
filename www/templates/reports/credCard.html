@@ -10,10 +10,10 @@
     {{#cartoes}}
     <li class="collection-item">
         <div class="li-lista row smaller">                        
-            <div class="col s4 left-align"><B>{{nome}}</B></div>
-            <div class="col s2 right-align"><B>{{data}}</B></div>
-            <div class="col s3 right-align"><B>{{valorExibicao}}</B></div>            
-            <div class="col s3 right-align"><B>{{saldoExibicao}}</B></div>            
+            <div class="col s4 titulo-lista left-align"><B>{{nome}}</B></div>
+            <div class="col s2 titulo-lista right-align"><B>{{data}}</B></div>
+            <div class="col s3 titulo-lista right-align"><B>{{valorExibicao}}</B></div>            
+            <div class="col s3 titulo-lista right-align"><B>{{saldoExibicao}}</B></div>            
         </div>
     </li> 
         {{#movimentos}}
@@ -27,4 +27,13 @@
         </li>    
         {{/movimentos}}
     {{/cartoes}}
+    
+    <li class="collection-item">
+        <div class="li-lista row smaller">                        
+            <h6 class="col s4 left-align">...</h6>
+            <div class="col s2 right-align">...</div>
+            <div class="col s3 right-align">...</div>            
+            <div class="col s3 titulo-lista right-align">{{saldoTotal}}</div>            
+        </div>
+    </li>
 </ul>

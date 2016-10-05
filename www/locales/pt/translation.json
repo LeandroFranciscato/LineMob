@@ -146,9 +146,12 @@
         "account-balance": "Saldo Bancario",
         "account-balance-filter": "Sld Banc (Filtro)",
         "account-balance-description": "Mostra o saldo das contas bancarias de acordo com o período filtrado.",
-        "cred-card-invoice" : "Fatura Cartão",
+        "cred-card-invoice": "Fatura Cartão",
         "cred-card-invoice-filter": "Fatura (Filtro)",
-        "cred-card-invoice-description" : "Mostra os lançamentos que compõem a fatura do cartão de crédito, de acordo com o período filtrado."
+        "cred-card-invoice-description": "Mostra os lançamentos que compõem a fatura do cartão de crédito, de acordo com o período filtrado.",
+        "group-category": "Categoria Agrupado",
+        "group-category-filter" : "Categ Agr (Filtro)",
+        "group-category-description": "Mostra os lançamentos agrupados por categoria, de acordo com o período filtardo."
     },
     "generics": {
         "no": "Não",

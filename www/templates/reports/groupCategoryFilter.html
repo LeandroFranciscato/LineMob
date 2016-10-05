@@ -9,18 +9,18 @@
                 <input type="date" id="dataFinal" name="dataFinal" value="" placeholder="" data-i18n="[placeholder]generics.dt-final">
                 <label for="dataInicio" class="active" data-i18n="generics.dt-final"></label>
             </div>
-        </div>    
-        
+        </div>   
+
         <div class="row">
-            <label class="label-cartao" data-i18n="cartao-controller.field-select-cartao" for="select-cartao"></label>
+            <label class="label-categoria" data-i18n="categoria-controller.field-select-categoria" for="select-categoria"></label>
             <div class="input-field col s12">                
-                <select id="select-cartao" 
+                <select id="select-categoria" 
                         class="browser-default"
-                        name="idCartao">
-                    <option value="" selected data-i18n="cartao-controller.field-select-cartao"></option>                    
-                    {{#cartao}}
+                        name="idCategoria">
+                    <option value="" selected data-i18n="categoria-controller.field-select-categoria"></option>                    
+                    {{#categoria}}
                     <option value="{{id}}" {{selected}}>{{nome}}</option>
-                    {{/cartao}}                                                            
+                    {{/categoria}}                                                            
                 </select>                
             </div>           
         </div>

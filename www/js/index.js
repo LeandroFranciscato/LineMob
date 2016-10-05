@@ -139,9 +139,15 @@ var app = {
                         reportsController.TEMPLATE_CRED_CARD = string;
                         $.get('templates/reports/credCardFilter.html', function (string) {
                             reportsController.TEMPLATE_CRED_CARD_FILTER = string;
-                            if (cb) {
-                                cb();
-                            }
+                            $.get("templates/reports/groupCategory.html", function (string) {
+                                reportsController.TEMPLATE_GROUP_CATEGORY = string;
+                                $.get("templates/reports/groupCategoryFilter.html", function (string) {
+                                    reportsController.TEMPLATE_GROUP_CATEGORY_FILTER = string;
+                                    if (cb) {
+                                        cb();
+                                    }
+                                });
+                            });
                         });
                     });
                 });
@@ -188,7 +194,8 @@ var app = {
             text: i18next.t("background-mode.text"),
             icon: "icon.png",
             resume: true,
-            color: "e53935"
+            color: "e53935",
+            silent: true
         });
         cordova.plugins.backgroundMode.enable();
 
