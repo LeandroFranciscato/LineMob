@@ -195,7 +195,7 @@ var app = {
             icon: "icon.png",
             resume: true,
             color: "e53935",
-            silent: true
+            silent: false
         });
         cordova.plugins.backgroundMode.enable();
 

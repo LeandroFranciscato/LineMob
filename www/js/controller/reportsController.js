@@ -1,5 +1,5 @@
 
-/* global Controller, mainController, iconUtil, i18next, daoUtil, alertUtil */
+/* global Controller, mainController, iconUtil, i18next, daoUtil, alertUtil, dateUtil */
 
 /*
  QUERIES
@@ -100,7 +100,7 @@ var reportsController = {
                         conta.saldo = conta.valor + saldo;
                         conta.valorExibicao = conta.valor.toFixed(2);
                         conta.saldoExibicao = conta.saldo.toFixed(2);
-                        conta.data = reportsController.dateFormat(dataInicio);
+                        conta.data = dateUtil.format(dataInicio);
                         saldo += conta.valor;
                         data.saldoTotal += conta.valor;
                         conta.movimentos = [];
@@ -117,7 +117,7 @@ var reportsController = {
                                         movimento.saldo = movimento.valor + saldo;
                                         movimento.valorExibicao = movimento.valor.toFixed(2);
                                         movimento.saldoExibicao = movimento.saldo.toFixed(2);
-                                        movimento.data = reportsController.dateFormat(movimento.data);
+                                        movimento.data = dateUtil.format(movimento.data);
                                         conta.movimentos.push(movimento);
                                         saldo += movimento.valor;
                                         data.saldoTotal += movimento.valor;
@@ -215,7 +215,7 @@ var reportsController = {
                         cartao.saldo = cartao.valor + saldo;
                         cartao.valorExibicao = cartao.valor.toFixed(2);
                         cartao.saldoExibicao = cartao.saldo.toFixed(2);
-                        cartao.data = reportsController.dateFormat(dataInicio);
+                        cartao.data = dateUtil.format(dataInicio);
                         saldo += cartao.valor;
                         data.saldoTotal += cartao.valor;
                         cartao.movimentos = [];
@@ -232,7 +232,7 @@ var reportsController = {
                                         movimento.saldo = movimento.valor + saldo;
                                         movimento.valorExibicao = movimento.valor.toFixed(2);
                                         movimento.saldoExibicao = movimento.saldo.toFixed(2);
-                                        movimento.data = reportsController.dateFormat(movimento.data);
+                                        movimento.data = dateUtil.format(movimento.data);
                                         cartao.movimentos.push(movimento);
                                         saldo += movimento.valor;
                                         data.saldoTotal += movimento.valor;
@@ -330,7 +330,7 @@ var reportsController = {
                         Categoria.saldo = Categoria.valor + saldo;
                         Categoria.valorExibicao = Categoria.valor.toFixed(2);
                         Categoria.saldoExibicao = Categoria.saldo.toFixed(2);
-                        Categoria.data = reportsController.dateFormat(dataInicio);
+                        Categoria.data = dateUtil.format(dataInicio);
                         saldo += Categoria.valor;
                         data.saldoTotal += Categoria.valor;
                         Categoria.movimentos = [];
@@ -348,7 +348,7 @@ var reportsController = {
                                         movimento.saldo = movimento.valor + saldo;
                                         movimento.valorExibicao = movimento.valor.toFixed(2);
                                         movimento.saldoExibicao = movimento.saldo.toFixed(2);
-                                        movimento.data = reportsController.dateFormat(movimento.data);
+                                        movimento.data = dateUtil.format(movimento.data);
                                         Categoria.movimentos.push(movimento);
                                         saldo += movimento.valor;
                                         data.saldoTotal += movimento.valor
@@ -382,9 +382,5 @@ var reportsController = {
                     });
                 }
         );
-    },
-    dateFormat: function (date) {
-        var campos = date.split("-");
-        return campos[2] + "/" + campos[1] + "/" + campos[0].substr(2, 2);
-    }
+    }    
 };

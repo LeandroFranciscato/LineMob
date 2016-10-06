@@ -230,12 +230,20 @@ var movimentoController = {
                 alertUtil.confirm(i18next.t("movimento-controller.alert-valor-req"));
             } else if (!movimento.descricao) {
                 alertUtil.confirm(i18next.t("movimento-controller.alert-descricao-req"));
-            } else if (!movimento.idConta) {
+            } else if (!movimento.idConta || movimento.idConta == "+") {
                 alertUtil.confirm(i18next.t("movimento-controller.alert-idConta-req"));
-            } else if (!movimento.idCategoria) {
+            } else if (!movimento.idCategoria || movimento.idCategoria == "+") {
                 alertUtil.confirm(i18next.t("movimento-controller.alert-idCategoria-req"));
-            } else if (!movimento.idPessoa) {
+            } else if (!movimento.idPessoa || movimento.idPessoa == "+") {
                 alertUtil.confirm(i18next.t("movimento-controller.alert-idPessoa-req"));
+            } else if (movimento.repeat > 0) {
+                if (movimento.countRepeat == 0) {
+                    alertUtil.confirm(i18next.t("movimento-controller.alert-repeat-wrong"));
+                } else {
+                    if (cb) {
+                        cb();
+                    }
+                }
             } else {
                 if (cb) {
                     cb();

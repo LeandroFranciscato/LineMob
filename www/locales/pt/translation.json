@@ -137,7 +137,16 @@
         "field-idCartao": "Cartão",
         "title-insert": "Novo Lançamento Cadastrado",
         "title-update": "Lançamento Atualizado",
-        "title-delete": "Lançamento Deletado"
+        "title-delete": "Lançamento Deletado",
+        "field-select-repeat": "Frequência",
+        "select-repeat-option-not": "Não repetir",
+        "select-repeat-option-daily": "Diário",
+        "select-repeat-option-weekly": "Semanal",
+        "select-repeat-option-monthly": "Mensal",
+        "select-repeat-option-semiannully": "Semestral",
+        "select-repeat-option-annully": "Anual",
+        "field-select-count-repeat": "Número de Repetições",
+        "alert-repeat-wrong": "Você escolheu uma frequência, mas não escolheu a quantidade de repetições."
     },
     "reports-controller": {
         "plural": "Relatórios",
@@ -150,7 +159,7 @@
         "cred-card-invoice-filter": "Fatura (Filtro)",
         "cred-card-invoice-description": "Mostra os lançamentos que compõem a fatura do cartão de crédito, de acordo com o período filtrado.",
         "group-category": "Categoria Agrupado",
-        "group-category-filter" : "Categ Agr (Filtro)",
+        "group-category-filter": "Categ Agr (Filtro)",
         "group-category-description": "Mostra os lançamentos agrupados por categoria, de acordo com o período filtardo."
     },
     "generics": {

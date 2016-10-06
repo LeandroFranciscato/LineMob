@@ -11,6 +11,8 @@ var Movimento = function(){
     this.idPessoa = "";
     this.idExternoPessoa = "";
     this.idCartao = "";
-    this.idExternoCartao = "";    
+    this.idExternoCartao = ""; 
+    this.repeat = "";
+    this.countRepeat = "";
 };
 Movimento.prototype = new Entity("movimento");
