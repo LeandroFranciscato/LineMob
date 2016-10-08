@@ -333,7 +333,7 @@ var sync = {
         });
     },
     ajax: function (httpType, responseType, url, dataInput, cbSuccess, cbError) {
-        url = "https://45.62.231.35:8181/LinemobAPI/" + url;
+        url = "http://10.0.0.102:8080/LinemobAPI/" + url;
         $.ajax({
             crossDomain: true,
             type: httpType,
@@ -360,16 +360,16 @@ var sync = {
     setRunning: function (qtdeTasks) {
         sync.running += qtdeTasks;
         if (sync.running >= 1) {
-            cordova.plugins.backgroundMode.configure({
-                title: i18next.t("background-mode.title-sync"),
-                color: "455a64"
-            });
+            if (!cordova.plugins.backgroundMode.isEnabled()) {
+                cordova.plugins.backgroundMode.configure({
+                    silent: true
+                });
+                cordova.plugins.backgroundMode.enable();
+            }
         } else {
-            cordova.plugins.backgroundMode.configure({
-                title: i18next.t("background-mode.title"),
-                color: "e53935"
-            });
-            loadController.hide();
+            if (cordova.plugins.backgroundMode.isEnabled()) {
+                cordova.plugins.backgroundMode.disable();
+            }
             if (notifyUtil.notificationsArray.length) {
                 notifyUtil.bulkNotify();
             }

@@ -208,7 +208,7 @@ var Controller = {
     initializePlugins: function () {
         i18nextInitialize();
         loadScroll();
-        $(".value").mask("000000000.00", {reverse: true});
+        $(".valor").mask("000000000.00", {reverse: true});
     },
     setFocus: function () {
         $(this.options.inputToFocus).focus();
