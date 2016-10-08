@@ -1,12 +1,4 @@
-
 /* global Controller, mainController, iconUtil, i18next, daoUtil, alertUtil, dateUtil */
-
-/*
- QUERIES
- daoUtil.getCustom("select cast(valorSaldoInicial as decimal) valorSaldoInicial from conta where id = 1", function(res){console.log(res);});
- daoUtil.getCustom("select sum(case natureza when 'C' then cast(valor as decimal) else cast(valor*-1 as decimal) end) saldo_inicial from movimento where dataVencimento <= '2016-09-27' and idConta = 2", function(res){console.log(res);});
- daoUtil.getCustom("select case natureza when 'C' then cast(valor as decimal) else cast(valor*-1 as decimal) end valor, dataVencimento, descricao from movimento where dataVencimento <= '2016-09-27' and idConta = 2", function(res){console.log(res);});
- */
 var reportsController = {
     TEMPLATE_CHOOSE_REPORTS: "",
     TEMPLATE_ACCOUNT_BALANCE: "",
@@ -75,7 +67,7 @@ var reportsController = {
                     display: "none"
                 }
             }, data, function () {
-
+                reportsController.setDefaultDates();
             });
         });
     },
@@ -123,7 +115,6 @@ var reportsController = {
                                         data.saldoTotal += movimento.valor;
                                     });
                                     data.contas.push(conta);
-
                                     if (contasRes.length === data.contas.length) {
                                         data.saldoTotal = data.saldoTotal.toFixed(2);
                                         Controller.render({
@@ -191,7 +182,7 @@ var reportsController = {
                     display: "none"
                 }
             }, data, function () {
-
+                reportsController.setDefaultDates();
             });
         });
     },
@@ -238,7 +229,6 @@ var reportsController = {
                                         data.saldoTotal += movimento.valor;
                                     });
                                     data.cartoes.push(cartao);
-
                                     if (cartoesRes.length === data.cartoes.length) {
                                         data.saldoTotal = data.saldoTotal.toFixed(2);
                                         Controller.render({
@@ -306,7 +296,7 @@ var reportsController = {
                     display: "none"
                 }
             }, data, function () {
-
+                reportsController.setDefaultDates();
             });
         });
     },
@@ -354,7 +344,6 @@ var reportsController = {
                                         data.saldoTotal += movimento.valor
                                     });
                                     data.categorias.push(Categoria);
-
                                     if (categoriasRes.length === data.categorias.length) {
                                         data.saldoTotal = data.saldoTotal.toFixed(2);
                                         Controller.render({
@@ -382,5 +371,12 @@ var reportsController = {
                     });
                 }
         );
-    }    
+    },
+    setDefaultDates: function () {
+        var data = new Date();
+        var firstDay = new Date(data.getFullYear(), data.getMonth(), 1);
+        var lastDay = new Date(data.getFullYear(), data.getMonth() + 1, 0);
+        $("#dataInicio").val(dateUtil.toString(firstDay));
+        $("#dataFinal").val(dateUtil.toString(lastDay));
+    }
 };

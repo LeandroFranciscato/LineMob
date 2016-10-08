@@ -15,5 +15,11 @@ dateUtil = {
         str = str.toString();
         var ans = pad.substring(0, pad.length - str.length) + str;
         return ans;
+    },
+    toString: function (date) {
+        var year = date.getFullYear();
+        var month = dateUtil.pad(date.getMonth() + 1, "00");
+        var day = dateUtil.pad(date.getDate(), "00");
+        return year + "-" + month + "-" + day;
     }
 };
