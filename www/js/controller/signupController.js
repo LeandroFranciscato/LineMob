@@ -61,10 +61,6 @@ var signupController = {
             signupController.requestSignUp(function () {
                 Controller.insert(i18next.t("login-controller.alert-welcome-pt1") + $("#inputUsuario").val(), undefined, function () {
                     mainController.render();
-                    loadController.show();
-                    setTimeout(function () {
-                        sync.run();
-                    }, 2000);
                 });
             }, function (msg) {
                 if (msg == "server-messages.user-exists") {

@@ -189,10 +189,12 @@ var app = {
         }
     },
     enableBackground: function () {
-        var interval = null;
-        interval = setInterval(function () {
-            sync.run();
-        }, 60000);
+        /*
+         var interval = null;
+         interval = setInterval(function () {
+         sync.run();
+         }, 60000);
+         */
     }
 };
 app.initialize();
