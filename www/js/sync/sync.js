@@ -333,7 +333,7 @@ var sync = {
         });
     },
     ajax: function (httpType, responseType, url, dataInput, cbSuccess, cbError) {
-        url = "https://45.62.231.35:8181/LinemobAPI/" + url;
+        url = "http://10.0.0.102:8080/LinemobAPI/" + url;
         $.ajax({
             crossDomain: true,
             type: httpType,
