@@ -5,7 +5,7 @@
     "left-menu": {
         "home": "Início",
         "bank-accounts": "Contas Bancarias",
-        "peoples": "Pessoas",
+        "peoples": "Estabelecimentos",
         "cred-card": "Cartões",
         "category": "Categorias",
         "activity": "Lançamentos",
@@ -178,10 +178,10 @@
         "currency-symbol": "R$",
         "error-deleting-server": "Erro deletando ",
         "sync-conflict": "Conflito ao sincronizar ",
-        "you-updated-but": "Você atualizou este registro, mas outro usuário atualizou antes. Infelizmente você perdeu suas alterações. =[ ",
-        "you-deleted-but": "Você deletou este registro, mas outro usuário atualizou antes. Então ele ainda existe aqui. =] ",
-        "you-updated-but-another-updated": "Você atualizou um registro, mas outro usuário deletou antes. Então ele não existe mais aqui. =[ ",
-        "you-deleted-but-another-deleted": "Outro usuário também deletou um registro que você havia deletado. Tudo certo, só registrando. =]",
+        "you-updated-but": "Você atualizou este registro, mas outro processo atualizou antes. Infelizmente você perdeu suas alterações. =[ ",
+        "you-deleted-but": "Você deletou este registro, mas outro processo atualizou antes. Então ele ainda existe aqui. =] ",
+        "you-updated-but-another-updated": "Você atualizou um registro, mas outro processo deletou antes. Então ele não existe mais aqui. =[ ",
+        "you-deleted-but-another-deleted": "Outro processo também deletou um registro que você havia deletado. Tudo certo, só registrando. =]",
         "dt-inicio": "Dt. Início",
         "dt-final": "Dt. Final",
         "name": "Nome",
@@ -200,6 +200,7 @@
         "insert-movimento-without-pessoa": "Pessoa do lançamento não cadastrada!",
         "insert-movimento-without-categoria": "Categoria do lançamento não cadastrada!",
         "insert-movimento-without-cartao": "Cartão do lançamento não cadastrado!",
-        "user-exists": "Nome de usuário indisponível, tente outro Usuário!"
+        "user-exists": "Nome de usuário indisponível, tente outro Usuário!",
+        "user-problems": "Nome de usuário deve conter apenas letras e/ou números."
     }
 }
