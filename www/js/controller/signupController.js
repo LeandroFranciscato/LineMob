@@ -47,12 +47,12 @@ var signupController = {
             if (cbSuccess) {
                 cbSuccess();
             }
-        }, function () {
+        }, function (msg) {
             loadController.hide();
             window.localStorage.removeItem("user");
             window.localStorage.removeItem("pwd");
             if (cbError) {
-                cbError();
+                cbError(msg);
             }
         });
     },
@@ -66,8 +66,12 @@ var signupController = {
                         sync.run();
                     }, 2000);
                 });
-            }, function () {
-                alertUtil.confirm(i18next.t("server-messages.user-exists"));
+            }, function (msg) {
+                if (msg == "server-messages.user-exists") {
+                    alertUtil.confirm(i18next.t(msg));
+                } else {
+                    alertUtil.confirm(i18next.t("server-messages.user-problems"));
+                }
             });
         });
     }
