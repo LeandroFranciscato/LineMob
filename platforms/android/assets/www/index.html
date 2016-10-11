@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-    <head>
+    <head>        
+        <meta http-equiv="Content-Security-Policy" content="default-src *; style-src *  'unsafe-inline'; script-src *  'unsafe-inline'; media-src *">
         <meta charset="UTF-8">
         <meta name="format-detection" content="telephone=no">        
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
@@ -16,7 +17,10 @@
         <script src="js/util/logUtil.js" type="text/javascript"></script>
         <script src="js/util/iconUtil.js" type="text/javascript"></script>
         <script src="js/util/alertUtil.js" type="text/javascript"></script>        
-
+        <script src="js/util/networkUtil.js" type="text/javascript"></script>
+        <script src="js/util/notifyUtil.js" type="text/javascript"></script>
+        <script src="js/util/dateUtil.js" type="text/javascript"></script>
+        
         <!--FRAMEWORKS-->        
         <script src="js/plugins/jquery-3.0.0.min.js" type="text/javascript"></script>        
         <script src="js/plugins/jquery.event.move.js" type="text/javascript"></script>
@@ -26,6 +30,8 @@
         <script src="js/plugins/tableToJSON.js" type="text/javascript"></script>
         <script src="js/plugins/taphold.js" type="text/javascript"></script>
         <script src="js/plugins/mustache.min.js" type="text/javascript"></script>
+        <script src="js/plugins/jquery.md5.js" type="text/javascript"></script>
+        <script src="js/plugins/jquery.mask.min.js" type="text/javascript"></script>
         <script src="materialize/js/materialize.js" type="text/javascript"></script>
         <script src="cordova.js" type="text/javascript"></script>        
         <script src="js/index.js" type="text/javascript"></script>
@@ -51,6 +57,8 @@
         <script src="js/controller/cartaoController.js" type="text/javascript"></script>
         <script src="js/controller/categoriaController.js" type="text/javascript"></script>
         <script src="js/controller/movimentoController.js" type="text/javascript"></script>
+        <script src="js/controller/signupController.js" type="text/javascript"></script>
+        <script src="js/controller/reportsController.js" type="text/javascript"></script>
 
         <!-- INTERNACIONALIZAÇÃO -->
         <script src="js/plugins/i18next/i18next-jquery.0.0.14.min.js" type="text/javascript"></script>
@@ -58,7 +66,12 @@
         <script src="js/plugins/i18next/i18nextBrowserLanguageDetector.min.js" type="text/javascript"></script>
         <script src="js/plugins/i18next/i18nextXHRBackend.min.js" type="text/javascript"></script>
         <script src="js/plugins/i18next/i18next.ini.js" type="text/javascript"></script>
-
+        
+        <!-- SYNC --> 
+        <script src="js/sync/sync.js" type="text/javascript"></script>        
+        <script src="js/sync/cartaoSync.js" type="text/javascript"></script>
+        <script src="js/sync/movimentoSync.js" type="text/javascript"></script>
+        
         <script type="text/javascript">
             function loadScroll() {
                 myScroll = new IScroll('#wrapper', {preventDefault: false});
@@ -134,6 +147,14 @@
                                 </i>
                             </span>
                         </a>
+                        <a class="collection-item" onclick="reportsController.load()">
+                            <span data-i18n="left-menu.reports"> </span>
+                            <span class="badge">
+                                <i class="material-icons">
+                                    <script>iconUtil.draw(iconUtil.reports);</script>
+                                </i>
+                            </span>
+                        </a>
                         <a class="collection-item" onclick="configController.load()">
                             <span data-i18n="left-menu.config"> </span>
                             <span class="badge">
@@ -141,7 +162,7 @@
                                     <script>iconUtil.draw(iconUtil.config);</script>
                                 </i>
                             </span>
-                        </a>
+                        </a>                        
                         <a class="collection-item" onclick="loginController.logout()">
                             <span data-i18n="left-menu.exit"> </span>
                             <span class="badge">
@@ -149,7 +170,7 @@
                                     <script>iconUtil.draw(iconUtil.exit);</script>
                                 </i>
                             </span>
-                        </a>
+                        </a>                       
                     </div>
                 </div>
             </div>

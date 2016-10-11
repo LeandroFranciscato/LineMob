@@ -1,11 +1,18 @@
 var Movimento = function(){
-    this.data = "";
+    this.dataLancamento = "";    
+    this.dataVencimento = "";    
     this.valor = "";
     this.natureza = "";
     this.descricao = "";
     this.idConta = "";
+    this.idExternoConta = "";
     this.idCategoria = "";
+    this.idExternoCategoria = "";
     this.idPessoa = "";
-    this.idCartao = "";    
+    this.idExternoPessoa = "";
+    this.idCartao = "";
+    this.idExternoCartao = ""; 
+    this.repeat = "";
+    this.countRepeat = "";
 };
 Movimento.prototype = new Entity("movimento");

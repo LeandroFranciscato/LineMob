@@ -1,0 +1,50 @@
+<div class="container row">    
+    <form id="form-cadastro" class="form-signin col s12" data-id="formLogin">        
+
+        <div class="row">
+            <div class="col s12 center">
+                <img id="img-form-signin" src="img/logo.png" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s12">
+                <input type="email" id="inputUsuario" name="usuario" placeholder="" data-i18n="[placeholder]login-controller.placeholder-email">
+                <label for="inputUsuario" class="active" data-i18n="login-controller.field-email"></label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s10">
+                <input type="password" id="inputPassword" name="senha" placeholder="********">                    
+                <label for="inputPassword" class="active" data-i18n="login-controller.field-senha"></label>
+            </div>
+            <div class="input-field col s2">                
+                <i id="icon-eye" class="material-icons grey-text eyeOn" onclick="loginController.showOrHidePasswd(this)">
+                    <script>$("#icon-eye").html(iconUtil.eyeOn);</script>
+                </i>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s6">
+                <input id="checkBoxLembrar" type="checkbox" class="filled-in" checked="checked" />
+                <label for="checkBoxLembrar" data-i18n="login-controller.field-check"></label>
+            </div>
+            <div class="col s6 grey-text right-align" onclick="signupController.load();">
+                <h6 data-i18n="login-controller.sign-up"> </h6>
+            </div>    
+        </div>            
+
+        <div class="row">
+            <div class="col s12">
+                <button data-id="btnLogin" 
+                        class="red darken-1 btn waves-effect waves-light" 
+                        type="button"
+                        onclick="loginController.insert();"
+                        data-i18n="login-controller.btn-login">                    
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

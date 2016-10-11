@@ -5,18 +5,24 @@
     "left-menu": {
         "home": "Início",
         "bank-accounts": "Contas Bancarias",
-        "peoples": "Pessoas",
+        "peoples": "Estabelecimentos",
         "cred-card": "Cartões",
         "category": "Categorias",
         "activity": "Lançamentos",
         "config": "Opções",
-        "exit": "Sair"
+        "exit": "Sair",
+        "reports": "Relatórios"
     },
     "language-select": {
         "label": "Idioma do App",
         "en": "Inglês",
         "pt": "Português",
         "es": "Espanhol"
+    },
+    "background-mode": {
+        "title": "App executando",
+        "text": "Linemob",
+        "title-sync": "App sincronizando"
     },
     "alerts-crud": {
         "title-editing": "Editando...",
@@ -27,7 +33,7 @@
         "body-delete-success": "Deletado com sucesso!",
         "body-edit-success": "Alterado com sucesso!",
         "body-insert-success": "Cadastrado com sucesso!"
-    },    
+    },
     "config-controller": {
         "plural": "OPÇÕES",
         "alert-lng-req": "Idioma deve ser informado."
@@ -41,7 +47,10 @@
         "field-nome": "Nome da Conta",
         "field-dataFundacao": "Data Fundação",
         "field-valorSaldoInicial": "Valor Saldo Inicial",
-        "field-select-conta": "Selecione a Conta"
+        "field-select-conta": "Selecione a Conta",
+        "title-insert": "Nova Conta Cadastrada",
+        "title-update": "Conta Atualizada",
+        "title-delete": "Conta Deletada"
     },
     "login-controller": {
         "alert-usuario-req": "Usuário deve ser informado.",
@@ -50,11 +59,13 @@
         "alert-welcome-pt1": "Bem vindo ",
         "body-alert-logout": "Esta ação fará com que todos os dados locais sejam perdidos, deseja mesmo continuar?",
         "title-alert-logout": "Saindo...",
-        "placeholder-email": "exemplo@dominio.com",
-        "field-email": "E-mail",
+        "placeholder-email": "Usuário",
+        "field-email": "Usuário",
         "field-senha": "Senha",
         "field-check": "Lembrar",
-        "btn-login": "Entrar"
+        "btn-login": "Entrar",
+        "sign-up": "Cadastrar-se",
+        "btn-signup": "Cadastrar"
     },
     "pessoa-controller": {
         "plural": "PESSOAS",
@@ -63,7 +74,10 @@
         "alert-apelido-req": "Apelido deve ser informado.",
         "field-nome": "Nome",
         "field-apelido": "Apelido",
-        "field-select-pessoa": "Selecione a Pessoa"
+        "field-select-pessoa": "Selecione a Pessoa",
+        "title-insert": "Nova Pessoa Cadastrada",
+        "title-update": "Pessoa Atualizada",
+        "title-delete": "Pessoa Deletada"
     },
     "cartao-controller": {
         "plural": "CARTÕES",
@@ -83,7 +97,10 @@
         "field-valorLimite": "Limite",
         "field-idConta": "Conta",
         "field-select-cartao": "Selecione o Cartão",
-        "field-option-cartao-nulo": "Sem Cartão"
+        "field-option-cartao-nulo": "Sem Cartão",
+        "title-insert": "Novo Cartão Cadastrado",
+        "title-update": "Cartão Atualizado",
+        "title-delete": "Cartão Deletado"
     },
     "categoria-controller": {
         "plural": "CATEGORIAS",
@@ -91,19 +108,24 @@
         "alert-nome-req": "Nome deve ser informado.",
         "field-nome": "Nome",
         "field-nome-sub-categoria": "SubCategoria",
-        "field-select-categoria": "Selecione a Categoria"
+        "field-select-categoria": "Selecione a Categoria",
+        "title-insert": "Nova Categoria cadastrada",
+        "title-update": "Categoria Atualizada",
+        "title-delete": "Categoria Deletada"
     },
     "movimento-controller": {
         "plural": "LANÇAMENTOS",
         "singular": "LANÇAMENTO",
-        "alert-data-req": "Data deve ser informada!",
+        "alert-dataVencimento-req": "Data do Vencimento deve ser informada!",
+        "alert-dataLancamento-req": "Data do Lançamento deve ser informada!",
         "alert-valor-req": "Valor deve ser informado!",
         "alert-descricao-req": "Descrição deve ser informada!",
         "alert-idConta-req": "Conta deve ser informada!",
         "alert-idCategoria-req": "Categoria deve ser informada!",
         "alert-idPessoa-req": "Pessoa deve ser informada!",
         "alert-idCartao-req": "Cartão deve ser informado!",
-        "field-data": "Data",
+        "field-dataVencimento": "Data Venc.",
+        "field-dataLancamento": "Data Lanc.",
         "field-valor": "Valor",
         "field-select-natureza": "Natureza",
         "field-select-natureza-option-d": "Débito",
@@ -112,16 +134,73 @@
         "field-idConta": "Conta",
         "field-idCategoria": "Categoria",
         "field-idPessoa": "Pessoa",
-        "field-idCartao": "Cartão"
+        "field-idCartao": "Cartão",
+        "title-insert": "Novo Lançamento Cadastrado",
+        "title-update": "Lançamento Atualizado",
+        "title-delete": "Lançamento Deletado",
+        "field-select-repeat": "Frequência",
+        "select-repeat-option-not": "Não repetir",
+        "select-repeat-option-daily": "Diário",
+        "select-repeat-option-weekly": "Semanal",
+        "select-repeat-option-monthly": "Mensal",
+        "select-repeat-option-semiannully": "Semestral",
+        "select-repeat-option-annully": "Anual",
+        "field-select-count-repeat": "Número de Repetições",
+        "alert-repeat-wrong": "Você escolheu uma frequência, mas não escolheu a quantidade de repetições."
+    },
+    "reports-controller": {
+        "plural": "Relatórios",
+        "single": "Relatório",
+        "description": "Descrição",
+        "account-balance": "Saldo Bancario",
+        "account-balance-filter": "Sld Banc (Filtro)",
+        "account-balance-description": "Mostra o saldo das contas bancarias de acordo com o período filtrado.",
+        "cred-card-invoice": "Fatura Cartão",
+        "cred-card-invoice-filter": "Fatura (Filtro)",
+        "cred-card-invoice-description": "Mostra os lançamentos que compõem a fatura do cartão de crédito, de acordo com o período filtrado.",
+        "group-category": "Categoria Agrupado",
+        "group-category-filter": "Categ Agr (Filtro)",
+        "group-category-description": "Mostra os lançamentos agrupados por categoria, de acordo com o período filtardo."
     },
     "generics": {
         "no": "Não",
         "yes": "Sim",
         "record-s-question": " registro(s)?",
         "field-required": "Campo deve ser preenchido.",
+        "all-fields-required": "Todos os campos devem ser informados.",
+        "date-range-required": "Data Inicial e Final devem ser informadas.",
         "fail-crud-msg": "Problemas... Contate-nos... ",
         "label-multedit": "Selecione o campo para Alteração.",
         "paginator-text-pt1": "Carregar mais ",
-        "search": "Pesquisar..."
+        "search": "Pesquisar...",
+        "must-be-online": "Você deve estar Online para executar esta ação!",
+        "currency": "Real",
+        "currency-symbol": "R$",
+        "error-deleting-server": "Erro deletando ",
+        "sync-conflict": "Conflito ao sincronizar ",
+        "you-updated-but": "Você atualizou este registro, mas outro processo atualizou antes. Infelizmente você perdeu suas alterações. =[ ",
+        "you-deleted-but": "Você deletou este registro, mas outro processo atualizou antes. Então ele ainda existe aqui. =] ",
+        "you-updated-but-another-updated": "Você atualizou um registro, mas outro processo deletou antes. Então ele não existe mais aqui. =[ ",
+        "you-deleted-but-another-deleted": "Outro processo também deletou um registro que você havia deletado. Tudo certo, só registrando. =]",
+        "dt-inicio": "Dt. Início",
+        "dt-final": "Dt. Final",
+        "name": "Nome",
+        "date": "Data",
+        "value": "Valor",
+        "balance": "Saldo"
+    },
+    "server-messages": {
+        "remove-categoria-used-movimento": "Categoria não pode ser deletada porque está vinculada a um Lançamento!",
+        "remove-conta-used-cartao": "Conta não pode ser deletada porque está vinculada a um Cartão!",
+        "remove-conta-used-movimento": "Conta não pode ser deletada porque está vinculada a um Lançamento!",
+        "remove-pessoa-used-movimento": "Pessoa não pode ser deletada porque está vinculada a um Lançamento!",
+        "remove-cartao-used-movimento": "Cartão não pode ser deletado porque está vinculado a um Lançamento!",
+        "insert-cartao-without-conta": "Conta do cartão não cadastrada!",
+        "insert-movimento-without-conta": "Conta do lançamento não cadastrada!",
+        "insert-movimento-without-pessoa": "Pessoa do lançamento não cadastrada!",
+        "insert-movimento-without-categoria": "Categoria do lançamento não cadastrada!",
+        "insert-movimento-without-cartao": "Cartão do lançamento não cadastrado!",
+        "user-exists": "Nome de usuário indisponível, tente outro Usuário!",
+        "user-problems": "Nome de usuário deve conter apenas letras e/ou números."
     }
 }

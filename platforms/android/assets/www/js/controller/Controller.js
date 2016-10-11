@@ -1,4 +1,4 @@
-/* global daoUtil, mainController, Mustache, iconUtil, myScroll, alertUtil, i18next, i18next, loadController */
+/* global daoUtil, mainController, Mustache, iconUtil, myScroll, alertUtil, i18next, i18next, loadController, dateUtil */
 var Controller = {
     SCROLLER: "#scroller",
     options: "",
@@ -10,6 +10,7 @@ var Controller = {
             inicial: 0,
             final: 10,
             orderBy: undefined,
+            isDescent: false,
             template: "",
             navLeft: {},
             navCenter: {},
@@ -29,7 +30,7 @@ var Controller = {
                             cb();
                         }
                     });
-                });
+                }, this.options.isDescent);
     },
     loadSearchedList: function (options, searchText, cb) {
         this.options = {
@@ -38,6 +39,7 @@ var Controller = {
             inicial: 0,
             final: 10,
             orderBy: undefined,
+            isDescent: false,
             template: "",
             navCenter: {},
             navLeft: {},
@@ -53,7 +55,7 @@ var Controller = {
                     cb();
                 }
             });
-        });
+        }, this.options.isDescent);
     },
     loadNewOrSingleEdit: function (options, data, cb) {
         this.options = {
@@ -151,6 +153,7 @@ var Controller = {
             inicial: 0,
             final: 10,
             orderBy: undefined,
+            isDescent: false,
             template: "",
             objectToBind: this.SCROLLER,
             navLeft: {
@@ -205,6 +208,7 @@ var Controller = {
     initializePlugins: function () {
         i18nextInitialize();
         loadScroll();
+        $(".valor").mask("000000000.00", {reverse: true});
     },
     setFocus: function () {
         $(this.options.inputToFocus).focus();
@@ -391,6 +395,7 @@ var Controller = {
             errorMessage = (!errorMessage) ? i18next.t("generics.fail-crud-msg") : errorMessage;
 
             this.options.controllerOrigin.validaFormulario(data, function () {
+                data.updated = 1;
                 daoUtil.update(data, function (rowsAffected) {
                     if (rowsAffected === 1) {
                         alertUtil.confirm(sucessMessage);
@@ -408,30 +413,52 @@ var Controller = {
                     } else {
                         alertUtil.confirm(errorMessage);
                     }
-                });
+                }, 1);
             });
         } else {
             sucessMessage = (!sucessMessage) ? i18next.t("alerts-crud.body-insert-success") : sucessMessage;
             errorMessage = (!errorMessage) ? i18next.t("generics.fail-crud-msg") : errorMessage;
             this.options.controllerOrigin.validaFormulario(data, function () {
-                daoUtil.insert(data, function (rowsAffected) {
-                    if (rowsAffected === 1) {
-                        alertUtil.confirm(sucessMessage);
-                        if (Controller.options.controllerOrigin.loadList) {
-                            Controller.options.controllerOrigin.loadList(function () {
-                                if (cb) {
-                                    cb();
-                                }
-                            });
-                        } else {
-                            if (cb) {
-                                cb();
-                            }
-                        }
-                    } else {
-                        alertUtil.confirm(errorMessage);
+
+                var countRepeat = [];
+                if (data.repeat > 0) {
+                    for (var i = 1; i <= data.countRepeat; i++) {
+                        countRepeat.push(i);
                     }
+                } else {
+                    countRepeat = [1];
+                }
+
+                var descricaoAux;
+                countRepeat.forEach(function (i) {
+                    if (data.dataVencimento && data.repeat > 0) {
+                        data.dataVencimento = (i == 1) ? data.dataVencimento : dateUtil.increment(data.dataVencimento, data.repeat);
+                    }
+                    if (data.descricao && data.repeat > 0) {
+                        if (!descricaoAux) {
+                            descricaoAux = data.descricao;
+                        }
+                        data.descricao = descricaoAux + " " + i + "/" + data.countRepeat;
+                    }
+                    daoUtil.insert(data, function (rowsAffected) {
+                        if (rowsAffected != 1) {
+                            alertUtil.confirm(errorMessage);
+                        }
+                    });
                 });
+
+                alertUtil.confirm(sucessMessage);
+                if (Controller.options.controllerOrigin.loadList) {
+                    Controller.options.controllerOrigin.loadList(function () {
+                        if (cb) {
+                            cb();
+                        }
+                    });
+                } else {
+                    if (cb) {
+                        cb();
+                    }
+                }
             });
         }
     },
@@ -464,11 +491,11 @@ var Controller = {
                                     if (res != 1) {
                                         alertUtil.confirm(i18next.t("generics.fail-crud-msg"), item.id);
                                     }
+                                    Controller.options.controllerOrigin.loadList();
                                 });
                             }
                         }
                         alertUtil.confirm(i18next.t("alerts-crud.body-delete-success"));
-                        Controller.options.controllerOrigin.loadList();
                     }
                 });
     },
@@ -560,6 +587,7 @@ var Controller = {
             tituloNavCenter: "NOVO",
             columnToReRender: "",
             orderByReRender: "",
+            isDescentReRender: false,
             callbackAction: "",
             labelSelect: "",
             data: {}
@@ -608,7 +636,7 @@ var Controller = {
                                         modalOptions.callbackAction();
                                     }
                                 });
-                            });
+                            }, modalOptions.isDescentReRender);
                         } else {
                             alertUtil.confirm(i18next.t("generics.fail-crud-msg"));
                         }

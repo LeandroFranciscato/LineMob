@@ -1,4 +1,4 @@
-/* global dbUtil, logUtil, contaController, loginController, mainController, daoUtil, pessoaController, configController, loadController, cartaoController, categoriaController, movimentoController, cordova, i18next */
+/* global dbUtil, logUtil, contaController, loginController, mainController, daoUtil, pessoaController, configController, loadController, cartaoController, categoriaController, movimentoController, cordova, i18next, syncUtil, sync, signupController, reportsController */
 
 var app = {
     initialize: function () {
@@ -6,13 +6,9 @@ var app = {
     },
     bindEvents: function () {
         document.addEventListener('deviceready', this.onDeviceReady, false);
-
     },
     onDeviceReady: function () {
-        cordova.plugins.backgroundMode.setDefaults({
-            silent: true
-        });
-        cordova.plugins.backgroundMode.enable();
+        app.enableBackground();
         loadController.show(function () {
             dbUtil.initialize(function () {
                 app.createTables(function () {
@@ -32,9 +28,11 @@ var app = {
                     app.loadTemplateCategoria(function () {
                         app.loadTemplateMovimento(function () {
                             app.loadTemplateMain(function () {
-                                if (cb) {
-                                    cb();
-                                }
+                                app.loadTemplateReports(function () {
+                                    if (cb) {
+                                        cb();
+                                    }
+                                });
                             });
                         });
                     });
@@ -44,11 +42,11 @@ var app = {
 
     },
     loadTemplateConta: function (cb) {
-        $.get('templates/contaCadastro.html', function (string) {
+        $.get('templates/forms/contaCadastro.html', function (string) {
             contaController.TEMPLATE_CADASTRO = string;
-            $.get('templates/contaLista.html', function (string) {
+            $.get('templates/forms/contaLista.html', function (string) {
                 contaController.TEMPLATE_LISTA = string;
-                $.get('templates/contaEdicao.html', function (string) {
+                $.get('templates/forms/contaEdicao.html', function (string) {
                     contaController.TEMPLATE_EDICAO = string;
                     if (cb) {
                         cb();
@@ -58,11 +56,11 @@ var app = {
         });
     },
     loadTemplatePessoa: function (cb) {
-        $.get('templates/pessoaCadastro.html', function (string) {
+        $.get('templates/forms/pessoaCadastro.html', function (string) {
             pessoaController.TEMPLATE_CADASTRO = string;
-            $.get('templates/pessoaLista.html', function (string) {
+            $.get('templates/forms/pessoaLista.html', function (string) {
                 pessoaController.TEMPLATE_LISTA = string;
-                $.get('templates/pessoaEdicao.html', function (string) {
+                $.get('templates/forms/pessoaEdicao.html', function (string) {
                     pessoaController.TEMPLATE_EDICAO = string;
                     if (cb) {
                         cb();
@@ -72,11 +70,11 @@ var app = {
         });
     },
     loadTemplateCartao: function (cb) {
-        $.get('templates/cartaoCadastro.html', function (string) {
+        $.get('templates/forms/cartaoCadastro.html', function (string) {
             cartaoController.TEMPLATE_CADASTRO = string;
-            $.get('templates/cartaoLista.html', function (string) {
+            $.get('templates/forms/cartaoLista.html', function (string) {
                 cartaoController.TEMPLATE_LISTA = string;
-                $.get('templates/cartaoEdicao.html', function (string) {
+                $.get('templates/forms/cartaoEdicao.html', function (string) {
                     cartaoController.TEMPLATE_EDICAO = string;
                     if (cb) {
                         cb();
@@ -86,11 +84,11 @@ var app = {
         });
     },
     loadTemplateCategoria: function (cb) {
-        $.get('templates/categoriaCadastro.html', function (string) {
+        $.get('templates/forms/categoriaCadastro.html', function (string) {
             categoriaController.TEMPLATE_CADASTRO = string;
-            $.get('templates/categoriaLista.html', function (string) {
+            $.get('templates/forms/categoriaLista.html', function (string) {
                 categoriaController.TEMPLATE_LISTA = string;
-                $.get('templates/categoriaEdicao.html', function (string) {
+                $.get('templates/forms/categoriaEdicao.html', function (string) {
                     categoriaController.TEMPLATE_EDICAO = string;
                     if (cb) {
                         cb();
@@ -100,11 +98,11 @@ var app = {
         });
     },
     loadTemplateMovimento: function (cb) {
-        $.get('templates/movimentoCadastro.html', function (string) {
+        $.get('templates/forms/movimentoCadastro.html', function (string) {
             movimentoController.TEMPLATE_CADASTRO = string;
-            $.get('templates/movimentoLista.html', function (string) {
+            $.get('templates/forms/movimentoLista.html', function (string) {
                 movimentoController.TEMPLATE_LISTA = string;
-                $.get('templates/movimentoEdicao.html', function (string) {
+                $.get('templates/forms/movimentoEdicao.html', function (string) {
                     movimentoController.TEMPLATE_EDICAO = string;
                     if (cb) {
                         cb();
@@ -114,15 +112,44 @@ var app = {
         });
     },
     loadTemplateMain: function (cb) {
-        $.get('templates/login.html', function (string) {
+        $.get('templates/forms/login.html', function (string) {
             loginController.TEMPLATE_LOGIN = string;
-            $.get('templates/config.html', function (string) {
+            $.get('templates/forms/config.html', function (string) {
                 configController.TEMPLATE_CONFIG = string;
-                $.get('templates/inicio.html', function (string) {
-                    mainController.TEMPLATE_MAIN = string;
-                    if (cb) {
-                        cb();
-                    }
+                $.get('templates/forms/signup.html', function (string) {
+                    signupController.TEMPLATE_SIGNUP = string;
+                    $.get('templates/forms/inicio.html', function (string) {
+                        mainController.TEMPLATE_MAIN = string;
+                        if (cb) {
+                            cb();
+                        }
+                    });
+                });
+            });
+        });
+    },
+    loadTemplateReports: function (cb) {
+        $.get('templates/reports/chooseReports.html', function (string) {
+            reportsController.TEMPLATE_CHOOSE_REPORTS = string;
+            $.get('templates/reports/accountBalance.html', function (string) {
+                reportsController.TEMPLATE_ACCOUNT_BALANCE = string;
+                $.get('templates/reports/accountBalanceFilter.html', function (string) {
+                    reportsController.TEMPLATE_ACCOUNT_BALANCE_FILTER = string;
+                    $.get('templates/reports/credCard.html', function (string) {
+                        reportsController.TEMPLATE_CRED_CARD = string;
+                        $.get('templates/reports/credCardFilter.html', function (string) {
+                            reportsController.TEMPLATE_CRED_CARD_FILTER = string;
+                            $.get("templates/reports/groupCategory.html", function (string) {
+                                reportsController.TEMPLATE_GROUP_CATEGORY = string;
+                                $.get("templates/reports/groupCategoryFilter.html", function (string) {
+                                    reportsController.TEMPLATE_GROUP_CATEGORY_FILTER = string;
+                                    if (cb) {
+                                        cb();
+                                    }
+                                });
+                            });
+                        });
+                    });
                 });
             });
         });
@@ -160,7 +187,14 @@ var app = {
                 cb();
             }
         }
+    },
+    enableBackground: function () {
+        /*
+        var interval = null;
+        interval = setInterval(function () {
+            sync.run();
+        }, 60000);
+         */
     }
 };
-
 app.initialize();

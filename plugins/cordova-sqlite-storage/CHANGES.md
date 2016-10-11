@@ -1,5 +1,42 @@
 # Changes
 
+### cordova-sqlite-storage 1.4.7
+
+- Minor JavaScript fixes to pass @brodybits/Cordova-sql-test-app
+
+### cordova-sqlite-storage 1.4.6
+
+- Stop remaining transaction callback in case of an error with no error handler returning false
+- Expand selfTest function to cover CRUD with unique record keys
+- Fix readTransaction to reject ALTER, REINDEX, and REPLACE operations
+- Fix Windows 10 ARM Release Build of SQLite3 by disabling SDL check (ARM Release only)
+- Fix Windows 8.1/Windows Phone 8.1 Release Build of SQLite3 by disabling SDL check
+- Some documentation fixes
+
+### cordova-sqlite-storage 1.4.5
+
+- Log/error message fixes; remove extra qid from internal JSON interface
+
+### cordova-sqlite-storage 1.4.4
+
+- Fix readTransaction to reject modification statements with extra semicolon(s) in the beginning
+- Announce new Cordova-sqlite-evcore-extbuild-free version
+- Additional tests
+- Other doc fixes
+
+### cordova-sqlite-storage 1.4.3
+
+- Handle executeSql with object sql value (solves another possible crash on iOS)
+
+### cordova-sqlite-storage 1.4.2
+
+- Fix sqlitePlugin.openDatabase and sqlitePlugin.deleteDatabase to check location/iosDatabaseLocation values
+- Fix sqlitePlugin.deleteDatabase to check that db name is really a string (prevents possible crash on iOS)
+- Fix iOS version to use DLog macro to remove extra logging from release build
+- Fix Lawnchair adapter to use new mandatory "location" parameter
+- Remove special handling of Blob parameters, use toString for all non-value parameter objects
+- Minor cleanup of Android version code
+
 ### cordova-sqlite-storage 1.4.1
 
 - Minimum Cordova version no longer enforced in this version

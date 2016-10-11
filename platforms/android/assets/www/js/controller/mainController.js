@@ -1,4 +1,4 @@
-/* global Mustache, contaController, Controller, iconUtil, i18next */
+/* global Mustache, contaController, Controller, iconUtil, i18next, sync, networkUtil, alertUtil, loadController */
 
 var mainController = {
     TEMPLATE_MAIN: "",

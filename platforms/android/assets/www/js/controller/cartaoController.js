@@ -4,13 +4,12 @@ var cartaoController = {
     TEMPLATE_CADASTRO: "",
     TEMPLATE_LISTA: "",
     TEMPLATE_EDICAO: "",
-    loadList: function (cb) {
-
+    loadList: function (cb) {        
         Controller.loadList({
             controllerOrigin: this,
             entity: new Cartao(),
             orderBy: "nome",
-            template: this.TEMPLATE_LISTA,
+            template: cartaoController.TEMPLATE_LISTA,
             navLeft: {
                 icon: iconUtil.back,
                 callbackClick: function () {

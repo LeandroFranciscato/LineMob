@@ -7,16 +7,19 @@
         "files": {}
     },
     "installed_plugins": {
-        "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "io.cordova.hellocordova"
-        },
-        "cordova-sqlite-storage": {
-            "PACKAGE_NAME": "io.cordova.hellocordova"
+        "cordova-plugin-background-mode": {
+            "PACKAGE_NAME": "org.linepack"
         },
         "cordova-plugin-dialogs": {
             "PACKAGE_NAME": "org.linepack"
         },
-        "cordova-plugin-background-mode": {
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "org.linepack"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "org.linepack"
+        },
+        "cordova-sqlite-storage": {
             "PACKAGE_NAME": "org.linepack"
         },
         "de.appplant.cordova.plugin.local-notification": {
@@ -24,10 +27,10 @@
         }
     },
     "dependent_plugins": {
-        "cordova-plugin-device": {
+        "cordova-plugin-app-event": {
             "PACKAGE_NAME": "org.linepack"
         },
-        "cordova-plugin-app-event": {
+        "cordova-plugin-device": {
             "PACKAGE_NAME": "org.linepack"
         }
     }
