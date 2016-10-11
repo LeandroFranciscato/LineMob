@@ -333,7 +333,7 @@ var sync = {
         });
     },
     ajax: function (httpType, responseType, url, dataInput, cbSuccess, cbError) {
-        url = "http://45.62.231.35:8080/LinemobAPI/" + url;
+        url = "https://45.62.231.35:8181/LinemobAPI/" + url;
         $.ajax({
             crossDomain: true,
             type: httpType,
@@ -361,12 +361,7 @@ var sync = {
         sync.running += qtdeTasks;
         if (sync.running >= 1) {
             if (!cordova.plugins.backgroundMode.isEnabled()) {
-                cordova.plugins.backgroundMode.setDefaults({
-                    title: i18next.t("background-mode.title"),
-                    text: i18next.t("background-mode.text"),
-                    icon: "icon.png",
-                    resume: true,
-                    color: "e53935",
+                cordova.plugins.backgroundMode.configure({
                     silent: true
                 });
                 cordova.plugins.backgroundMode.enable();

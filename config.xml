@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="org.linepack.pro" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="org.linepack.free" version="1.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>LineMob</name> 
   <icon src="www\img\logo.png"/>
   <description>
-        Controle de Finanças Pessoais
+        Controle de Finanças
     </description>
   <author email="android-support@linepack.org" href="http://github.com/Linepack">
         Linepack Systems
