@@ -1,6 +1,6 @@
 {
     "app": {
-        "name": "LINEMOB"
+        "name": "LINEMOB FINANZAS"
     },
     "left-menu": {
         "home": "Casa",
@@ -50,7 +50,8 @@
         "field-select-conta": "Seleccionar cuenta",
         "title-insert": "Cuenta Nueva registrada",
         "title-update": "Cuenta Actualizada",
-        "title-delete": "Cuenta eliminada"
+        "title-delete": "Cuenta eliminada",
+        "initial-help": "Utilice este registro para entrar, editar o borrar su \"cuentas bancarias \". Estas cuentas serán luego usados en el \"Release \" y pueden tener su saldo controlado en \"saldo bancario Informe \". Estate atento a los campos \"Importe Saldo inicial de \" y \"Datos Fundación \" es a partir de estos campos que la aplicación calculará su equilibrio."
     },
     "login-controller": {
         "alert-usuario-req": "El usuario debe ser informado.",
@@ -77,7 +78,8 @@
         "field-select-pessoa": "Seleccionar la persona",
         "title-insert": "Nueva persona registrada",
         "title-update": "Persona Actualizada",
-        "title-delete": "Persona eliminada"
+        "title-delete": "Persona eliminada",
+        "initial-help": "Aquí están el domicilio \"instalaciones \" en la que usted tendrá gastos y / o ingresos. Supermercados, gasolineras, restaurantes, empresas, etc. A continuación, puede realizar un seguimiento de sus gastos por \"Creación \"."
     },
     "cartao-controller": {
         "plural": "TARJETAS",
@@ -100,18 +102,20 @@
         "field-option-cartao-nulo": "No Tarjeta",
         "title-insert": "Nueva Tarjeta registrada",
         "title-update": "Tarjeta Actualizada",
-        "title-delete": "Tarjeta Eliminada"
+        "title-delete": "Tarjeta Eliminada",
+        "initial-help": "Si utiliza es \"Tarjetas de crédito \" para llevar a cabo algunas de sus compras, usted debe registrarse aquí. También debe informar a la \"Cuenta \" en el que se pagará la factura de la tarjeta. Más tarde, se puede controlar el saldo de su cuenta usando el \"Tarjeta de Informe de factura \"."
     },
     "categoria-controller": {
         "plural": "CATEGORÍAS",
         "singular": "CATEGORÍA",
         "alert-nome-req": "El nombre debe ser informado.",
-            "field-nome": "Nombre",
+        "field-nome": "Nombre",
         "field-nome-sub-categoria": "subCategoría",
         "field-select-categoria": "Selecciona la categoría",
         "title-insert": "Nueva categoría registrada",
         "title-update": "Categoría Actualizada",
-        "title-delete": "Categoría Eliminada"
+        "title-delete": "Categoría Eliminada",
+        "initial-help": "\"Categorías\" se utilizan para controlar sus gastos en grupos. Alimentos, combustible, Mercado, Gastos personales, regalos, así que ... Grupo de sus gastos. El campo \"el subdirectorio \" es opcional y sirve para separar un poco más grupos. Por ejemplo, \"Tax-IPVA \" y \" Tax-propiedad\". Puede realizar un seguimiento de los gastos por categoría de \"Informe de Gastos Categoría \"."
     },
     "movimento-controller": {
         "plural": "ACTIVIDADES",
@@ -146,7 +150,8 @@
         "select-repeat-option-semiannully": "Semestre",
         "select-repeat-option-annully": "Anual",
         "field-select-count-repeat": "número de repeticiones",
-        "alert-repeat-wrong": "Usted ha elegido una frecuencia, pero no eligió el número de repeticiones."
+        "alert-repeat-wrong": "Usted ha elegido una frecuencia, pero no eligió el número de repeticiones.",
+        "initial-help": "Aquí se registrarán todos sus gastos e ingresos. Que va a utilizar todas las entradas realizadas con anterioridad: \"Card \", \"cuentas bancarias \", \" instalaciones\" y \"categorías\". También tiene la opción de comunicados repetir en varias frecuencias (mensual, semanal, anual, etc.)."
     },
     "reports-controller": {
         "plural": "INFORMES",

@@ -1,6 +1,6 @@
 {
     "app": {
-        "name": "LINEMOB"
+        "name": "LINEMOB FINANCES"
     },
     "left-menu": {
         "home": "Home",
@@ -50,7 +50,8 @@
         "field-select-conta": "Select the Account",
         "title-insert": "New Account Registered",
         "title-update": "Accunt Updated",
-        "title-delete": "Accunt Deleted"
+        "title-delete": "Accunt Deleted",
+        "initial-help": "Use this register to enter, edit or delete your \"Bank Accounts\". These accounts will later be used in the \"Activity\" and may have your balance controlled in \"Bank Balance Report\". Stay tuned to the fields \"Initial Balance Amount\" and \"Foundation Date\" is from these fields that the App will calculate your balance."
     },
     "login-controller": {
         "alert-usuario-req": "User must be informed.",
@@ -77,7 +78,8 @@
         "field-select-pessoa": "Select the Establishment",
         "title-insert": "New Establishment Registered",
         "title-update": "Establishment Updated",
-        "title-delete": "Establishment Deleted"
+        "title-delete": "Establishment Deleted",
+        "initial-help": "Here are the registered \"Establishments\" in which you will have expenses and/or income. Supermarkets, Gas Stations, Restaurants, Companies, etc. Then you can track your expenses by \"Establishment\"."    
     },
     "cartao-controller": {
         "plural": "CARDS",
@@ -100,7 +102,8 @@
         "field-option-cartao-nulo": "Without Crédit Card",
         "title-insert": "New Card Registered",
         "title-update": "Card Updated",
-        "title-delete": "Card Deleted"
+        "title-delete": "Card Deleted",
+        "initial-help": "If you use \"Credit Cards\" to perform some of yours purchases, you must register them here. You should also inform the \"Bank Account\" in which will be paid the invoice of the Card. Later, you can control the balance of your bill using the \"Card Invoice Report\"."
     },
     "categoria-controller": {
         "plural": "CATEGORIES",
@@ -111,7 +114,8 @@
         "field-select-categoria": "Select the Category",
         "title-insert": "New Category Registered",
         "title-update": "Category Updated",
-        "title-delete": "Category Deleted"
+        "title-delete": "Category Deleted",
+        "initial-help": "\"Categories \" are used to control its expenses in groups. Food, Fuel, Market, Personal expenses, gifts, so ... Group your spending. Field \"Sub-category \" is optional and serves to separate a little more groups. For example, \"Food-Lunch\" and \"Food-Dinner\". You can track expenses by category in \"Expenses Report by Category\". "
     },
     "movimento-controller": {
         "plural": "ACTIVITIES",
@@ -139,14 +143,15 @@
         "title-update": "Activity Updated",
         "title-delete": "Activity Deleted",
         "field-select-repeat": "Frequency",
-        "select-repeat-option-not": "Don't repeat ",
+        "select-repeat-option-not": "Doesn't repeat ",
         "select-repeat-option-daily": "Daily",
         "select-repeat-option-weekly": "Weekly",
         "select-repeat-option-monthly": "Monthly",
         "select-repeat-option-semiannully": "SemiAnnually",
         "select-repeat-option-annully": "Annually",
         "field-select-count-repeat": "Repeat Number",
-        "alert-repeat-wrong": "You have chosen a frequency, but did not choose the number of repetitions."
+        "alert-repeat-wrong": "You have chosen a frequency, but did not choose the number of repetitions.",
+        "initial-help": "Here you will registered all your expenses and income. You will use all the entries made previously: \"Card\", \"Bank Accounts\", \"Establishments\" and \"Categories\". You also have the option of repeat releases at various frequencies (Monthly, Weekly, Annual, etc.) .."
     },
     "reports-controller": {
         "plural": "REPORTS",
@@ -160,7 +165,7 @@
         "cred-card-invoice-description": "It shows the entries that make up the credit card bill, according to the filtered period.",
         "group-category": "Group Category",
         "group-category-filter": "Category (Filter)",
-        "group-category-description": "Shows the entries grouped by category, according to the period filtardo."
+        "group-category-description": "Shows the entries grouped by category, according to the filtered period."
     },
     "generics": {
         "no": "No",
