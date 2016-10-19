@@ -46,6 +46,24 @@ var daoUtil = {
             });
         });
     },
+    checkTableChanges: function (entity, cb) {
+        entity.getFields(function (entityFields) {
+            daoUtil.getCustom("PRAGMA table_info(" + entity.tableName + ")", function (fieldsObj) {
+                var databaseFields = [];
+                fieldsObj.forEach(function (fieldObj) {
+                    databaseFields.push(fieldObj.name.toString());
+                });
+                entityFields.forEach(function (entityField) {
+                    if (databaseFields.indexOf(entityField) === -1) {
+                        daoUtil.getCustom("alter table " + entity.tableName + " add column " + entityField + " text");
+                    }
+                });
+                if (cb) {
+                    cb();
+                }
+            });
+        });
+    },
     insert: function (entity, cb) {
         entity.getFields(function (fields, values) {
             var sql = "insert into " + entity.tableName + "(" + fields + ") values (" + values + ")";
@@ -120,7 +138,7 @@ var daoUtil = {
         var sql = "select * from " + entity.tableName + " where deleted <> '1' ";
 
         if (orderByColumn) {
-            sql += " order by " + orderByColumn + " collate nocase " ;
+            sql += " order by " + orderByColumn + " collate nocase ";
             sql += (isDescent) ? "desc" : "asc";
         }
 
@@ -156,7 +174,7 @@ var daoUtil = {
         var sql = "select * from " + entity.tableName + " where deleted <> '1' ";
 
         if (orderByColumn) {
-            sql += " order by " + orderByColumn + " collate nocase " ;
+            sql += " order by " + orderByColumn + " collate nocase ";
             sql += (isDescent) ? "desc" : "asc";
         }
 
@@ -209,7 +227,7 @@ var daoUtil = {
             sql += ")";
 
             if (orderbyColumn) {
-                sql += " order by " + orderbyColumn + " collate nocase " ;
+                sql += " order by " + orderbyColumn + " collate nocase ";
                 sql += (isDescent) ? "desc" : "asc";
             }
 
@@ -252,7 +270,7 @@ var daoUtil = {
             });
         });
     },
-    getCustom: function (sql, cb) {        
+    getCustom: function (sql, cb) {
         dbUtil.executeSql(sql, [], function (res) {
             daoUtil.sucessGets(null, res, function (retorno) {
                 if (cb) {

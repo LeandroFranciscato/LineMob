@@ -157,20 +157,13 @@ var app = {
     createTables: function (cb) {
         var storage = window.localStorage;
         if (!storage.getItem("dataBaseCreated")) {
-            var usuario = new Usuario();
-            daoUtil.initialize(usuario, function () {
-                var conta = new Conta();
-                daoUtil.initialize(conta, function () {
-                    var cartao = new Cartao();
-                    daoUtil.initialize(cartao, function () {
-                        var categoria = new Categoria();
-                        daoUtil.initialize(categoria, function () {
-                            var pessoa = new Pessoa();
-                            daoUtil.initialize(pessoa, function () {
-                                var mov = new Movimento();
-                                daoUtil.initialize(mov, function () {
-                                    var config = new Config();
-                                    daoUtil.initialize(config, function () {
+            daoUtil.initialize(new Usuario(), function () {
+                daoUtil.initialize(new Conta(), function () {
+                    daoUtil.initialize(new Cartao(), function () {
+                        daoUtil.initialize(new Categoria(), function () {
+                            daoUtil.initialize(new Pessoa(), function () {
+                                daoUtil.initialize(new Movimento(), function () {
+                                    daoUtil.initialize(new Config(), function () {
                                         storage.setItem("dataBaseCreated", "1");
                                         if (cb) {
                                             cb();
@@ -183,9 +176,23 @@ var app = {
                 });
             });
         } else {
-            if (cb) {
-                cb();
-            }
+            daoUtil.checkTableChanges(new Usuario(), function () {
+                daoUtil.checkTableChanges(new Conta(), function () {
+                    daoUtil.checkTableChanges(new Cartao(), function () {
+                        daoUtil.checkTableChanges(new Categoria(), function () {
+                            daoUtil.checkTableChanges(new Pessoa(), function () {
+                                daoUtil.checkTableChanges(new Movimento(), function () {
+                                    daoUtil.checkTableChanges(new Config(), function () {                                        
+                                        if (cb) {
+                                            cb();
+                                        }
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
         }
     },
     enableBackground: function () {

@@ -14,5 +14,6 @@ var Movimento = function(){
     this.idExternoCartao = ""; 
     this.repeat = "";
     this.countRepeat = "";
+    this.isTransferencia = "";
 };
 Movimento.prototype = new Entity("movimento");
