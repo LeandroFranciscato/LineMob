@@ -254,6 +254,16 @@ var movimentoController = {
                 cb();
             }
         }
+    },
+    preparaTransferencia: function (element) {
+        if ($(element).val() == "T") {
+            $("#select-conta-origem-row").removeClass("hide");
+            $("#select-conta-destino-row").removeClass("hide");
+            $("#select-conta-row").addClass("hide");
+        } else {
+            $("#select-conta-origem-row").addClass("hide");
+            $("#select-conta-destino-row").addClass("hide");
+            $("#select-conta-row").removeClass("hide");
+        }
     }
-
 }; 

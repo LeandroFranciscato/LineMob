@@ -33,14 +33,46 @@
         <div class="row">
             <label class="label-select" data-i18n="movimento-controller.field-select-natureza"></label>
             <div class="input-field col s12">                
-                <select id="natureza" name="natureza" class="browser-default">                    
+                <select id="natureza" 
+                        name="natureza" 
+                        class="browser-default"
+                        onchange="movimentoController.preparaTransferencia(this)">
                     <option value="D" {{#naturezaD}}selected{{/naturezaD}} data-i18n="movimento-controller.field-select-natureza-option-d"></option>                
                     <option value="C" {{#naturezaC}}selected{{/naturezaC}} data-i18n="movimento-controller.field-select-natureza-option-c"></option>                
+                    <option value="T" data-i18n="movimento-controller.field-select-natureza-option-t"></option>                
                 </select>                
             </div>
         </div>
+        
+        <div id="select-conta-origem-row" class="row hide">
+            <label class="label-select" data-i18n="conta-controller.field-select-conta-origem" for="select-conta-origem"></label>
+            <div class="input-field col s12">                
+                <select id="select-conta-origem" 
+                        class="browser-default"
+                        name="idContaOrigem">
+                    <option value="" disabled selected data-i18n="conta-controller.field-select-conta-origem"></option>                    
+                    {{#conta}}
+                    <option value="{{id}}" {{selected}}>{{nome}}</option>
+                    {{/conta}}                                                            
+                </select>                
+            </div>           
+        </div>
+        
+        <div id="select-conta-destino-row" class="row hide">
+            <label class="label-select" data-i18n="conta-controller.field-select-conta-destino" for="select-conta-destino"></label>
+            <div class="input-field col s12">                
+                <select id="select-conta-destino" 
+                        class="browser-default"
+                        name="idContaDestino">
+                    <option value="" disabled selected data-i18n="conta-controller.field-select-conta-destino"></option>                    
+                    {{#conta}}
+                    <option value="{{id}}" {{selected}}>{{nome}}</option>
+                    {{/conta}}                                                            
+                </select>                
+            </div>           
+        </div>
 
-        <div class="row">
+        <div id="select-conta-row" class="row">
             <label class="label-select" data-i18n="conta-controller.field-select-conta" for="select-conta"></label>
             <div class="input-field col s12">                
                 <select id="select-conta" 
