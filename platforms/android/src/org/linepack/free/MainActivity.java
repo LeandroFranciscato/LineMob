@@ -17,7 +17,7 @@
        under the License.
  */
 
-package org.linepack.pro;
+package org.linepack.free;
 
 import android.os.Bundle;
 import org.apache.cordova.*;

@@ -1,6 +1,6 @@
-var Movimento = function(){
-    this.dataLancamento = "";    
-    this.dataVencimento = "";    
+var Movimento = function () {
+    this.dataLancamento = "";
+    this.dataVencimento = "";
     this.valor = "";
     this.natureza = "";
     this.descricao = "";
@@ -11,8 +11,9 @@ var Movimento = function(){
     this.idPessoa = "";
     this.idExternoPessoa = "";
     this.idCartao = "";
-    this.idExternoCartao = ""; 
+    this.idExternoCartao = "";
     this.repeat = "";
     this.countRepeat = "";
+    this.isTransferencia = "";
 };
 Movimento.prototype = new Entity("movimento");

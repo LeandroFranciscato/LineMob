@@ -4,7 +4,7 @@ var cartaoController = {
     TEMPLATE_CADASTRO: "",
     TEMPLATE_LISTA: "",
     TEMPLATE_EDICAO: "",
-    loadList: function (cb) {        
+    loadList: function (cb) {
         Controller.loadList({
             controllerOrigin: this,
             entity: new Cartao(),
@@ -112,6 +112,14 @@ var cartaoController = {
             $("#valor-campo").prop("id", "id-temp");
             $("#id-temp").prop("id", "valor-campo");
 
+            $("#valor-campo").val("");
+
+            if (campo === "valorLimite") {
+                $("#valor-campo").mask("000000000.00", {reverse: true});
+            } else {
+                $("#valor-campo").unmask();
+            }
+
             if (campo === "nome") {
                 $("#prompt-campo").html(i18next.t("cartao-controller.field-nome"));
                 $("#valor-campo").prop("type", "text");
@@ -123,7 +131,7 @@ var cartaoController = {
                 $("#valor-campo").prop("type", "number");
             } else if (campo === "valorLimite") {
                 $("#prompt-campo").html(i18next.t("cartao-controller.field-valorLimite"));
-                $("#valor-campo").prop("type", "number");
+                $("#valor-campo").prop("type", "tel");
             }
 
             $("#valor-campo").prop("name", campo.toString());

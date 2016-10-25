@@ -1,6 +1,6 @@
 {
     "app": {
-        "name": "LINEMOB"
+        "name": "LINEMOB FINANÇAS"
     },
     "left-menu": {
         "home": "Início",
@@ -50,7 +50,10 @@
         "field-select-conta": "Selecione a Conta",
         "title-insert": "Nova Conta Cadastrada",
         "title-update": "Conta Atualizada",
-        "title-delete": "Conta Deletada"
+        "title-delete": "Conta Deletada",
+        "initial-help": "Utilize este cadastro para inserir, editar ou excluir suas \"Contas Bancarias\". Estas contas serão utilizadas posteriormente nos \"Lançamentos\" e poderão ter seu saldo controlado no \"Relatório de Saldo Bancário\". Fique atento aos campos \"Valor do Saldo Inicial\" e \"Data Fundação\", é a partir destes campos que o App calculará seu Saldo.",
+        "field-select-conta-origem" : "Selecione a Conta de Origem",
+        "field-select-conta-destino" : "Selecione a Conta de Destino"
     },
     "login-controller": {
         "alert-usuario-req": "Usuário deve ser informado.",
@@ -68,16 +71,17 @@
         "btn-signup": "Cadastrar"
     },
     "pessoa-controller": {
-        "plural": "PESSOAS",
-        "singular": "PESSOA",
+        "plural": "ESTABELECIMENTOS",
+        "singular": "ESTABELECIMENTO",
         "alert-nome-req": "Nome deve ser informado.",
         "alert-apelido-req": "Apelido deve ser informado.",
         "field-nome": "Nome",
         "field-apelido": "Apelido",
-        "field-select-pessoa": "Selecione a Pessoa",
-        "title-insert": "Nova Pessoa Cadastrada",
-        "title-update": "Pessoa Atualizada",
-        "title-delete": "Pessoa Deletada"
+        "field-select-pessoa": "Selecione o estabelecimento",
+        "title-insert": "Novo estabelecimento Cadastrada",
+        "title-update": "Estabelecimento Atualizada",
+        "title-delete": "Estabelecimento Deletada",
+        "initial-help": "Aqui serão cadastrados os \"Estabelecimentos\" nos quais você terá despesas e/ou receitas. Supermercados, Postos de Gasolina, Restaurantes, Empresas, etc. Depois, você poderá acompanhar suas despesas por \"Estabelecimento\"."
     },
     "cartao-controller": {
         "plural": "CARTÕES",
@@ -100,7 +104,8 @@
         "field-option-cartao-nulo": "Sem Cartão",
         "title-insert": "Novo Cartão Cadastrado",
         "title-update": "Cartão Atualizado",
-        "title-delete": "Cartão Deletado"
+        "title-delete": "Cartão Deletado",
+        "initial-help": "Se você utiliza-se de \"Cartões de Crédito\" para realizar algumas de suas compras, deve cadastrá-los aqui. Você também deve informar a \"Conta\" na qual será pago a fatura do cartão. Posteriormente, poderá controlar o saldo da sua fatura utilizando o \"Relatório de Fatura de Cartão\"."
     },
     "categoria-controller": {
         "plural": "CATEGORIAS",
@@ -111,7 +116,8 @@
         "field-select-categoria": "Selecione a Categoria",
         "title-insert": "Nova Categoria cadastrada",
         "title-update": "Categoria Atualizada",
-        "title-delete": "Categoria Deletada"
+        "title-delete": "Categoria Deletada",
+        "initial-help": "\"Categorias\" são utilizadas para controlar suas Despesas em grupos. Alimentação, Combustível, Mercado, Despesas Pessoais, Presentes, enfim... Agrupe seus gastos. O campo \"Sub Categoria\" é opcional e serve para separar um pouco mais os grupos. Por exemplo, \"Impostos-IPVA\" e \"Impostos-IPTU\". Você pode acompanhar os gastos por categoria no \"Relatório de Gastos por Categoria\". "
     },
     "movimento-controller": {
         "plural": "LANÇAMENTOS",
@@ -122,7 +128,7 @@
         "alert-descricao-req": "Descrição deve ser informada!",
         "alert-idConta-req": "Conta deve ser informada!",
         "alert-idCategoria-req": "Categoria deve ser informada!",
-        "alert-idPessoa-req": "Pessoa deve ser informada!",
+        "alert-idPessoa-req": "Estabelecimento deve ser informada!",
         "alert-idCartao-req": "Cartão deve ser informado!",
         "field-dataVencimento": "Data Venc.",
         "field-dataLancamento": "Data Lanc.",
@@ -130,10 +136,11 @@
         "field-select-natureza": "Natureza",
         "field-select-natureza-option-d": "Débito",
         "field-select-natureza-option-c": "Crédito",
+        "field-select-natureza-option-t": "Transferência",
         "field-descricao": "Descricao",
         "field-idConta": "Conta",
         "field-idCategoria": "Categoria",
-        "field-idPessoa": "Pessoa",
+        "field-idPessoa": "Estabelecimento",
         "field-idCartao": "Cartão",
         "title-insert": "Novo Lançamento Cadastrado",
         "title-update": "Lançamento Atualizado",
@@ -146,7 +153,9 @@
         "select-repeat-option-semiannully": "Semestral",
         "select-repeat-option-annully": "Anual",
         "field-select-count-repeat": "Número de Repetições",
-        "alert-repeat-wrong": "Você escolheu uma frequência, mas não escolheu a quantidade de repetições."
+        "alert-repeat-wrong": "Você escolheu uma frequência, mas não escolheu a quantidade de repetições.",
+        "initial-help": "Aqui serão cadastradas todas suas Despesas e Receitas. Você utilizará todos os cadastros realizados anteriormente: \"Cartões\", \"Contas Bancárias\", \"Estabelecimentos\" e \"Categorias\". Você também tem a opção de repetir os lançamentos em várias frequências (Mensal, Semanal, Anual, etc).",
+        "alert-equal-idContaOrigem-idContaDestino": "Conta de Origem e de Destino não podem ser iguais."
     },
     "reports-controller": {
         "plural": "Relatórios",
@@ -193,11 +202,11 @@
         "remove-categoria-used-movimento": "Categoria não pode ser deletada porque está vinculada a um Lançamento!",
         "remove-conta-used-cartao": "Conta não pode ser deletada porque está vinculada a um Cartão!",
         "remove-conta-used-movimento": "Conta não pode ser deletada porque está vinculada a um Lançamento!",
-        "remove-pessoa-used-movimento": "Pessoa não pode ser deletada porque está vinculada a um Lançamento!",
+        "remove-pessoa-used-movimento": "Estabelecimento não pode ser deletada porque está vinculada a um Lançamento!",
         "remove-cartao-used-movimento": "Cartão não pode ser deletado porque está vinculado a um Lançamento!",
         "insert-cartao-without-conta": "Conta do cartão não cadastrada!",
         "insert-movimento-without-conta": "Conta do lançamento não cadastrada!",
-        "insert-movimento-without-pessoa": "Pessoa do lançamento não cadastrada!",
+        "insert-movimento-without-pessoa": "Estabelecimento do lançamento não cadastrada!",
         "insert-movimento-without-categoria": "Categoria do lançamento não cadastrada!",
         "insert-movimento-without-cartao": "Cartão do lançamento não cadastrado!",
         "user-exists": "Nome de usuário indisponível, tente outro Usuário!",

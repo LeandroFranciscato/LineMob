@@ -81,12 +81,17 @@ body {
 }
 .icon-search-nav,.icon-clean-search-field,.icon-right-nav{
     margin-right: 10px;
-
 }
+
+.search-input-field{    
+    width: 200px;
+}
+
 .titulo-center-nav{
-    font-size: x-large;
+    font-size: larger;
     font-weight: bold;    
-    margin-left: 20px; 
+    margin-left: 15px; 
+    margin-top: 2px;
 }
 
 .menu-esquerdo{
@@ -180,7 +185,7 @@ body {
 }
 
 .modal-aux .titulo-center-modal{
-    font-size: x-large;
+    font-size: larger;
     font-weight: bold;    
     margin-left: 20px;        
     float: left;

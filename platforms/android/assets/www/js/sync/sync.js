@@ -361,7 +361,12 @@ var sync = {
         sync.running += qtdeTasks;
         if (sync.running >= 1) {
             if (!cordova.plugins.backgroundMode.isEnabled()) {
-                cordova.plugins.backgroundMode.configure({
+                cordova.plugins.backgroundMode.setDefaults({
+                    title: i18next.t("background-mode.title"),
+                    text: i18next.t("background-mode.text"),
+                    icon: "icon.png",
+                    resume: true,
+                    color: "e53935",
                     silent: true
                 });
                 cordova.plugins.backgroundMode.enable();

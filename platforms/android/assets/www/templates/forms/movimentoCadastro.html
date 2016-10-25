@@ -33,14 +33,54 @@
         <div class="row">
             <label class="label-select" data-i18n="movimento-controller.field-select-natureza"></label>
             <div class="input-field col s12">                
-                <select id="natureza" name="natureza" class="browser-default">                    
+                <select id="natureza" 
+                        name="natureza" 
+                        class="browser-default"
+                        onchange="movimentoController.preparaTransferencia(this)">
                     <option value="D" {{#naturezaD}}selected{{/naturezaD}} data-i18n="movimento-controller.field-select-natureza-option-d"></option>                
                     <option value="C" {{#naturezaC}}selected{{/naturezaC}} data-i18n="movimento-controller.field-select-natureza-option-c"></option>                
+                    {{^id}}<option value="T" data-i18n="movimento-controller.field-select-natureza-option-t"></option>{{/id}}
                 </select>                
             </div>
         </div>
 
-        <div class="row">
+        <div id="select-conta-origem-row" class="row">
+            <label class="label-select" data-i18n="conta-controller.field-select-conta-origem" for="select-conta-origem"></label>
+            <div class="input-field col s12">                
+                <select id="select-conta-origem" 
+                        class="browser-default"
+                        name="idContaOrigem"
+                        onchange="contaController.loadNewModal(this, function () {
+                                    movimentoController.loadList();
+                                });">
+                    <option value="" disabled selected data-i18n="conta-controller.field-select-conta-origem"></option>                    
+                    <option value="+">+</option>
+                    {{#conta}}
+                    <option value="{{id}}" {{selected}}>{{nome}}</option>
+                    {{/conta}}                                                            
+                </select>                
+            </div>           
+        </div>
+
+        <div id="select-conta-destino-row" class="row">
+            <label class="label-select" data-i18n="conta-controller.field-select-conta-destino" for="select-conta-destino"></label>
+            <div class="input-field col s12">                
+                <select id="select-conta-destino" 
+                        class="browser-default"
+                        name="idContaDestino"
+                        onchange="contaController.loadNewModal(this, function () {
+                                    movimentoController.loadList();
+                                });">
+                    <option value="" disabled selected data-i18n="conta-controller.field-select-conta-destino"></option>                    
+                    <option value="+">+</option>
+                    {{#conta}}
+                    <option value="{{id}}" {{selected}}>{{nome}}</option>
+                    {{/conta}}                                                            
+                </select>                
+            </div>           
+        </div>
+
+        <div id="select-conta-row" class="row">
             <label class="label-select" data-i18n="conta-controller.field-select-conta" for="select-conta"></label>
             <div class="input-field col s12">                
                 <select id="select-conta" 
@@ -113,7 +153,7 @@
         </div>
 
         {{^id}}
-        <div class="card-panel red darken-2">
+        <div id="repeat-card-panel" class="card-panel red darken-2">
             <div class="row">
                 <label class="label-repeat white-text" data-i18n="movimento-controller.field-select-repeat"></label>
                 <div class="input-field col s12">                

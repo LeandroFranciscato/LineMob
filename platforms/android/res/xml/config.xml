@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="org.linepack.pro" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="org.linepack.free" version="1.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <feature name="Device">
         <param name="android-package" value="org.apache.cordova.device.Device" />
     </feature>
@@ -25,11 +25,11 @@
     <name>LineMob</name>
     <icon src="www\img\logo.png" />
     <description>
-        Controle de Finanças Pessoais
+        Controle de Finanças
     </description>
     <author email="android-support@linepack.org" href="http://github.com/Linepack">
         Linepack Systems
-  </author>
+    </author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />

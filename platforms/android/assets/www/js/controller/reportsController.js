@@ -67,7 +67,7 @@ var reportsController = {
                     display: "none"
                 }
             }, data, function () {
-                reportsController.setDefaultDates();
+                reportsController.setDefaultTodayDates();
             });
         });
     },
@@ -182,7 +182,7 @@ var reportsController = {
                     display: "none"
                 }
             }, data, function () {
-                reportsController.setDefaultDates();
+                reportsController.setDefaultNextMonthlyDates();
             });
         });
     },
@@ -296,7 +296,7 @@ var reportsController = {
                     display: "none"
                 }
             }, data, function () {
-                reportsController.setDefaultDates();
+                reportsController.setDefaultMonthlyDates();
             });
         });
     },
@@ -330,6 +330,7 @@ var reportsController = {
                                 "       descricao " +
                                 "  from movimento " +
                                 " where natureza = 'D' " +
+                                "   and isTransferencia = '0' " +
                                 "   and dataVencimento > '" + dataInicio + "'" +
                                 "   and dataVencimento <= '" + dataFinal + "'" +
                                 "   and idCategoria = " + Categoria.id +
@@ -372,11 +373,23 @@ var reportsController = {
                 }
         );
     },
-    setDefaultDates: function () {
+    setDefaultMonthlyDates: function () {
         var data = new Date();
         var firstDay = new Date(data.getFullYear(), data.getMonth(), 1);
         var lastDay = new Date(data.getFullYear(), data.getMonth() + 1, 0);
         $("#dataInicio").val(dateUtil.toString(firstDay));
         $("#dataFinal").val(dateUtil.toString(lastDay));
+    },
+    setDefaultNextMonthlyDates: function () {
+        var data = new Date();
+        var firstDay = new Date(data.getFullYear(), data.getMonth() + 1, 1);
+        var lastDay = new Date(data.getFullYear(), data.getMonth() + 2, 0);
+        $("#dataInicio").val(dateUtil.toString(firstDay));
+        $("#dataFinal").val(dateUtil.toString(lastDay));
+    },
+    setDefaultTodayDates: function () {
+        var data = new Date();
+        $("#dataInicio").val(dateUtil.toString(data));
+        $("#dataFinal").val(dateUtil.toString(data));
     }
 };
