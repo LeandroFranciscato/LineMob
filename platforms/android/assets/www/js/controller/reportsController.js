@@ -330,7 +330,7 @@ var reportsController = {
                                 "       descricao " +
                                 "  from movimento " +
                                 " where natureza = 'D' " +
-                                "   and isTransferencia = '0' " +
+                                "   and ifnull(isTransferencia,'0') = '0' " +
                                 "   and dataVencimento > '" + dataInicio + "'" +
                                 "   and dataVencimento <= '" + dataFinal + "'" +
                                 "   and idCategoria = " + Categoria.id +
