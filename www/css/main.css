@@ -185,7 +185,7 @@ body {
 }
 
 .modal-aux .titulo-center-modal{
-    font-size: x-large;
+    font-size: larger;
     font-weight: bold;    
     margin-left: 20px;        
     float: left;
