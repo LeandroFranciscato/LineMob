@@ -51,7 +51,9 @@
         "title-insert": "New Account Registered",
         "title-update": "Accunt Updated",
         "title-delete": "Accunt Deleted",
-        "initial-help": "Use this register to enter, edit or delete your \"Bank Accounts\". These accounts will later be used in the \"Activity\" and may have your balance controlled in \"Bank Balance Report\". Stay tuned to the fields \"Initial Balance Amount\" and \"Foundation Date\" is from these fields that the App will calculate your balance."
+        "initial-help": "Use this register to enter, edit or delete your \"Bank Accounts\". These accounts will later be used in the \"Activity\" and may have your balance controlled in \"Bank Balance Report\". Stay tuned to the fields \"Initial Balance Amount\" and \"Foundation Date\" is from these fields that the App will calculate your balance.",
+        "field-select-conta-origem" : "Select the Source Account",
+        "field-select-conta-destino" : "Select the Target Account"        
     },
     "login-controller": {
         "alert-usuario-req": "User must be informed.",
@@ -134,6 +136,7 @@
         "field-select-natureza": "Type",
         "field-select-natureza-option-d": "Debit",
         "field-select-natureza-option-c": "Credit",
+        "field-select-natureza-option-t": "Transfer",
         "field-descricao": "Description",
         "field-idConta": "Account",
         "field-idCategoria": "Category",
@@ -151,7 +154,8 @@
         "select-repeat-option-annully": "Annually",
         "field-select-count-repeat": "Repeat Number",
         "alert-repeat-wrong": "You have chosen a frequency, but did not choose the number of repetitions.",
-        "initial-help": "Here you will registered all your expenses and income. You will use all the entries made previously: \"Card\", \"Bank Accounts\", \"Establishments\" and \"Categories\". You also have the option of repeat releases at various frequencies (Monthly, Weekly, Annual, etc.) .."
+        "initial-help": "Here you will registered all your expenses and income. You will use all the entries made previously: \"Card\", \"Bank Accounts\", \"Establishments\" and \"Categories\". You also have the option of repeat releases at various frequencies (Monthly, Weekly, Annual, etc.) ..",
+        "alert-equal-idContaOrigem-idContaDestino": "Source and Target Account can not be equal."
     },
     "reports-controller": {
         "plural": "REPORTS",

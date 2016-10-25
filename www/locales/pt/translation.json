@@ -51,7 +51,9 @@
         "title-insert": "Nova Conta Cadastrada",
         "title-update": "Conta Atualizada",
         "title-delete": "Conta Deletada",
-        "initial-help": "Utilize este cadastro para inserir, editar ou excluir suas \"Contas Bancarias\". Estas contas serão utilizadas posteriormente nos \"Lançamentos\" e poderão ter seu saldo controlado no \"Relatório de Saldo Bancário\". Fique atento aos campos \"Valor do Saldo Inicial\" e \"Data Fundação\", é a partir destes campos que o App calculará seu Saldo."
+        "initial-help": "Utilize este cadastro para inserir, editar ou excluir suas \"Contas Bancarias\". Estas contas serão utilizadas posteriormente nos \"Lançamentos\" e poderão ter seu saldo controlado no \"Relatório de Saldo Bancário\". Fique atento aos campos \"Valor do Saldo Inicial\" e \"Data Fundação\", é a partir destes campos que o App calculará seu Saldo.",
+        "field-select-conta-origem" : "Selecione a Conta de Origem",
+        "field-select-conta-destino" : "Selecione a Conta de Destino"
     },
     "login-controller": {
         "alert-usuario-req": "Usuário deve ser informado.",
@@ -134,6 +136,7 @@
         "field-select-natureza": "Natureza",
         "field-select-natureza-option-d": "Débito",
         "field-select-natureza-option-c": "Crédito",
+        "field-select-natureza-option-t": "Transferência",
         "field-descricao": "Descricao",
         "field-idConta": "Conta",
         "field-idCategoria": "Categoria",
@@ -151,7 +154,8 @@
         "select-repeat-option-annully": "Anual",
         "field-select-count-repeat": "Número de Repetições",
         "alert-repeat-wrong": "Você escolheu uma frequência, mas não escolheu a quantidade de repetições.",
-        "initial-help": "Aqui serão cadastradas todas suas Despesas e Receitas. Você utilizará todos os cadastros realizados anteriormente: \"Cartões\", \"Contas Bancárias\", \"Estabelecimentos\" e \"Categorias\". Você também tem a opção de repetir os lançamentos em várias frequências (Mensal, Semanal, Anual, etc)."
+        "initial-help": "Aqui serão cadastradas todas suas Despesas e Receitas. Você utilizará todos os cadastros realizados anteriormente: \"Cartões\", \"Contas Bancárias\", \"Estabelecimentos\" e \"Categorias\". Você também tem a opção de repetir os lançamentos em várias frequências (Mensal, Semanal, Anual, etc).",
+        "alert-equal-idContaOrigem-idContaDestino": "Conta de Origem e de Destino não podem ser iguais."
     },
     "reports-controller": {
         "plural": "Relatórios",

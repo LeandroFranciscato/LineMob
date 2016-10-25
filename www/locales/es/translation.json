@@ -51,7 +51,9 @@
         "title-insert": "Cuenta Nueva registrada",
         "title-update": "Cuenta Actualizada",
         "title-delete": "Cuenta eliminada",
-        "initial-help": "Utilice este registro para entrar, editar o borrar su \"cuentas bancarias \". Estas cuentas serán luego usados en el \"Release \" y pueden tener su saldo controlado en \"saldo bancario Informe \". Estate atento a los campos \"Importe Saldo inicial de \" y \"Datos Fundación \" es a partir de estos campos que la aplicación calculará su equilibrio."
+        "initial-help": "Utilice este registro para entrar, editar o borrar su \"cuentas bancarias \". Estas cuentas serán luego usados en el \"Release \" y pueden tener su saldo controlado en \"saldo bancario Informe \". Estate atento a los campos \"Importe Saldo inicial de \" y \"Datos Fundación \" es a partir de estos campos que la aplicación calculará su equilibrio.",
+        "field-select-conta-origem" : "Selecione a Conta de Origem",
+        "field-select-conta-destino" : "Seleccione la cuenta de destino"
     },
     "login-controller": {
         "alert-usuario-req": "El usuario debe ser informado.",
@@ -134,6 +136,7 @@
         "field-select-natureza": "Naturaleza",
         "field-select-natureza-option-d": "Débito",
         "field-select-natureza-option-c": "Crédito",
+        "field-select-natureza-option-t": "Transferencia",
         "field-descricao": "Descripción",
         "field-idConta": "Cuenta",
         "field-idCategoria": "Categoría",
@@ -151,7 +154,8 @@
         "select-repeat-option-annully": "Anual",
         "field-select-count-repeat": "número de repeticiones",
         "alert-repeat-wrong": "Usted ha elegido una frecuencia, pero no eligió el número de repeticiones.",
-        "initial-help": "Aquí se registrarán todos sus gastos e ingresos. Que va a utilizar todas las entradas realizadas con anterioridad: \"Card \", \"cuentas bancarias \", \" instalaciones\" y \"categorías\". También tiene la opción de comunicados repetir en varias frecuencias (mensual, semanal, anual, etc.)."
+        "initial-help": "Aquí se registrarán todos sus gastos e ingresos. Que va a utilizar todas las entradas realizadas con anterioridad: \"Card \", \"cuentas bancarias \", \" instalaciones\" y \"categorías\". También tiene la opción de comunicados repetir en varias frecuencias (mensual, semanal, anual, etc.).",
+        "alert-equal-idContaOrigem-idContaDestino": "Fuente y de cuenta de destino no pueden ser iguales."
     },
     "reports-controller": {
         "plural": "INFORMES",
