@@ -419,46 +419,24 @@ var Controller = {
             sucessMessage = (!sucessMessage) ? i18next.t("alerts-crud.body-insert-success") : sucessMessage;
             errorMessage = (!errorMessage) ? i18next.t("generics.fail-crud-msg") : errorMessage;
             this.options.controllerOrigin.validaFormulario(data, function () {
-
-                var countRepeat = [];
-                if (data.repeat > 0) {
-                    for (var i = 1; i <= data.countRepeat; i++) {
-                        countRepeat.push(i);
-                    }
-                } else {
-                    countRepeat = [1];
-                }
-
-                var descricaoAux;
-                countRepeat.forEach(function (i) {
-                    if (data.dataVencimento && data.repeat > 0) {
-                        data.dataVencimento = (i == 1) ? data.dataVencimento : dateUtil.increment(data.dataVencimento, data.repeat);
-                    }
-                    if (data.descricao && data.repeat > 0) {
-                        if (!descricaoAux) {
-                            descricaoAux = data.descricao;
+                daoUtil.insert(data, function (rowsAffected) {
+                    if (rowsAffected === 1) {
+                        alertUtil.confirm(sucessMessage);
+                        if (Controller.options.controllerOrigin.loadList) {
+                            Controller.options.controllerOrigin.loadList(function () {
+                                if (cb) {
+                                    cb();
+                                }
+                            });
+                        } else {
+                            if (cb) {
+                                cb();
+                            }
                         }
-                        data.descricao = descricaoAux + " " + i + "/" + data.countRepeat;
+                    } else {
+                        alertUtil.confirm(errorMessage);
                     }
-                    daoUtil.insert(data, function (rowsAffected) {
-                        if (rowsAffected != 1) {
-                            alertUtil.confirm(errorMessage);
-                        }
-                    });
                 });
-
-                alertUtil.confirm(sucessMessage);
-                if (Controller.options.controllerOrigin.loadList) {
-                    Controller.options.controllerOrigin.loadList(function () {
-                        if (cb) {
-                            cb();
-                        }
-                    });
-                } else {
-                    if (cb) {
-                        cb();
-                    }
-                }
             });
         }
     },

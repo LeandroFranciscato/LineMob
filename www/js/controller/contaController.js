@@ -50,7 +50,7 @@ var contaController = {
                 icon: (data) ? iconUtil.edit : iconUtil.add
             },
             inputToFocus: "#nome"
-        }, data, function () {            
+        }, data, function () {
             if (cb) {
                 cb();
             }
@@ -80,6 +80,14 @@ var contaController = {
     selecionaCampoEdicaoMultipla: function () {
         var campo = $("#select-campo").val();
 
+        $("#valor-campo").val("");
+
+        if (campo === "valorSaldoInicial") {
+            $("#valor-campo").mask("000000000.00", {reverse: true});
+        } else {
+            $("#valor-campo").unmask();
+        }
+
         if (campo === "nome") {
             $("#prompt-campo").html(i18next.t("conta-controller.field-nome"));
             $("#valor-campo").prop("name", "nome");
@@ -91,7 +99,7 @@ var contaController = {
         } else if (campo === "valorSaldoInicial") {
             $("#prompt-campo").html(i18next.t("conta-controller.field-valorSaldoInicial"));
             $("#valor-campo").prop("name", "valorSaldoInicial");
-            $("#valor-campo").prop("type", "number");
+            $("#valor-campo").prop("type", "tel");
         }
         $("#prompt-campo").addClass("active");
     },

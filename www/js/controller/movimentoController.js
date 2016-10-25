@@ -1,4 +1,4 @@
-/* global Mustache, logUtil, mainController, alertUtil, daoUtil, Controller, iconUtil, i18next */
+/* global Mustache, logUtil, mainController, alertUtil, daoUtil, Controller, iconUtil, i18next, dateUtil */
 
 var movimentoController = {
     TEMPLATE_CADASTRO: "",
@@ -105,8 +105,18 @@ var movimentoController = {
                                 title: i18next.t("movimento-controller.singular"),
                                 icon: (!inserting) ? iconUtil.edit : iconUtil.add
                             },
+                            navRight: {
+                                display: "block",
+                                iconName: iconUtil.check,
+                                callbackClick: function () {
+                                    movimentoController.insert();
+                                }
+                            },
                             inputToFocus: "#data"
                         }, data, function () {
+                            $("#select-conta-origem-row").addClass("hide");
+                            $("#select-conta-destino-row").addClass("hide");
+                            Controller.initializePlugins();
                             if (cb) {
                                 cb();
                             }
@@ -203,6 +213,14 @@ var movimentoController = {
             $("#valor-campo").prop("id", "id-temp");
             $("#id-temp").prop("id", "valor-campo");
 
+            $("#valor-campo").val("");
+
+            if (campo === "valor") {
+                $("#valor-campo").mask("000000000.00", {reverse: true});
+            } else {
+                $("#valor-campo").unmask();
+            }
+
             if (campo === "dataVencimento") {
                 $("#prompt-campo").html(i18next.t("movimento-controller.field-dataVencimento"));
                 $("#valor-campo").prop("type", "date");
@@ -230,8 +248,12 @@ var movimentoController = {
                 alertUtil.confirm(i18next.t("movimento-controller.alert-valor-req"));
             } else if (!movimento.descricao) {
                 alertUtil.confirm(i18next.t("movimento-controller.alert-descricao-req"));
-            } else if (!movimento.idConta || movimento.idConta == "+") {
+            } else if ((!movimento.idConta || movimento.idConta == "+") && movimento.natureza != "T") {
                 alertUtil.confirm(i18next.t("movimento-controller.alert-idConta-req"));
+            } else if ((!movimento.idContaOrigem || !movimento.idContaDestino) && movimento.natureza == "T") {
+                alertUtil.confirm(i18next.t("movimento-controller.alert-idConta-req"));
+            } else if ((movimento.idContaOrigem == movimento.idContaDestino) && movimento.natureza == "T") {
+                alertUtil.confirm(i18next.t("movimento-controller.alert-equal-idContaOrigem-idContaDestino"));
             } else if (!movimento.idCategoria || movimento.idCategoria == "+") {
                 alertUtil.confirm(i18next.t("movimento-controller.alert-idCategoria-req"));
             } else if (!movimento.idPessoa || movimento.idPessoa == "+") {
@@ -256,14 +278,107 @@ var movimentoController = {
         }
     },
     preparaTransferencia: function (element) {
-        if ($(element).val() == "T") {
+        if ($(element).val() === "T") {
             $("#select-conta-origem-row").removeClass("hide");
             $("#select-conta-destino-row").removeClass("hide");
             $("#select-conta-row").addClass("hide");
+            $("#repeat-card-panel").addClass("hide");
         } else {
             $("#select-conta-origem-row").addClass("hide");
             $("#select-conta-destino-row").addClass("hide");
             $("#select-conta-row").removeClass("hide");
+            $("#repeat-card-panel").removeClass("hide");
+        }
+        Controller.initializePlugins();
+    },
+    insert: function (sucessMessage, errorMessage, cb) {
+        var movimento = $("#form-cadastro").serializeObject();
+        Object.setPrototypeOf(movimento, new Movimento());
+
+        // Preparação para a Transferência
+        var idContaOrigem = movimento.idContaOrigem;
+        var idContaDestino = movimento.idContaDestino;
+        movimento.isTransferencia = (movimento.natureza == "T") ? 1 : 0;
+
+        if (movimento.id) {
+            sucessMessage = (!sucessMessage) ? i18next.t("alerts-crud.body-edit-success") : sucessMessage;
+            errorMessage = (!errorMessage) ? i18next.t("generics.fail-crud-msg") : errorMessage;
+            movimentoController.validaFormulario(movimento, function () {
+                delete movimento.idContaOrigem;
+                delete movimento.idContaDestino;
+                movimento.updated = 1;
+                daoUtil.update(movimento, function (rowsAffected) {
+                    if (rowsAffected === 1) {
+                        alertUtil.confirm(sucessMessage);
+                        movimentoController.loadList(function () {
+                            if (cb) {
+                                cb();
+                            }
+                        });
+                    } else {
+                        alertUtil.confirm(errorMessage);
+                    }
+                }, 1);
+            });
+        } else {
+            sucessMessage = (!sucessMessage) ? i18next.t("alerts-crud.body-insert-success") : sucessMessage;
+            errorMessage = (!errorMessage) ? i18next.t("generics.fail-crud-msg") : errorMessage;
+
+            movimentoController.validaFormulario(movimento, function () {
+
+                delete movimento.idContaOrigem;
+                delete movimento.idContaDestino;
+
+                var countRepeat = [];
+                if (movimento.repeat > 0) {
+                    for (var i = 1; i <= movimento.countRepeat; i++) {
+                        countRepeat.push(i);
+                    }
+                } else {
+                    if (movimento.isTransferencia) {
+                        countRepeat = [1, 2];
+                    } else {
+                        countRepeat = [1];
+                    }
+                }
+
+                var descricaoAux;
+                countRepeat.forEach(function (i) {
+                    if (movimento.dataVencimento && movimento.repeat > 0) {
+                        movimento.dataVencimento = (i == 1) ? movimento.dataVencimento : dateUtil.increment(movimento.dataVencimento, movimento.repeat);
+                    }
+                    if (movimento.descricao && movimento.repeat > 0) {
+                        if (!descricaoAux) {
+                            descricaoAux = movimento.descricao;
+                        }
+                        movimento.descricao = descricaoAux + " " + i + "/" + movimento.countRepeat;
+                    }
+                    if (movimento.isTransferencia) {
+                        if (!descricaoAux) {
+                            descricaoAux = movimento.descricao;
+                        }
+                        if (i == 1) {
+                            movimento.natureza = "D";
+                            movimento.descricao = descricaoAux + " - ";
+                        } else {
+                            movimento.natureza = "C";
+                            movimento.descricao = descricaoAux + " + ";
+                        }
+                    }
+                    daoUtil.insert(movimento, function (rowsAffected) {
+                        if (rowsAffected != 1) {
+                            alertUtil.confirm(errorMessage);
+                        }
+                    });
+                });
+
+                alertUtil.confirm(sucessMessage);
+                movimentoController.loadList(function () {
+                    if (cb) {
+                        cb();
+                    }
+                });
+            });
         }
     }
 }; 
