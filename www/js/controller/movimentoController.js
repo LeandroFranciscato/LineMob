@@ -117,6 +117,10 @@ var movimentoController = {
                             $("#select-conta-origem-row").addClass("hide");
                             $("#select-conta-destino-row").addClass("hide");
                             Controller.initializePlugins();
+                            if (inserting) {
+                                var date = new Date();
+                                $("#dataLancamento").val(dateUtil.toString(date));
+                            }
                             if (cb) {
                                 cb();
                             }
@@ -360,9 +364,11 @@ var movimentoController = {
                         if (i == 1) {
                             movimento.natureza = "D";
                             movimento.descricao = descricaoAux + " - ";
+                            movimento.idConta = idContaOrigem;
                         } else {
                             movimento.natureza = "C";
                             movimento.descricao = descricaoAux + " + ";
+                            movimento.idConta = idContaDestino;
                         }
                     }
                     daoUtil.insert(movimento, function (rowsAffected) {
