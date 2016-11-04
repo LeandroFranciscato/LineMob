@@ -420,10 +420,13 @@ var reportsController = {
                                 var data = google.visualization.arrayToDataTable(categoriasArray);
                                 var options = {
                                     title: i18next.t("categoria-controller.pie-chart"),
-                                    legend: {position: 'right'}
+                                    titleTextStyle: {fontSize: 15},
+                                    legend: {position: 'top', textStyle: {fontSize: 15}},
+                                    chartArea: {left: 10, right: 10},
                                 };
                                 var chart = new google.visualization.PieChart(document.getElementById('piechart'));
                                 chart.draw(data, options);
+                                Controller.initializePlugins();
                             });
                 }
             });
