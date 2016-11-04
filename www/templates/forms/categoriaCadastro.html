@@ -3,7 +3,7 @@
         <div class="invisible">                       
             <input type="text" class="" id="id" name="id" value="{{id}}">
         </div>
-        
+
         <div class="invisible">                       
             <input type="text" class="" id="versao" name="versao" value="{{versao}}">
         </div>
@@ -21,6 +21,14 @@
                 <label for="nome-sub-categoria" class="active" data-i18n="categoria-controller.field-nome-sub-categoria"></label>
             </div>
         </div>                    
+
+        <div class="row">
+            <div class="input-field col s6">                        
+                <input type="tel" id="valor-meta" class="valor" name="valorMeta" value="{{valorMeta}}" placeholder="" data-i18n="[placeholder]categoria-controller.field-valor-meta">
+                <label for="valor-meta" class="active" data-i18n="categoria-controller.field-valor-meta"></label>
+            </div>            
+        </div>
+
         <div class="row grey-text">
             <center>{{#idExterno}}_Id:{{/idExterno}} {{idExterno}}</center> 
             <center>{{#versao}}_vs:{{/versao}} {{versao}}</center> 

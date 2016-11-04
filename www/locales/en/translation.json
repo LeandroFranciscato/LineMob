@@ -117,7 +117,8 @@
         "title-insert": "New Category Registered",
         "title-update": "Category Updated",
         "title-delete": "Category Deleted",
-        "initial-help": "\"Categories \" are used to control its expenses in groups. Food, Fuel, Market, Personal expenses, gifts, so ... Group your spending. Field \"Sub-category \" is optional and serves to separate a little more groups. For example, \"Food-Lunch\" and \"Food-Dinner\". You can track expenses by category in \"Expenses Report by Category\". "
+        "initial-help": "\"Categories \" are used to control its expenses in groups. Food, Fuel, Market, Personal expenses, gifts, so ... Group your spending. Field \"Sub-category \" is optional and serves to separate a little more groups. For example, \"Food-Lunch\" and \"Food-Dinner\". You can track expenses by category in \"Expenses Report by Category\". ",        
+        "pie-chart": "Chart: Expenditure grouped by category"        
     },
     "movimento-controller": {
         "plural": "ACTIVITIES",
@@ -196,7 +197,9 @@
         "name": "Name",
         "date": "Date",
         "value": "Value",
-        "balance": "Balance"
+        "balance": "Balance",
+        "radio-group-report": "Report",
+        "radio-group-chart": "Chart"
     },
     "server-messages": {
         "remove-categoria-used-movimento": "Category can not be deleted because it is linked to a Activity!",

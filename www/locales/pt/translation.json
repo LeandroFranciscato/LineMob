@@ -117,7 +117,8 @@
         "title-insert": "Nova Categoria cadastrada",
         "title-update": "Categoria Atualizada",
         "title-delete": "Categoria Deletada",
-        "initial-help": "\"Categorias\" são utilizadas para controlar suas Despesas em grupos. Alimentação, Combustível, Mercado, Despesas Pessoais, Presentes, enfim... Agrupe seus gastos. O campo \"Sub Categoria\" é opcional e serve para separar um pouco mais os grupos. Por exemplo, \"Impostos-IPVA\" e \"Impostos-IPTU\". Você pode acompanhar os gastos por categoria no \"Relatório de Gastos por Categoria\". "
+        "initial-help": "\"Categorias\" são utilizadas para controlar suas Despesas em grupos. Alimentação, Combustível, Mercado, Despesas Pessoais, Presentes, enfim... Agrupe seus gastos. O campo \"Sub Categoria\" é opcional e serve para separar um pouco mais os grupos. Por exemplo, \"Impostos-IPVA\" e \"Impostos-IPTU\". Você pode acompanhar os gastos por categoria no \"Relatório de Gastos por Categoria\". ",        
+        "pie-chart": "Gráfico: Gastos agrupados por categoria"
     },
     "movimento-controller": {
         "plural": "LANÇAMENTOS",
@@ -196,7 +197,9 @@
         "name": "Nome",
         "date": "Data",
         "value": "Valor",
-        "balance": "Saldo"
+        "balance": "Saldo",
+        "radio-group-report": "Relatório",
+        "radio-group-chart": "Gráfico"
     },
     "server-messages": {
         "remove-categoria-used-movimento": "Categoria não pode ser deletada porque está vinculada a um Lançamento!",

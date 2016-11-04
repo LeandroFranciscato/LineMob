@@ -117,7 +117,8 @@
         "title-insert": "Nueva categoría registrada",
         "title-update": "Categoría Actualizada",
         "title-delete": "Categoría Eliminada",
-        "initial-help": "\"Categorías\" se utilizan para controlar sus gastos en grupos. Alimentos, combustible, Mercado, Gastos personales, regalos, así que ... Grupo de sus gastos. El campo \"el subdirectorio \" es opcional y sirve para separar un poco más grupos. Por ejemplo, \"Tax-IPVA \" y \" Tax-propiedad\". Puede realizar un seguimiento de los gastos por categoría de \"Informe de Gastos Categoría \"."
+        "initial-help": "\"Categorías\" se utilizan para controlar sus gastos en grupos. Alimentos, combustible, Mercado, Gastos personales, regalos, así que ... Grupo de sus gastos. El campo \"el subdirectorio \" es opcional y sirve para separar un poco más grupos. Por ejemplo, \"Tax-IPVA \" y \" Tax-propiedad\". Puede realizar un seguimiento de los gastos por categoría de \"Informe de Gastos Categoría \".",
+        "pie-chart": "Gráfico: El gasto se agrupan por categoría"
     },
     "movimento-controller": {
         "plural": "ACTIVIDADES",
@@ -196,7 +197,9 @@
         "name": "El Nombre",
         "date": "Fecha",
         "value": "El Valor",
-        "balance": "Equilibrio"
+        "balance": "Equilibrio",
+        "radio-group-report": "Informe",
+        "radio-group-chart": "Gráfico"
     },
     "server-messages": {
         "remove-categoria-used-movimento": "La categoría no se puede eliminar porque está vinculado a un lanzamiento!",
