@@ -1,4 +1,4 @@
-/* global Controller, mainController, iconUtil, i18next, daoUtil, alertUtil, dateUtil, google */
+/* global Controller, mainController, iconUtil, i18next, daoUtil, alertUtil, dateUtil, google, networkUtil, importUtil */
 var reportsController = {
     TEMPLATE_CHOOSE_REPORTS: "",
     TEMPLATE_ACCOUNT_BALANCE: "",
@@ -296,7 +296,7 @@ var reportsController = {
                     display: "none"
                 }
             }, data, function () {
-                reportsController.setDefaultMonthlyDates();
+                reportsController.setDefaultNextMonthlyDates();
             });
         });
     },
@@ -367,6 +367,7 @@ var reportsController = {
                                             }, data, function () {
                                                 $("#piechart").addClass("hide");
                                                 $("#ul-list").removeClass("hide");
+                                                Controller.initializePlugins();
                                             });
                                         }
                                     }
@@ -375,60 +376,66 @@ var reportsController = {
                     }
             );
         } else {
-            Controller.render({
-                controllerOrigin: reportsController,
-                template: reportsController.TEMPLATE_GROUP_CATEGORY,
-                navLeft: {
-                    icon: iconUtil.back,
-                    callbackClick: function () {
-                        reportsController.loadFilterCategory();
+            if (!networkUtil.isOnline()) {
+                alertUtil.confirm(i18next.t("generics.must-be-online"));
+                return;
+            }
+            importUtil.get("google", "https://www.gstatic.com/charts/loader.js", function () {
+                Controller.render({
+                    controllerOrigin: reportsController,
+                    template: reportsController.TEMPLATE_GROUP_CATEGORY,
+                    navLeft: {
+                        icon: iconUtil.back,
+                        callbackClick: function () {
+                            reportsController.loadFilterCategory();
+                        }
+                    },
+                    navCenter: {
+                        title: i18next.t("reports-controller.group-category"),
+                        icon: ""
+                    },
+                    navSearch: {
+                        display: "none"
                     }
-                },
-                navCenter: {
-                    title: i18next.t("reports-controller.group-category"),
-                    icon: ""
-                },
-                navSearch: {
-                    display: "none"
-                }
-            }, data, function () {
-                $("#piechart").removeClass("hide");
-                $("#ul-list").addClass("hide");
+                }, data, function () {
+                    $("#piechart").removeClass("hide");
+                    $("#ul-list").addClass("hide");
 
-                // Criando p Gráfico
-                google.charts.load('current', {'packages': ['corechart']});
-                google.charts.setOnLoadCallback(drawChart);
-                function drawChart() {
+                    // Criando o Gráfico
+                    google.charts.load('current', {'packages': ['corechart']});
+                    google.charts.setOnLoadCallback(drawChart);
+                    function drawChart() {
 
-                    daoUtil.getCustom(
-                            "select nome, " +
-                            "       id ," +
-                            "       (select abs(ifnull(sum(case natureza when 'C' then cast(valor as decimal) else cast(valor*-1 as decimal) end),0)) saldo_inicial " +
-                            "          from movimento" +
-                            "         where movimento.idCategoria = categoria.id" +
-                            "           and movimento.natureza = 'D' " +
-                            "           and movimento.dataVencimento >= '" + dataInicio + "'" +
-                            "           and movimento.dataVencimento <= '" + dataFinal + "') saldoLancamentos" +
-                            "  from categoria " + stringFiltroCategoria + " order by nome ", function (categoriasRes) {
+                        daoUtil.getCustom(
+                                "select nome, " +
+                                "       id ," +
+                                "       (select abs(ifnull(sum(case natureza when 'C' then cast(valor as decimal) else cast(valor*-1 as decimal) end),0)) saldo_inicial " +
+                                "          from movimento" +
+                                "         where movimento.idCategoria = categoria.id" +
+                                "           and movimento.natureza = 'D' " +
+                                "           and movimento.dataVencimento >= '" + dataInicio + "'" +
+                                "           and movimento.dataVencimento <= '" + dataFinal + "') saldoLancamentos" +
+                                "  from categoria " + stringFiltroCategoria + " order by nome ", function (categoriasRes) {
 
-                                var categoriasArray = [];
-                                categoriasArray.push([i18next.t("categoria-controller.singular"), i18next.t("movimento-controller.field-valor")]);
-                                categoriasRes.forEach(function (categoria) {
-                                    categoriasArray.push([categoria.nome, categoria.saldoLancamentos]);
+                                    var categoriasArray = [];
+                                    categoriasArray.push([i18next.t("categoria-controller.singular"), i18next.t("movimento-controller.field-valor")]);
+                                    categoriasRes.forEach(function (categoria) {
+                                        categoriasArray.push([categoria.nome, categoria.saldoLancamentos]);
+                                    });
+
+                                    var data = google.visualization.arrayToDataTable(categoriasArray);
+                                    var options = {
+                                        title: i18next.t("categoria-controller.pie-chart"),
+                                        titleTextStyle: {fontSize: 15},
+                                        legend: {position: 'top', textStyle: {fontSize: 15}},
+                                        chartArea: {left: 10, right: 10}
+                                    };
+                                    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                                    chart.draw(data, options);
+                                    Controller.initializePlugins();
                                 });
-
-                                var data = google.visualization.arrayToDataTable(categoriasArray);
-                                var options = {
-                                    title: i18next.t("categoria-controller.pie-chart"),
-                                    titleTextStyle: {fontSize: 15},
-                                    legend: {position: 'top', textStyle: {fontSize: 15}},
-                                    chartArea: {left: 10, right: 10},
-                                };
-                                var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-                                chart.draw(data, options);
-                                Controller.initializePlugins();
-                            });
-                }
+                    }
+                });
             });
         }
     },
