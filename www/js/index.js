@@ -1,4 +1,4 @@
-/* global dbUtil, logUtil, contaController, loginController, mainController, daoUtil, pessoaController, configController, loadController, cartaoController, categoriaController, movimentoController, cordova, i18next, syncUtil, sync, signupController, reportsController */
+/* global dbUtil, logUtil, contaController, loginController, mainController, daoUtil, pessoaController, configController, loadController, cartaoController, categoriaController, movimentoController, cordova, i18next, syncUtil, sync, signupController, reportsController, chartController */
 
 var app = {
     initialize: function () {
@@ -29,9 +29,11 @@ var app = {
                         app.loadTemplateMovimento(function () {
                             app.loadTemplateMain(function () {
                                 app.loadTemplateReports(function () {
-                                    if (cb) {
-                                        cb();
-                                    }
+                                    app.loadTemplateCharts(function () {
+                                        if (cb) {
+                                            cb();
+                                        }
+                                    });
                                 });
                             });
                         });
@@ -154,6 +156,26 @@ var app = {
             });
         });
     },
+    loadTemplateCharts: function (cb) {
+        $.get('templates/charts/chooseChart.html', function (string) {
+            chartController.TEMPLATE_CHOOSE_CHART = string;
+            $.get('templates/charts/pieCategory.html', function (string) {
+                chartController.TEMPLATE_PIE_CATEGORY = string;
+                $.get('templates/charts/pieCategoryFilter.html', function (string) {
+                    chartController.TEMPLATE_PIE_CATEGORY_FILTER = string;
+                    $.get('templates/charts/lineCategory.html', function (string) {
+                        chartController.TEMPLATE_LINE_CATEGORY = string;
+                        $.get('templates/charts/lineCategoryFilter.html', function (string) {
+                            chartController.TEMPLATE_LINE_CATEGORY_FILTER = string;
+                            if (cb) {
+                                cb();
+                            }
+                        });
+                    });
+                });
+            });
+        });
+    },
     createTables: function (cb) {
         var storage = window.localStorage;
         if (!storage.getItem("dataBaseCreated")) {
@@ -182,7 +204,7 @@ var app = {
                         daoUtil.checkTableChanges(new Categoria(), function () {
                             daoUtil.checkTableChanges(new Pessoa(), function () {
                                 daoUtil.checkTableChanges(new Movimento(), function () {
-                                    daoUtil.checkTableChanges(new Config(), function () {                                        
+                                    daoUtil.checkTableChanges(new Config(), function () {
                                         if (cb) {
                                             cb();
                                         }

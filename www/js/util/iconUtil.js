@@ -19,6 +19,7 @@ var iconUtil = {
     refresh: "&#xE5D5;",
     print: "&#xE8AD;",
     reports: "&#xE873;",
+    charts:"&#xE24B;",
     draw: function (iconName) {
         document.write(iconName);
     }

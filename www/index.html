@@ -59,6 +59,7 @@
         <script src="js/controller/movimentoController.js" type="text/javascript"></script>
         <script src="js/controller/signupController.js" type="text/javascript"></script>
         <script src="js/controller/reportsController.js" type="text/javascript"></script>
+        <script src="js/controller/chartController.js" type="text/javascript"></script>
 
         <!-- INTERNACIONALIZAÇÃO -->
         <script src="js/plugins/i18next/i18next-jquery.0.0.14.min.js" type="text/javascript"></script>
@@ -152,6 +153,14 @@
                             <span class="badge">
                                 <i class="material-icons">
                                     <script>iconUtil.draw(iconUtil.reports);</script>
+                                </i>
+                            </span>
+                        </a>
+                        <a class="collection-item" onclick="chartController.load()">
+                            <span data-i18n="left-menu.charts"> </span>
+                            <span class="badge">
+                                <i class="material-icons">
+                                    <script>iconUtil.draw(iconUtil.charts);</script>
                                 </i>
                             </span>
                         </a>
