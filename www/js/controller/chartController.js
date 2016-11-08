@@ -93,6 +93,7 @@ var chartController = {
                             "       (select abs(ifnull(sum(case natureza when 'C' then cast(valor as decimal) else cast(valor*-1 as decimal) end),0)) saldo_inicial " +
                             "          from movimento" +
                             "         where movimento.idCategoria = categoria.id" +
+                            "           and ifnull(movimento.isTransferencia,'0') = '0' " +
                             "           and movimento.natureza = 'D' " +
                             "           and movimento.dataVencimento >= '" + dataInicio + "'" +
                             "           and movimento.dataVencimento <= '" + dataFinal + "') saldoLancamentos" +
@@ -191,6 +192,7 @@ var chartController = {
                             "        dataLancamento " +
                             "   from movimento" +
                             "  where natureza = 'D' " +
+                            "    and ifnull(isTransferencia,'0') = '0' " +
                             "    and dataLancamento >= '" + dataInicio + "'" +
                             "    and dataLancamento <= '" + dataFinal + "' " +
                             "  group by dataLancamento", function (movimentoRes) {
