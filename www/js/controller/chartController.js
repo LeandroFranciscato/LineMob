@@ -1,4 +1,4 @@
-/* global Controller, chartController, iconUtil, mainController, i18next, alertUtil, reportsController, networkUtil, importUtil, google, daoUtil */
+/* global Controller, chartController, iconUtil, mainController, i18next, alertUtil, reportsController, networkUtil, importUtil, google, daoUtil, loadController */
 var chartController = {
     TEMPLATE_CHOOSE_CHART: "",
     TEMPLATE_PIE_CATEGORY: "",
@@ -65,6 +65,7 @@ var chartController = {
             alertUtil.confirm(i18next.t("generics.must-be-online"));
             return;
         }
+        loadController.show();
         importUtil.get("google", "https://www.gstatic.com/charts/loader.js", function () {
             Controller.render({
                 controllerOrigin: chartController,
@@ -114,12 +115,13 @@ var chartController = {
                                 var chart = new google.visualization.PieChart(document.getElementById('piechart'));
                                 chart.draw(data, options);
                                 Controller.initializePlugins();
+                                loadController.hide();
                             });
                 }
             });
         });
     },
-    loadFilterLineExpenses: function () {
+    loadFilterLineExpenses: function () {        
         Controller.render({
             controllerOrigin: chartController,
             template: chartController.TEMPLATE_LINE_CATEGORY_FILTER,
@@ -158,6 +160,7 @@ var chartController = {
             alertUtil.confirm(i18next.t("generics.must-be-online"));
             return;
         }
+        loadController.show();
         importUtil.get("google", "https://www.gstatic.com/charts/loader.js", function () {
             window.screen.lockOrientation("landscape");
             Controller.render({
@@ -209,11 +212,12 @@ var chartController = {
                                     vAxis: {
                                         title: i18next.t("movimento-controller.field-valor")
                                     },
-                                    title: i18next.t("chart-controller.line-expenses"),
+                                    title: i18next.t("chart-controller.line-expenses")
                                 };
                                 var chart = new google.visualization.LineChart(document.getElementById('linechart'));
                                 chart.draw(data, options);
                                 Controller.initializePlugins();
+                                loadController.hide();
                             });
                 }
             });
