@@ -9,6 +9,19 @@
                 <input type="date" id="dataFinal" name="dataFinal" value="" placeholder="" data-i18n="[placeholder]generics.dt-final">
                 <label for="dataInicio" class="active" data-i18n="generics.dt-final"></label>
             </div>
-        </div>          
+        </div>
+        
+        <div class="row">
+            <label class="label-select" data-i18n="generics.filter-data-type"></label>
+            <div class="input-field col s12">                
+                <select id="tipoData" 
+                        name="tipoData" 
+                        class="browser-default">
+                    <option value="dataVencimento" data-i18n="movimento-controller.field-dataVencimento" selected></option>
+                    <option value="dataLancamento" data-i18n="movimento-controller.field-dataLancamento"></option>
+                </select>                
+            </div>
+        </div>
+        
     </form>
 </div>

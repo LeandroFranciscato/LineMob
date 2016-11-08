@@ -289,11 +289,12 @@ var reportsController = {
                         var dataInicio = $("#dataInicio").val();
                         var dataFinal = $("#dataFinal").val();
                         var categoriaId = $("#select-categoria").val();
+                        var tipoData = $("#tipoData").val();
                         if (!dataInicio || !dataFinal) {
                             alertUtil.confirm(i18next.t("generics.date-range-required"));
                             return;
                         }
-                        reportsController.loadCategory(dataInicio, dataFinal, categoriaId);
+                        reportsController.loadCategory(dataInicio, dataFinal, categoriaId, tipoData);
                     }
                 },
                 navSearch: {
@@ -304,7 +305,7 @@ var reportsController = {
             });
         });
     },
-    loadCategory: function (dataInicio, dataFinal, categoriaId) {
+    loadCategory: function (dataInicio, dataFinal, categoriaId, tipoData) {
         var stringFiltroCategoria = (categoriaId) ? " where id = " + categoriaId : "";
         var data = {};
         data.categorias = [];
@@ -316,7 +317,7 @@ var reportsController = {
                 "          from movimento" +
                 "         where movimento.idCategoria = categoria.id" +
                 "           and ifnull(isTransferencia,'0') <> '1' " +
-                "           and dataVencimento = '" + dataInicio + "') saldoLancamentos" +
+                "           and " + tipoData + " = '" + dataInicio + "') saldoLancamentos" +
                 "  from categoria " + stringFiltroCategoria + " order by nome ", function (categoriasRes) {
 
                     categoriasRes.forEach(function (Categoria) {
@@ -331,15 +332,15 @@ var reportsController = {
                         Categoria.movimentos = [];
                         daoUtil.getCustom(
                                 "select case natureza when 'C' then cast(valor as decimal) else cast(valor*-1 as decimal) end valor, " +
-                                "       dataVencimento data, " +
+                                "      " + tipoData + " data, " +
                                 "       descricao " +
                                 "  from movimento " +
                                 " where natureza = 'D' " +
                                 "   and ifnull(isTransferencia,'0') <> '1' " +
-                                "   and dataVencimento > '" + dataInicio + "'" +
-                                "   and dataVencimento <= '" + dataFinal + "'" +
+                                "   and " + tipoData + " > '" + dataInicio + "'" +
+                                "   and " + tipoData + " <= '" + dataFinal + "'" +
                                 "   and idCategoria = " + Categoria.id +
-                                " order by dataVencimento", function (movimentosRes) {
+                                " order by " + tipoData, function (movimentosRes) {
                                     movimentosRes.forEach(function (movimento) {
                                         movimento.saldo = movimento.valor + saldo;
                                         movimento.valorExibicao = movimento.valor.toFixed(2);

@@ -46,11 +46,12 @@ var chartController = {
                 callbackClick: function () {
                     var dataInicio = $("#dataInicio").val();
                     var dataFinal = $("#dataFinal").val();
+                    var tipoData = $("#tipoData").val();
                     if (!dataInicio || !dataFinal) {
                         alertUtil.confirm(i18next.t("generics.date-range-required"));
                         return;
                     }
-                    chartController.loadPieCategory(dataInicio, dataFinal);
+                    chartController.loadPieCategory(dataInicio, dataFinal, tipoData);
                 }
             },
             navSearch: {
@@ -60,7 +61,7 @@ var chartController = {
             reportsController.setDefaultNextMonthlyDates();
         });
     },
-    loadPieCategory: function (dataInicio, dataFinal) {
+    loadPieCategory: function (dataInicio, dataFinal, tipoData) {
         if (!networkUtil.isOnline()) {
             alertUtil.confirm(i18next.t("generics.must-be-online"));
             return;
@@ -95,8 +96,8 @@ var chartController = {
                             "         where movimento.idCategoria = categoria.id" +
                             "           and ifnull(movimento.isTransferencia,'0') <> '1' " +
                             "           and movimento.natureza = 'D' " +
-                            "           and movimento.dataVencimento >= '" + dataInicio + "'" +
-                            "           and movimento.dataVencimento <= '" + dataFinal + "') saldoLancamentos" +
+                            "           and movimento." + tipoData + " >= '" + dataInicio + "'" +
+                            "           and movimento." + tipoData + " <= '" + dataFinal + "') saldoLancamentos" +
                             "  from categoria " +
                             " order by nome ", function (categoriasRes) {
 
@@ -122,7 +123,7 @@ var chartController = {
             });
         });
     },
-    loadFilterLineExpenses: function () {        
+    loadFilterLineExpenses: function () {
         Controller.render({
             controllerOrigin: chartController,
             template: chartController.TEMPLATE_LINE_CATEGORY_FILTER,
@@ -142,11 +143,12 @@ var chartController = {
                 callbackClick: function () {
                     var dataInicio = $("#dataInicio").val();
                     var dataFinal = $("#dataFinal").val();
+                    var tipoData = $("#tipoData").val();
                     if (!dataInicio || !dataFinal) {
                         alertUtil.confirm(i18next.t("generics.date-range-required"));
                         return;
                     }
-                    chartController.loadLineExpenses(dataInicio, dataFinal);
+                    chartController.loadLineExpenses(dataInicio, dataFinal, tipoData);
                 }
             },
             navSearch: {
@@ -156,21 +158,19 @@ var chartController = {
             reportsController.setDefaultMonthlyDates();
         });
     },
-    loadLineExpenses: function (dataInicio, dataFinal) {
+    loadLineExpenses: function (dataInicio, dataFinal, tipoData) {
         if (!networkUtil.isOnline()) {
             alertUtil.confirm(i18next.t("generics.must-be-online"));
             return;
         }
         loadController.show();
         importUtil.get("google", "https://www.gstatic.com/charts/loader.js", function () {
-            window.screen.lockOrientation("landscape");
             Controller.render({
                 controllerOrigin: chartController,
                 template: chartController.TEMPLATE_LINE_CATEGORY,
                 navLeft: {
                     icon: iconUtil.back,
                     callbackClick: function () {
-                        window.screen.lockOrientation("portrait");
                         chartController.loadFilterLineExpenses();
                     }
                 },
@@ -189,17 +189,17 @@ var chartController = {
 
                     daoUtil.getCustom(
                             " select abs(ifnull(sum(case natureza when 'C' then cast(valor as decimal) else cast(valor*-1 as decimal) end),0)) valor, " +
-                            "        dataLancamento " +
+                            "        " + tipoData + " data " +
                             "   from movimento" +
                             "  where natureza = 'D' " +
                             "    and ifnull(isTransferencia,'0') <> '1' " +
-                            "    and dataLancamento >= '" + dataInicio + "'" +
-                            "    and dataLancamento <= '" + dataFinal + "' " +
-                            "  group by dataLancamento", function (movimentoRes) {
+                            "    and " + tipoData + " >= '" + dataInicio + "'" +
+                            "    and " + tipoData + " <= '" + dataFinal + "' " +
+                            "  group by " + tipoData, function (movimentoRes) {
 
                                 var movimentosArray = [];
                                 movimentoRes.forEach(function (movimento) {
-                                    movimentosArray.push([new Date(movimento.dataLancamento), movimento.valor]);
+                                    movimentosArray.push([new Date(movimento.data), movimento.valor]);
                                 });
 
                                 var data = new google.visualization.DataTable();
