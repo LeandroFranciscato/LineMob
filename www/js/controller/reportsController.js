@@ -199,6 +199,7 @@ var reportsController = {
                 "       (select ifnull(sum(case natureza when 'C' then cast(valor as decimal) else cast(valor*-1 as decimal) end),0) saldo_inicial " +
                 "          from movimento" +
                 "         where movimento.idCartao = cartao.id" +
+                "           and ifnull(isTransferencia,'0') <> '1' " +
                 "           and dataVencimento = '" + dataInicio + "') saldoLancamentos" +
                 "  from cartao " + stringFiltroCartao + " order by nome ", function (cartoesRes) {
 
@@ -220,6 +221,7 @@ var reportsController = {
                                 " where dataVencimento > '" + dataInicio + "'" +
                                 "   and dataVencimento <= '" + dataFinal + "'" +
                                 "   and idCartao = " + cartao.id +
+                                "   and ifnull(isTransferencia,'0') <> '1' " +
                                 " order by dataVencimento", function (movimentosRes) {
                                     movimentosRes.forEach(function (movimento) {
                                         movimento.saldo = movimento.valor + saldo;
@@ -313,6 +315,7 @@ var reportsController = {
                 "       (select ifnull(sum(case natureza when 'C' then cast(valor as decimal) else cast(valor*-1 as decimal) end),0) saldo_inicial " +
                 "          from movimento" +
                 "         where movimento.idCategoria = categoria.id" +
+                "           and ifnull(isTransferencia,'0') <> '1' " +
                 "           and dataVencimento = '" + dataInicio + "') saldoLancamentos" +
                 "  from categoria " + stringFiltroCategoria + " order by nome ", function (categoriasRes) {
 
@@ -332,7 +335,7 @@ var reportsController = {
                                 "       descricao " +
                                 "  from movimento " +
                                 " where natureza = 'D' " +
-                                "   and ifnull(isTransferencia,'0') = '0' " +
+                                "   and ifnull(isTransferencia,'0') <> '1' " +
                                 "   and dataVencimento > '" + dataInicio + "'" +
                                 "   and dataVencimento <= '" + dataFinal + "'" +
                                 "   and idCategoria = " + Categoria.id +
