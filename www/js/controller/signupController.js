@@ -32,6 +32,8 @@ var signupController = {
             alertUtil.confirm(i18next.t("login-controller.alert-usuario-req"));
         } else if (!usuario.senha) {
             alertUtil.confirm(i18next.t("login-controller.alert-senha-req"));
+        } else if (!signupController.isEmail(usuario.usuario)) {
+            alertUtil.confirm(i18next.t("login-controller.alert-email-invalid"));
         } else {
             if (callbackSucess) {
                 callbackSucess();
@@ -39,8 +41,9 @@ var signupController = {
         }
     },
     requestSignUp: function (cbSuccess, cbError) {
-        var user = window.localStorage.setItem("user", $("#inputUsuario").val());
-        var pwd = window.localStorage.setItem("pwd", $.md5($("#inputPassword").val()));
+        window.localStorage.setItem("user", $("#inputUsuario").val());
+        window.localStorage.setItem("pwd", $.md5($("#inputPassword").val()));
+        window.localStorage.setItem("name", $("#inputNome").val());
         loadController.show();
         sync.ajax("GET", "TEXT", "usuario/signup", {}, function () {
             loadController.hide();
@@ -51,6 +54,7 @@ var signupController = {
             loadController.hide();
             window.localStorage.removeItem("user");
             window.localStorage.removeItem("pwd");
+            window.localStorage.removeItem("name");
             if (cbError) {
                 cbError(msg);
             }
@@ -59,7 +63,7 @@ var signupController = {
     insert: function () {
         this.validaFormulario($("#form-cadastro").serializeObject(), function () {
             signupController.requestSignUp(function () {
-                Controller.insert(i18next.t("login-controller.alert-welcome-pt1") + $("#inputUsuario").val(), undefined, function () {
+                Controller.insert(i18next.t("login-controller.alert-welcome-pt1") + $("#inputNome").val(), undefined, function () {
                     mainController.render();
                 });
             }, function (msg) {
@@ -70,5 +74,15 @@ var signupController = {
                 }
             });
         });
+    },
+    isEmail: function (email) {
+        var exclude=/[^@\-\.\w]|^[_@\.\-]|[\._\-]{2}|[@\.]{2}|(@)[^@]*\1/;
+        var check=/@[\w\-]+\./;
+        var checkend=/\.[a-zA-Z]{2,3}$/;
+        if (((email.search(exclude) != -1) || (email.search(check)) == -1) || (email.search(checkend) == -1)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 };

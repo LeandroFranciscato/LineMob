@@ -1,4 +1,4 @@
-/* global logUtil, Mustache, alertUtil, mainController, daoUtil, Materialize, database_helper, Controller, dbUtil, i18next, iconUtil, sync, loadController */
+/* global logUtil, Mustache, alertUtil, mainController, daoUtil, Materialize, database_helper, Controller, dbUtil, i18next, iconUtil, sync, loadController, signupController */
 
 var loginController = {
     TEMPLATE_LOGIN: "",
@@ -43,6 +43,8 @@ var loginController = {
             alertUtil.confirm(i18next.t("login-controller.alert-usuario-req"));
         } else if (!usuario.senha) {
             alertUtil.confirm(i18next.t("login-controller.alert-senha-req"));
+        } else if (!signupController.isEmail(usuario.usuario)) {
+            alertUtil.confirm(i18next.t("login-controller.alert-email-invalid"));
         } else {
             if (callbackSucess) {
                 callbackSucess();
@@ -50,18 +52,23 @@ var loginController = {
         }
     },
     requestLogin: function (cbSuccess, cbError) {
-        var user = window.localStorage.setItem("user", $("#inputUsuario").val());
-        var pwd = window.localStorage.setItem("pwd", $.md5($("#inputPassword").val()));
+        var user = $("#inputUsuario").val();
+        var pwd = $.md5($("#inputPassword").val());
+        window.localStorage.setItem("user", user);
+        window.localStorage.setItem("pwd", pwd);
         loadController.show();
-        sync.ajax("GET", "TEXT", "usuario/login", {}, function () {
+        sync.ajax("GET", "TEXT", "usuario/login", {}, function (nomeUsuario) {
             loadController.hide();
             if (cbSuccess) {
+                window.localStorage.setItem("name", nomeUsuario);
+                $("#inputNome").val(nomeUsuario);
                 cbSuccess();
             }
         }, function () {
             loadController.hide();
             window.localStorage.removeItem("user");
             window.localStorage.removeItem("pwd");
+            window.localStorage.removeItem("name");
             if (cbError) {
                 cbError();
             }
@@ -71,11 +78,11 @@ var loginController = {
         this.validaFormulario($("#form-cadastro").serializeObject(), function () {
             loginController.requestLogin(function () {
                 if ($('#checkBoxLembrar').prop('checked') === true) {
-                    Controller.insert(i18next.t("login-controller.alert-welcome-pt1") + $("#inputUsuario").val(), undefined, function () {
-                        mainController.render();                        
+                    Controller.insert(i18next.t("login-controller.alert-welcome-pt1") + $("#inputNome").val(), undefined, function () {
+                        mainController.render();
                     });
                 } else {
-                    mainController.render();                    
+                    mainController.render();
                 }
             }, function () {
                 alertUtil.confirm(i18next.t("login-controller.alert-login-fail"));
@@ -108,5 +115,8 @@ var loginController = {
             $("#icon-eye").html(iconUtil.eyeOn);
         }
         $("#inputPassword").trigger("focus");
+    },
+    getNomeUsuario: function () {
+        return window.localStorage.getItem("name");
     }
 };

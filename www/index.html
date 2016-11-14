@@ -93,11 +93,20 @@
     </head>
     <body>                             
         <!-- LEFT-MENU -->
-        <div id="menu-esquerdo" class="menu-esquerdo">
+        <div id="menu-esquerdo" class="menu-esquerdo">            
             <div id="scroller-left-menu">
                 <div id="div-img-menu-esquerdo">
                     <img id="img-menu-esquerdo" src="img/logo.png">
-                </div>                
+                </div>                                
+                <center>
+                    <div>
+                        <h5 style="color: white">
+                            <script>
+                                document.write(loginController.getNomeUsuario());
+                            </script>
+                        </h5>
+                    </div>
+                </center>
                 <div id="links"> 
                     <div class="collection">
                         <a class="collection-item" onclick="mainController.render()">

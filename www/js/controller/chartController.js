@@ -148,7 +148,7 @@ var chartController = {
                         alertUtil.confirm(i18next.t("generics.date-range-required"));
                         return;
                     }
-                    chartController.loadLineExpenses(dataInicio, dataFinal, tipoData);
+                    chartController.loadLineExpenses(dataInicio, dataFinal, tipoData, {});
                 }
             },
             navSearch: {
@@ -158,15 +158,15 @@ var chartController = {
             reportsController.setDefaultMonthlyDates();
         });
     },
-    loadLineExpenses: function (dataInicio, dataFinal, tipoData) {
+    loadLineExpenses: function (dataInicio, dataFinal, tipoData, options, cb) {
         if (!networkUtil.isOnline()) {
             alertUtil.confirm(i18next.t("generics.must-be-online"));
             return;
         }
         loadController.show();
         importUtil.get("google", "https://www.gstatic.com/charts/loader.js", function () {
-            Controller.render({
-                controllerOrigin: chartController,
+
+            this.options = {controllerOrigin: chartController,
                 template: chartController.TEMPLATE_LINE_CATEGORY,
                 navLeft: {
                     icon: iconUtil.back,
@@ -181,8 +181,10 @@ var chartController = {
                 navSearch: {
                     display: "none"
                 }
-            }, {}, function () {
+            };
 
+            Controller.setOptions(this.options, options);
+            Controller.render(this.options, {}, function () {
                 google.charts.load('current', {'packages': ['corechart', 'line']});
                 google.charts.setOnLoadCallback(drawChart);
                 function drawChart() {
@@ -220,6 +222,9 @@ var chartController = {
                                 chart.draw(data, options);
                                 Controller.initializePlugins();
                                 loadController.hide();
+                                if (cb) {
+                                    cb();
+                                }
                             });
                 }
             });

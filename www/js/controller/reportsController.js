@@ -378,12 +378,19 @@ var reportsController = {
                 }
         );
     },
-    setDefaultMonthlyDates: function () {
+    getFirstMonthlyDay: function () {
         var data = new Date();
         var firstDay = new Date(data.getFullYear(), data.getMonth(), 1);
+        return firstDay;
+    },
+    getLastMonthlyDay: function () {
+        var data = new Date();
         var lastDay = new Date(data.getFullYear(), data.getMonth() + 1, 0);
-        $("#dataInicio").val(dateUtil.toString(firstDay));
-        $("#dataFinal").val(dateUtil.toString(lastDay));
+        return lastDay;
+    },
+    setDefaultMonthlyDates: function () {
+        $("#dataInicio").val(dateUtil.toString(reportsController.getFirstMonthlyDay()));
+        $("#dataFinal").val(dateUtil.toString(reportsController.getLastMonthlyDay()));
     },
     setDefaultNextMonthlyDates: function () {
         var data = new Date();

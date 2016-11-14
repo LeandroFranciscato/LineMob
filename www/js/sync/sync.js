@@ -333,7 +333,7 @@ var sync = {
         });
     },
     ajax: function (httpType, responseType, url, dataInput, cbSuccess, cbError) {
-        url = "http://45.62.231.35:8080/LinemobAPI/" + url;
+        url = "http://10.1.1.2:8080/LinemobAPI/" + url;
         $.ajax({
             crossDomain: true,
             type: httpType,
@@ -341,8 +341,9 @@ var sync = {
             url: url,
             data: (dataInput) ? JSON.stringify(dataInput) : {},
             beforeSend: function (xhr) {
-                xhr.setRequestHeader("Usuario", window.localStorage.getItem("user"));
+                xhr.setRequestHeader("Usuario", window.localStorage.getItem("user").replace(/[.]/g,','));
                 xhr.setRequestHeader("Token", window.localStorage.getItem("pwd"));
+                xhr.setRequestHeader("Nome", window.localStorage.getItem("name"));
                 xhr.setRequestHeader("Content-Type", "application/json");
             },
             success: function (returnedData, textStatus, jqXHR) {
