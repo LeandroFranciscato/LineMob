@@ -37,7 +37,10 @@
     },
     "config-controller": {
         "plural": "OPÇÕES",
-        "alert-lng-req": "Idioma deve ser informado."
+        "alert-lng-req": "Idioma deve ser informado.",
+        "alterar-informacoes-cadastrais": "Alterar Informações Cadastrais",
+        "alterar-informacoes": "Alterar Informações",
+        "dados-alterados-sucesso": "Dados alterados com sucesso"
     },
     "conta-controller": {
         "plural": "CONTAS",
@@ -59,6 +62,7 @@
     "login-controller": {
         "alert-usuario-req": "E-mail deve ser informado.",
         "alert-email-invalid": "Informe um E-mail Válido",
+        "alert-nome-req": "Nome deve ser informado.",
         "alert-senha-req": "Senha deve ser informada.",
         "alert-login-fail": "E-mail e/ou senha incorretos.",
         "alert-welcome-pt1": "Bem vindo ",

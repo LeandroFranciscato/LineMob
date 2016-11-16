@@ -28,7 +28,9 @@ var signupController = {
         });
     },
     validaFormulario: function (usuario, callbackSucess) {
-        if (!usuario.usuario) {
+        if (!usuario.nome) {
+            alertUtil.confirm(i18next.t("login-controller.alert-nome-req"));
+        } else if (!usuario.usuario) {
             alertUtil.confirm(i18next.t("login-controller.alert-usuario-req"));
         } else if (!usuario.senha) {
             alertUtil.confirm(i18next.t("login-controller.alert-senha-req"));
@@ -76,9 +78,9 @@ var signupController = {
         });
     },
     isEmail: function (email) {
-        var exclude=/[^@\-\.\w]|^[_@\.\-]|[\._\-]{2}|[@\.]{2}|(@)[^@]*\1/;
-        var check=/@[\w\-]+\./;
-        var checkend=/\.[a-zA-Z]{2,3}$/;
+        var exclude = /[^@\-\.\w]|^[_@\.\-]|[\._\-]{2}|[@\.]{2}|(@)[^@]*\1/;
+        var check = /@[\w\-]+\./;
+        var checkend = /\.[a-zA-Z]{2,3}$/;
         if (((email.search(exclude) != -1) || (email.search(check)) == -1) || (email.search(checkend) == -1)) {
             return false;
         } else {

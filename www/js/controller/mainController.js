@@ -1,4 +1,4 @@
-/* global Mustache, contaController, Controller, iconUtil, i18next, sync, networkUtil, alertUtil, loadController, reportsController, chartController */
+/* global Mustache, contaController, Controller, iconUtil, i18next, sync, networkUtil, alertUtil, loadController, reportsController, chartController, loginController */
 
 var mainController = {
     TEMPLATE_MAIN: "",
@@ -33,6 +33,7 @@ var mainController = {
                         }
                     }
             , function () {
+                $("#nome-usuario-left-menu").html(loginController.getNomeUsuario());
                 loadScrollLeftMenu();
                 mainController.bindEvents();
             });
@@ -59,6 +60,7 @@ var mainController = {
                     display: "none"
                 }
             }, null, function () {
+                $("#nome-usuario-left-menu").html(loginController.getNomeUsuario());
                 loadScrollLeftMenu();
                 mainController.bindEvents();
                 if (cb) {

@@ -100,11 +100,7 @@
                 </div>                                
                 <center>
                     <div>
-                        <h5 style="color: white">
-                            <script>
-                                document.write(loginController.getNomeUsuario());
-                            </script>
-                        </h5>
+                        <h5 id="nome-usuario-left-menu" style="color: white"></h5>
                     </div>
                 </center>
                 <div id="links"> 
@@ -281,8 +277,8 @@
 
                         <li id="titulo-center-modal" class="titulo-center-modal red-text darken-1 center">CONTA</li>
 
-                        <li class="icon-titulo-center-modal">
-                            <i class="material-icons red-text darken-1"><script>iconUtil.draw(iconUtil.add);</script></i>                       
+                        <li>
+                            <i class="material-icons red-text darken-1" id="icon-titulo-center-modal"></i>                       
                         </li>
 
                         <li id="icon-right-modal" class="icon-right-modal right red-text darken-1" >

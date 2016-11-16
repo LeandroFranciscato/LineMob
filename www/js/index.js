@@ -28,11 +28,13 @@ var app = {
                     app.loadTemplateCategoria(function () {
                         app.loadTemplateMovimento(function () {
                             app.loadTemplateMain(function () {
-                                app.loadTemplateReports(function () {
-                                    app.loadTemplateCharts(function () {
-                                        if (cb) {
-                                            cb();
-                                        }
+                                app.loadTemplateConfig(function () {
+                                    app.loadTemplateReports(function () {
+                                        app.loadTemplateCharts(function () {
+                                            if (cb) {
+                                                cb();
+                                            }
+                                        });
                                     });
                                 });
                             });
@@ -116,17 +118,25 @@ var app = {
     loadTemplateMain: function (cb) {
         $.get('templates/forms/login.html', function (string) {
             loginController.TEMPLATE_LOGIN = string;
+            $.get('templates/forms/signup.html', function (string) {
+                signupController.TEMPLATE_SIGNUP = string;
+                $.get('templates/forms/inicio.html', function (string) {
+                    mainController.TEMPLATE_MAIN = string;
+                    if (cb) {
+                        cb();
+                    }
+                });
+            });
+        });
+    },
+    loadTemplateConfig: function (cb) {
+        $.get('templates/forms/configAlterarDadosCadastrais.html', function (string) {
+            configController.TEMPLATE_ALTERAR_DADOS_CADASTRAIS = string;
             $.get('templates/forms/config.html', function (string) {
                 configController.TEMPLATE_CONFIG = string;
-                $.get('templates/forms/signup.html', function (string) {
-                    signupController.TEMPLATE_SIGNUP = string;
-                    $.get('templates/forms/inicio.html', function (string) {
-                        mainController.TEMPLATE_MAIN = string;
-                        if (cb) {
-                            cb();
-                        }
-                    });
-                });
+                if (cb) {
+                    cb();
+                }
             });
         });
     },
