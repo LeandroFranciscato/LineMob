@@ -634,29 +634,24 @@ var Controller = {
                 });
             } else {
                 $("#icon-right-modal").on("click", function () {
-                    modalOptions.callbackConfirmAction(function () {
-                        $("#modal").closeModal();
-                        $(document).unbind("backbutton");
-                        $(document).on("backbutton", function () {
-                            if (modalOptions.callbackAction) {
-                                modalOptions.callbackAction();
-                            }
-                        });
-                    });
+                    modalOptions.callbackConfirmAction();
                 });
             }
 
             $(document).unbind("backbutton");
             $(document).on("backbutton", function () {
-                $("#modal").closeModal();
-                $(document).unbind("backbutton");
-                $(document).on("backbutton", function () {
-                    if (modalOptions.callbackAction) {
-                        modalOptions.callbackAction();
-                    }
-                });
+                Controller.closeModal(modalOptions.callbackAction());
             });
             $("#modal").openModal({dismissible: false});
         }
+    },
+    closeModal: function (cb) {
+        $("#modal").closeModal();
+        $(document).unbind("backbutton");
+        $(document).on("backbutton", function () {
+            if (cb) {
+                cb();
+            }
+        });
     }
 };

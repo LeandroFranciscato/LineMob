@@ -79,10 +79,10 @@ var configController = {
                 mainController.render();
             },
             callbackConfirmAction: function () {
-                configController.alterarDadosCadastrais(function (cb) {
-                    if (cb) {
-                        cb();
-                    }
+                configController.alterarDadosCadastrais(function () {
+                    Controller.closeModal(function () {
+                        mainController.render();
+                    });
                 });
             },
             data: {nome: window.localStorage.getItem("name"), email: window.localStorage.getItem("user")}
@@ -106,19 +106,24 @@ var configController = {
 
         // Envio ao Server        
         var dataJson = {
-            nome: data.email.replace(/[.]/g,','),
+            nome: data.email.replace(/[.]/g, ','),
             nomeNovo: data.nome,
-            versao: 1
+            versao: 1,
+            password: window.localStorage.getItem("pwd")
         };
 
         loadController.show();
-        sync.ajax("POST", "TEXT", "usuario/alteracaoDadosCadastrais", dataJson, function () {
+        sync.ajax("POST", "TEXT", "usuario/alteracaoDadosCadastrais", dataJson, function (msg) {
             loadController.hide();
-            window.localStorage.setItem("user", data.email);
-            window.localStorage.setItem("name", data.nome);
-            alertUtil.confirm(i18next.t("config-controller.dados-alterados-sucesso"));
-            if (cb) {
-                cb();
+            if (!msg) {                
+                window.localStorage.setItem("user", data.email);
+                window.localStorage.setItem("name", data.nome);
+                alertUtil.confirm(i18next.t("config-controller.dados-alterados-sucesso"));
+                if (cb) {
+                    cb();
+                }
+            } else {
+                alertUtil.confirm(i18next.t(msg));
             }
         }, function (msg) {
             loadController.hide();

@@ -232,7 +232,7 @@
         "insert-movimento-without-pessoa": "Estabelecimento do lançamento não cadastrada!",
         "insert-movimento-without-categoria": "Categoria do lançamento não cadastrada!",
         "insert-movimento-without-cartao": "Cartão do lançamento não cadastrado!",
-        "user-exists": "Nome de usuário indisponível, tente outro Usuário!",
+        "user-exists": "Este E-mail já existe em nossa base de dados!",
         "user-problems": "Nome de usuário deve conter apenas letras e/ou números."
     }
 }

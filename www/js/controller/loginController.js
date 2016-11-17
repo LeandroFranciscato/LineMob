@@ -1,4 +1,4 @@
-/* global logUtil, Mustache, alertUtil, mainController, daoUtil, Materialize, database_helper, Controller, dbUtil, i18next, iconUtil, sync, loadController, signupController */
+/* global logUtil, Mustache, alertUtil, mainController, daoUtil, Materialize, database_helper, Controller, dbUtil, i18next, iconUtil, sync, loadController, signupController, networkUtil */
 
 var loginController = {
     TEMPLATE_LOGIN: "",
@@ -75,6 +75,10 @@ var loginController = {
         });
     },
     insert: function () {
+        if (!networkUtil.isOnline()) {
+            alertUtil.confirm(i18next.t("generics.must-be-online"));
+            return;
+        }
         this.validaFormulario($("#form-cadastro").serializeObject(), function () {
             loginController.requestLogin(function () {
                 if ($('#checkBoxLembrar').prop('checked') === true) {

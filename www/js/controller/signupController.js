@@ -1,4 +1,4 @@
-/* global logUtil, Mustache, alertUtil, mainController, daoUtil, Materialize, database_helper, Controller, dbUtil, i18next, iconUtil, sync, loadController, loginController */
+/* global logUtil, Mustache, alertUtil, mainController, daoUtil, Materialize, database_helper, Controller, dbUtil, i18next, iconUtil, sync, loadController, loginController, networkUtil */
 
 var signupController = {
     TEMPLATE_SIGNUP: "",
@@ -63,6 +63,10 @@ var signupController = {
         });
     },
     insert: function () {
+        if (!networkUtil.isOnline()){
+            alertUtil.confirm(i18next.t("generics.must-be-online"));
+            return;
+        }
         this.validaFormulario($("#form-cadastro").serializeObject(), function () {
             signupController.requestSignUp(function () {
                 Controller.insert(i18next.t("login-controller.alert-welcome-pt1") + $("#inputNome").val(), undefined, function () {

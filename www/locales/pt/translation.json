@@ -38,7 +38,8 @@
     "config-controller": {
         "plural": "OPÇÕES",
         "alert-lng-req": "Idioma deve ser informado.",
-        "alterar-informacoes-cadastrais": "Alterar Dados Cadastrais",
+        "alterar-informacoes-cadastrais": "Alterar Informações Cadastrais",
+        "alterar-informacoes": "Alterar Informações",
         "dados-alterados-sucesso": "Dados alterados com sucesso"
     },
     "conta-controller": {
@@ -231,7 +232,7 @@
         "insert-movimento-without-pessoa": "Estabelecimento do lançamento não cadastrada!",
         "insert-movimento-without-categoria": "Categoria do lançamento não cadastrada!",
         "insert-movimento-without-cartao": "Cartão do lançamento não cadastrado!",
-        "user-exists": "Nome de usuário indisponível, tente outro Usuário!",
+        "user-exists": "Este E-mail já existe em nossa base de dados!",
         "user-problems": "Nome de usuário deve conter apenas letras e/ou números."
     }
 }
