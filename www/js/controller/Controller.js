@@ -640,7 +640,9 @@ var Controller = {
 
             $(document).unbind("backbutton");
             $(document).on("backbutton", function () {
-                Controller.closeModal(modalOptions.callbackAction());
+                Controller.closeModal(function () {
+                    modalOptions.callbackAction();
+                });
             });
             $("#modal").openModal({dismissible: false});
         }
