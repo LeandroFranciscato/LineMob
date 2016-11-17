@@ -132,11 +132,14 @@ var app = {
     loadTemplateConfig: function (cb) {
         $.get('templates/forms/configAlterarDadosCadastrais.html', function (string) {
             configController.TEMPLATE_ALTERAR_DADOS_CADASTRAIS = string;
-            $.get('templates/forms/config.html', function (string) {
-                configController.TEMPLATE_CONFIG = string;
-                if (cb) {
-                    cb();
-                }
+            $.get('templates/forms/configAlterarSenha.html', function (string) {
+                configController.TEMPLATE_ALTERAR_SENHA = string;
+                $.get('templates/forms/config.html', function (string) {
+                    configController.TEMPLATE_CONFIG = string;
+                    if (cb) {
+                        cb();
+                    }
+                });
             });
         });
     },

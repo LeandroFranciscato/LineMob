@@ -2,6 +2,7 @@
 var configController = {
     TEMPLATE_CONFIG: "",
     TEMPLATE_ALTERAR_DADOS_CADASTRAIS: "",
+    TEMPLATE_ALTERAR_SENHA: "",
     load: function (cb) {
         var config = new Config();
         daoUtil.getAll(config, "", function (data) {
@@ -115,7 +116,7 @@ var configController = {
         loadController.show();
         sync.ajax("POST", "TEXT", "usuario/alteracaoDadosCadastrais", dataJson, function (msg) {
             loadController.hide();
-            if (!msg) {                
+            if (!msg) {
                 window.localStorage.setItem("user", data.email);
                 window.localStorage.setItem("name", data.nome);
                 alertUtil.confirm(i18next.t("config-controller.dados-alterados-sucesso"));
@@ -124,6 +125,70 @@ var configController = {
                 }
             } else {
                 alertUtil.confirm(i18next.t(msg));
+            }
+        }, function (msg) {
+            loadController.hide();
+            alertUtil.confirm(i18next.t(msg));
+        });
+    },
+    abrirAlterarSenha: function () {
+        if (!networkUtil.isOnline()) {
+            alertUtil.confirm("generics.must-be-online");
+            return;
+        }
+        Controller.loadNewModal({
+            controllerModal: configController,
+            template: configController.TEMPLATE_ALTERAR_SENHA,
+            element: "",
+            tituloNavCenter: i18next.t("config-controller.alterar-senha"),
+            iconTituloNavCenter: iconUtil.edit,
+            callbackAction: function () {
+                mainController.render();
+            },
+            callbackConfirmAction: function () {
+                configController.alterarSenha(function () {
+                    Controller.closeModal(function () {
+                        mainController.render();
+                    });
+                });
+            }
+        });
+    },
+    alterarSenha: function () {
+        // Validações
+        var data = $("#form-modal").serializeObject();
+        if (!data.senhaAtual || !data.senhaNova || !data.senhaNovaRepete){
+            alertUtil.confirm(i18next.t("generics.all-fields-required"));
+            return;
+        }        
+        if (data.senhaAtual != window.localStorage.getItem("pwd")){
+            alertUtil.confirm(i18next.t("config-controller.senha-incorreta"));
+            return;
+        }        
+        if (data.senhaNova != data.senhaNovaRepete){
+            alertUtil.confirm(i18next.t("config-controller.senhas-nao-coincidem"));
+            return;
+        }            
+
+        // Envio ao Server        
+        var dataJson = {
+            nome: window.localStorage.getItem("user").replace(/[.]/g, ','),
+            nomeNovo: window.localStorage.getItem("name"),
+            versao: 1,
+            password: data.senhaNova
+        };
+
+        loadController.show();
+        sync.ajax("POST", "TEXT", "usuario/alteracaoSenha", dataJson, function (msg) {
+            loadController.hide();
+            if (msg == "1") {
+                window.localStorage.setItem("pwd", data.senhaAtual);
+                alertUtil.confirm(i18next.t("config-controller.senha-alterada-sucesso"));
+                if (cb) {
+                    cb();
+                }
+            } else {
+                alertUtil.confirm(i18next.t("generics.fail-crud-msg"));
             }
         }, function (msg) {
             loadController.hide();

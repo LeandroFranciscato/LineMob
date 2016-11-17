@@ -40,7 +40,14 @@
         "alert-lng-req": "Idioma deve ser informado.",
         "alterar-informacoes-cadastrais": "Alterar Informações Cadastrais",
         "alterar-informacoes": "Alterar Informações",
-        "dados-alterados-sucesso": "Dados alterados com sucesso"
+        "dados-alterados-sucesso": "Dados alterados com sucesso",
+        "alterar-senha": "Alterar Senha",
+        "field-senha-atual": "Senha Atual",
+        "field-senha-nova": "Nova Senha",
+        "field-senha-nova-repete": "Repetir Nova Senha",
+        "senha-incorreta": "Senha Atual Incorreta",
+        "senhas-nao-coincidem": "Nova senha e sua repetição não coincidem",
+        "senha-alterada-sucesso": "Senha alterada com sucesso"
     },
     "conta-controller": {
         "plural": "CONTAS",
