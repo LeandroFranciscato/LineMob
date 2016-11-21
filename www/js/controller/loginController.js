@@ -111,14 +111,16 @@ var loginController = {
     showOrHidePasswd: function (element) {
         if ($(element).hasClass("eyeOn")) {
             $(element).removeClass("eyeOn").addClass("eyeOff");
-            $("#inputPassword").attr("type", "text");
-            $("#icon-eye").html(iconUtil.eyeOff);
+            $(".password").attr("type", "text");
+            $(element).html(iconUtil.eyeOff);
         } else {
             $(element).removeClass("eyeOff").addClass("eyeOn");
-            $("#inputPassword").attr("type", "password");
-            $("#icon-eye").html(iconUtil.eyeOn);
+            $(".password").attr("type", "password");
+            $(element).html(iconUtil.eyeOn);
         }
-        $("#inputPassword").trigger("focus");
+        if ($(".password").length == 1) {
+            $(".password").trigger("focus");
+        }
     },
     getNomeUsuario: function () {
         return window.localStorage.getItem("name");

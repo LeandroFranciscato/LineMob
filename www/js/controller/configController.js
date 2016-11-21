@@ -154,21 +154,30 @@ var configController = {
             }
         });
     },
-    alterarSenha: function () {
-        // Validações
-        var data = $("#form-modal").serializeObject();
-        if (!data.senhaAtual || !data.senhaNova || !data.senhaNovaRepete){
+    alterarSenha: function (cb) {
+        // Validações        
+        var data = {};
+        data.senhaAtual = $("#senha-atual").val();
+        data.senhaNova = $("#senha-nova").val();
+        data.senhaNovaRepete = $("#senha-nova-repete").val();
+
+        if (!data.senhaAtual || !data.senhaNova || !data.senhaNovaRepete) {
             alertUtil.confirm(i18next.t("generics.all-fields-required"));
             return;
-        }        
-        if (data.senhaAtual != window.localStorage.getItem("pwd")){
+        }
+
+        data.senhaAtual = $.md5(data.senhaAtual);
+        data.senhaNova = $.md5(data.senhaNova);
+        data.senhaNovaRepete = $.md5(data.senhaNovaRepete);
+
+        if (data.senhaAtual != window.localStorage.getItem("pwd")) {
             alertUtil.confirm(i18next.t("config-controller.senha-incorreta"));
             return;
-        }        
-        if (data.senhaNova != data.senhaNovaRepete){
+        }
+        if (data.senhaNova != data.senhaNovaRepete) {
             alertUtil.confirm(i18next.t("config-controller.senhas-nao-coincidem"));
             return;
-        }            
+        }
 
         // Envio ao Server        
         var dataJson = {

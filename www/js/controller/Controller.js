@@ -644,7 +644,9 @@ var Controller = {
                     modalOptions.callbackAction();
                 });
             });
-            $("#modal").openModal({dismissible: false});
+            $("#modal").openModal({dismissible: false,
+                in_duration: 0,
+                out_duration: 0});
         }
     },
     closeModal: function (cb) {
