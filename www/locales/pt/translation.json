@@ -226,7 +226,11 @@
         "balance": "Saldo",
         "expenses": "Despesas",
         "period": "Período",
-        "filter-data-type": "Tipo de Data"
+        "filter-data-type": "Tipo de Data",
+        "atualizar-dados-cadastrais-msg": "Notamos que você não tem um E-mail vinculado a sua conta. É importante que seus dados estejam atualizados para receber novidades e atualizações do App.",
+        "atualizar-dados-cadastrais-title": "Atualização necessária",
+        "nao-atualizar": "Mais Tarde",
+        "atualizar": "Atualizar"
     },
     "server-messages": {
         "remove-categoria-used-movimento": "Categoria não pode ser deletada porque está vinculada a um Lançamento!",

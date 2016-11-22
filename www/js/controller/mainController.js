@@ -1,4 +1,4 @@
-/* global Mustache, contaController, Controller, iconUtil, i18next, sync, networkUtil, alertUtil, loadController, reportsController, chartController, loginController */
+/* global Mustache, contaController, Controller, iconUtil, i18next, sync, networkUtil, alertUtil, loadController, reportsController, chartController, loginController, configController */
 
 var mainController = {
     TEMPLATE_MAIN: "",
@@ -7,7 +7,7 @@ var mainController = {
         $("#wrapper").css("top", "56px");
         $("#header").css("display", "block");
         $("#menu-esquerdo").css("display", "block");
-
+                        
         if (networkUtil.isOnline()) {
             chartController.loadLineExpenses(
                     reportsController.getFirstMonthlyDay(),
@@ -36,6 +36,7 @@ var mainController = {
                 $("#nome-usuario-left-menu").html(loginController.getNomeUsuario());
                 loadScrollLeftMenu();
                 mainController.bindEvents();
+                mainController.verificaAtualizacaoDadosCadastrais();
             });
         } else {
             Controller.render({
@@ -63,6 +64,7 @@ var mainController = {
                 $("#nome-usuario-left-menu").html(loginController.getNomeUsuario());
                 loadScrollLeftMenu();
                 mainController.bindEvents();
+                mainController.verificaAtualizacaoDadosCadastrais();
                 if (cb) {
                     cb();
                 }
@@ -110,6 +112,31 @@ var mainController = {
                 left: "0px"
             }, 150);
             this.SITUACAO_MENU_ESQUERDO = 0;
+        }
+    },
+    verificaAtualizacaoDadosCadastrais: function () {
+        if (window.localStorage.getItem("user").indexOf("@") == -1) {
+            alertUtil.confirm(
+                    i18next.t("generics.atualizar-dados-cadastrais-msg"),
+                    i18next.t("generics.atualizar-dados-cadastrais-title"),
+                    [i18next.t("generics.nao-atualizar"), i18next.t("generics.atualizar")],
+                    function (btnEscolhido) {
+                        if (btnEscolhido == 2) {
+                            configController.abrirAlterarDadosCadastrais({
+                                callbackAction: function () {
+                                    navigator.app.exitApp();
+                                },
+                                callbackConfirmAction: function () {
+                                    configController.alterarDadosCadastrais(function () {
+                                        Controller.closeModal(function () {
+                                            navigator.app.exitApp();
+                                        });
+                                    });
+                                }
+                            });
+                        }
+                    }
+            );
         }
     }
 };

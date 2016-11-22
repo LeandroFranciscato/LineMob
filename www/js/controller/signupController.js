@@ -47,37 +47,37 @@ var signupController = {
         window.localStorage.setItem("pwd", $.md5($("#inputPassword").val()));
         window.localStorage.setItem("name", $("#inputNome").val());
         loadController.show();
-        sync.ajax("GET", "TEXT", "usuario/signup", {}, function () {
+        sync.ajax("GET", "TEXT", "usuario/signup", {}, function (msg) {
             loadController.hide();
             if (cbSuccess) {
-                cbSuccess();
+                cbSuccess(msg);
             }
-        }, function (msg) {
+        }, function () {
             loadController.hide();
             window.localStorage.removeItem("user");
             window.localStorage.removeItem("pwd");
             window.localStorage.removeItem("name");
             if (cbError) {
-                cbError(msg);
+                cbError();
             }
         });
     },
     insert: function () {
-        if (!networkUtil.isOnline()){
+        if (!networkUtil.isOnline()) {
             alertUtil.confirm(i18next.t("generics.must-be-online"));
             return;
         }
         this.validaFormulario($("#form-cadastro").serializeObject(), function () {
-            signupController.requestSignUp(function () {
-                Controller.insert(i18next.t("login-controller.alert-welcome-pt1") + $("#inputNome").val(), undefined, function () {
-                    mainController.render();
-                });
-            }, function (msg) {
+            signupController.requestSignUp(function (msg) {
                 if (msg == "server-messages.user-exists") {
                     alertUtil.confirm(i18next.t(msg));
                 } else {
-                    alertUtil.confirm(i18next.t("server-messages.user-problems"));
+                    Controller.insert(i18next.t("login-controller.alert-welcome-pt1") + $("#inputNome").val(), undefined, function () {
+                        mainController.render();
+                    });
                 }
+            }, function () {
+                alertUtil.confirm(i18next.t("generics.fail-crud-msg"));
             });
         });
     },
