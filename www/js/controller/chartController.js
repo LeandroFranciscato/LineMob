@@ -163,28 +163,29 @@ var chartController = {
             alertUtil.confirm(i18next.t("generics.must-be-online"));
             return;
         }
+
+        var optionsDefault = {controllerOrigin: chartController,
+            template: chartController.TEMPLATE_LINE_CATEGORY,
+            navLeft: {
+                icon: iconUtil.back,
+                callbackClick: function () {
+                    chartController.loadFilterLineExpenses();
+                }
+            },
+            navCenter: {
+                title: i18next.t("chart-controller.line-expenses"),
+                icon: ""
+            },
+            navSearch: {
+                display: "none"
+            }
+        };
+        Controller.setOptions(optionsDefault, options);
+
         loadController.show();
         importUtil.get("google", "https://www.gstatic.com/charts/loader.js", function () {
 
-            this.options = {controllerOrigin: chartController,
-                template: chartController.TEMPLATE_LINE_CATEGORY,
-                navLeft: {
-                    icon: iconUtil.back,
-                    callbackClick: function () {
-                        chartController.loadFilterLineExpenses();
-                    }
-                },
-                navCenter: {
-                    title: i18next.t("chart-controller.line-expenses"),
-                    icon: ""
-                },
-                navSearch: {
-                    display: "none"
-                }
-            };
-
-            Controller.setOptions(this.options, options);
-            Controller.render(this.options, {}, function () {
+            Controller.render(optionsDefault, {}, function () {
                 google.charts.load('current', {'packages': ['corechart', 'line']});
                 google.charts.setOnLoadCallback(drawChart);
                 function drawChart() {
@@ -209,7 +210,7 @@ var chartController = {
                                 data.addColumn('number', i18next.t("generics.expenses"));
                                 data.addRows(movimentosArray);
 
-                                var options = {
+                                var optionsChart = {
                                     hAxis: {
                                         title: i18next.t("generics.period")
                                     },
@@ -219,7 +220,7 @@ var chartController = {
                                     title: i18next.t("chart-controller.line-expenses")
                                 };
                                 var chart = new google.visualization.LineChart(document.getElementById('linechart'));
-                                chart.draw(data, options);
+                                chart.draw(data, optionsChart);
                                 Controller.initializePlugins();
                                 loadController.hide();
                                 if (cb) {

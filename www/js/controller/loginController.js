@@ -124,5 +124,45 @@ var loginController = {
     },
     getNomeUsuario: function () {
         return window.localStorage.getItem("name");
+    },
+    esqueciMinhaSenha: function () {
+        var user = $("#inputUsuario").val();
+        if (!user) {
+            alertUtil.confirm(i18next.t("login-controller.preencher-email"));
+            return;
+        }
+        
+        window.localStorage.setItem("user",user);
+        var senhaAleatoria = loginController.getRandomString();
+        var dataJson = {
+            nome: user.replace(/[.]/g, ','),
+            nomeNovo: senhaAleatoria,
+            versao: 1,
+            password: $.md5(senhaAleatoria)
+        };
+
+        loadController.show();
+        sync.ajax("POST", "TEXT", "usuario/esqueciMinhaSenha", dataJson, function (msg) {
+            loadController.hide();  
+            window.localStorage.removeItem("user");
+            if (msg) {
+                alertUtil.confirm(i18next.t(msg));
+            } else {
+                alertUtil.confirm(i18next.t("login-controller.senha-nova-enviada-email"));
+            }
+        }, function () {            
+            loadController.hide();
+            window.localStorage.removeItem("user");
+            alertUtil.confirm(i18next.t("generics.fail-crud-msg"));
+        });
+    },
+    getRandomString: function () {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for (var i = 0; i < 5; i++)
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+        return text;
     }
 };

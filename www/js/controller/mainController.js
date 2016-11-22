@@ -1,4 +1,4 @@
-/* global Mustache, contaController, Controller, iconUtil, i18next, sync, networkUtil, alertUtil, loadController, reportsController, chartController, loginController, configController */
+/* global Mustache, contaController, Controller, iconUtil, i18next, sync, networkUtil, alertUtil, loadController, reportsController, chartController, loginController, configController, dateUtil */
 
 var mainController = {
     TEMPLATE_MAIN: "",
@@ -7,11 +7,11 @@ var mainController = {
         $("#wrapper").css("top", "56px");
         $("#header").css("display", "block");
         $("#menu-esquerdo").css("display", "block");
-                        
+
         if (networkUtil.isOnline()) {
             chartController.loadLineExpenses(
-                    reportsController.getFirstMonthlyDay(),
-                    reportsController.getLastMonthlyDay(),
+                    dateUtil.toString(reportsController.getFirstMonthlyDay()),
+                    dateUtil.toString(reportsController.getLastMonthlyDay()),
                     "dataLancamento",
                     {
                         navLeft: {
@@ -37,6 +37,9 @@ var mainController = {
                 loadScrollLeftMenu();
                 mainController.bindEvents();
                 mainController.verificaAtualizacaoDadosCadastrais();
+                if (cb) {
+                    cb();
+                }
             });
         } else {
             Controller.render({

@@ -82,8 +82,11 @@
         "field-senha": "Senha",
         "field-check": "Lembrar",
         "btn-login": "Entrar",
-        "sign-up": "Cadastrar-se",
-        "btn-signup": "Cadastrar"
+        "sign-up": "Cadastrar",
+        "btn-signup": "Cadastrar",
+        "esqueci-minha-senha":"Esqueci Minha Senha",
+        "preencher-email": "Preencha o campo E-mail e clique novamente em \"Esqueci Minha Senha\"",
+        "senha-nova-enviada-email": "Uma nova senha foi enviada para seu E-mail. Utilize esta nova senha para logar no App e depois modifique-a no menu \">> Opções >> Alterar Senha\""
     },
     "pessoa-controller": {
         "plural": "ESTABELECIMENTOS",
@@ -244,6 +247,7 @@
         "insert-movimento-without-categoria": "Categoria do lançamento não cadastrada!",
         "insert-movimento-without-cartao": "Cartão do lançamento não cadastrado!",
         "user-exists": "Este E-mail já existe em nossa base de dados!",
-        "user-problems": "Nome de usuário deve conter apenas letras e/ou números."
+        "user-not-exists": "Este E-mail Não existe em nossa base de dados!",        
+        "user-problems": "Nome de usuário deve conter apenas letras e/ou números."        
     }
 }
