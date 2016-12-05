@@ -333,7 +333,7 @@ var sync = {
         });
     },
     ajax: function (httpType, responseType, url, dataInput, cbSuccess, cbError) {
-        url = "http://10.0.0.102:8080/LinemobAPI/" + url;
+        url = "https://linepack.org:8181/LinemobAPI/" + url;        
         $.ajax({
             crossDomain: true,
             type: httpType,
@@ -341,7 +341,7 @@ var sync = {
             url: url,
             data: (dataInput) ? JSON.stringify(dataInput) : {},
             beforeSend: function (xhr) {
-                xhr.setRequestHeader("Usuario", window.localStorage.getItem("user").replace(/[.]/g,','));
+                xhr.setRequestHeader("Usuario", window.localStorage.getItem("user").replace(/[.]/g, ','));
                 xhr.setRequestHeader("Token", window.localStorage.getItem("pwd"));
                 xhr.setRequestHeader("Nome", window.localStorage.getItem("name"));
                 xhr.setRequestHeader("Content-Type", "application/json");
@@ -361,21 +361,18 @@ var sync = {
     setRunning: function (qtdeTasks) {
         sync.running += qtdeTasks;
         if (sync.running >= 1) {
-            if (!cordova.plugins.backgroundMode.isEnabled()) {
-                cordova.plugins.backgroundMode.setDefaults({
-                    title: i18next.t("background-mode.title"),
-                    text: i18next.t("background-mode.text"),
-                    icon: "icon.png",
-                    resume: true,
-                    color: "e53935",
-                    silent: true
+            if (cordova.plugins.backgroundMode.isEnabled()) {
+                cordova.plugins.backgroundMode.configure({
+                    color: "43a047"
                 });
-                cordova.plugins.backgroundMode.enable();
             }
         } else {
             if (cordova.plugins.backgroundMode.isEnabled()) {
-                cordova.plugins.backgroundMode.disable();
+                cordova.plugins.backgroundMode.configure({
+                    color: "e53935"
+                });
             }
+
             if (notifyUtil.notificationsArray.length) {
                 notifyUtil.bulkNotify();
             }

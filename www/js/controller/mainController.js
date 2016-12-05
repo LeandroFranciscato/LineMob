@@ -8,7 +8,7 @@ var mainController = {
         $("#header").css("display", "block");
         $("#menu-esquerdo").css("display", "block");
 
-        if (networkUtil.isOnline()) {
+        if (networkUtil.isOnline() && networkUtil.connectionType() == "wifi") {
             chartController.loadLineExpenses(
                     reportsController.getFirstMonthlyDay(),
                     reportsController.getLastMonthlyDay(),

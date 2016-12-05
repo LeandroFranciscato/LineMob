@@ -231,6 +231,18 @@ var app = {
         }
     },
     enableBackground: function () {
+        if (window.localStorage.getItem("bg") == "true") {
+            cordova.plugins.backgroundMode.setDefaults({
+                title: i18next.t("background-mode.title"),
+                text: i18next.t("background-mode.text"),
+                icon: "icon.png",
+                resume: true,
+                color: "e53935",
+                silent: false
+            });
+            cordova.plugins.backgroundMode.enable();
+        }
+
         var interval = null;
         interval = setInterval(function () {
             sync.run();

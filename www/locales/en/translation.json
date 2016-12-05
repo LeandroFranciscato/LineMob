@@ -47,7 +47,8 @@
         "field-senha-nova-repete": "Repetir Nova Senha",
         "senha-incorreta": "Senha Atual Incorreta",
         "senhas-nao-coincidem": "Nova senha e sua repetição não coincidem",
-        "senha-alterada-sucesso": "Senha alterada com sucesso"
+        "senha-alterada-sucesso": "Senha alterada com sucesso",
+        "ativa-gb": "Funcionamento em Background"
     },
     "conta-controller": {
         "plural": "CONTAS",

@@ -27,4 +27,20 @@
             <div class="col s12 center-align center" data-i18n="config-controller.alterar-senha"></div>
         </div>
     </li> 
+    <li class="collection-item" >
+        <form id="form-bg">                        
+            <center>
+                <label class="label-select" data-i18n="config-controller.ativa-gb"></label>
+                <div class="switch">
+                    <label>                   
+                        <input id="ativa-bg" 
+                               type="checkbox" 
+                               {{#bg}}checked="checked" {{/bg}}
+                               onclick="configController.funcionamentoBg(this)">
+                        <span class="lever"></span>                   
+                    </label>
+                </div>
+            </center>
+        </form>
+    </li>
 </ul>

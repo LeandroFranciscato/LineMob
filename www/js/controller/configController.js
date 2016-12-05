@@ -18,6 +18,10 @@ var configController = {
                 {lng: "pt", selected: currentLng === "pt"},
                 {lng: "es", selected: currentLng === "es"}
             ];
+
+            if (window.localStorage.getItem("bg") == "true") {
+                data.bg = true;
+            }
             Controller.render({
                 controllerOrigin: configController,
                 entity: new Config(),
@@ -157,18 +161,18 @@ var configController = {
     alterarSenha: function () {
         // Validações
         var data = $("#form-modal").serializeObject();
-        if (!data.senhaAtual || !data.senhaNova || !data.senhaNovaRepete){
+        if (!data.senhaAtual || !data.senhaNova || !data.senhaNovaRepete) {
             alertUtil.confirm(i18next.t("generics.all-fields-required"));
             return;
-        }        
-        if (data.senhaAtual != window.localStorage.getItem("pwd")){
+        }
+        if (data.senhaAtual != window.localStorage.getItem("pwd")) {
             alertUtil.confirm(i18next.t("config-controller.senha-incorreta"));
             return;
-        }        
-        if (data.senhaNova != data.senhaNovaRepete){
+        }
+        if (data.senhaNova != data.senhaNovaRepete) {
             alertUtil.confirm(i18next.t("config-controller.senhas-nao-coincidem"));
             return;
-        }            
+        }
 
         // Envio ao Server        
         var dataJson = {
@@ -194,5 +198,24 @@ var configController = {
             loadController.hide();
             alertUtil.confirm(i18next.t(msg));
         });
+    },
+    funcionamentoBg: function (element) {
+        window.localStorage.setItem("bg", $(element).prop("checked"));
+        
+        if (window.localStorage.getItem("bg") == "true") {
+            cordova.plugins.backgroundMode.setDefaults({
+                title: i18next.t("background-mode.title"),
+                text: i18next.t("background-mode.text"),
+                icon: "icon.png",
+                resume: true,
+                color: "e53935",
+                silent: false
+            });
+            cordova.plugins.backgroundMode.enable();
+        } else {
+            if (cordova.plugins.backgroundMode.isEnabled()) {
+                cordova.plugins.backgroundMode.disable();
+            }
+        }
     }
 }; 
