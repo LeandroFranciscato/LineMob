@@ -5,5 +5,8 @@ var networkUtil = {
             return false;
         }
         return true;
+    },
+    connectionType: function () {
+        return navigator.connection.type;
     }
 };

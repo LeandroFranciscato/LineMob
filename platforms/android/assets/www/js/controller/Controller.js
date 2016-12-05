@@ -558,80 +558,102 @@ var Controller = {
     loadNewModal: function (options) {
         var modalOptions = {
             controllerModal: Controller,
+            template: "",
             entity: new Entity(),
             element: "select",
-            templateCadastro: "",
             objectToBind: "#modal-aux-form-content",
             tituloNavCenter: "NOVO",
+            iconTituloNavCenter: iconUtil.add,
             columnToReRender: "",
             orderByReRender: "",
             isDescentReRender: false,
             callbackAction: "",
+            callbackConfirmAction: "",
             labelSelect: "",
             data: {}
         };
         this.setOptions(modalOptions, options);
 
-        if ($(modalOptions.element).val() === "+") {
-            Controller.renderHtml(modalOptions.data, modalOptions.controllerModal.TEMPLATE_CADASTRO, modalOptions.objectToBind);
+        if ($(modalOptions.element).val() === "+" || !modalOptions.element) {
+
+            if (!modalOptions.template) {
+                Controller.renderHtml(modalOptions.data, modalOptions.controllerModal.TEMPLATE_CADASTRO, modalOptions.objectToBind);
+            } else {
+                Controller.renderHtml(modalOptions.data, modalOptions.template, modalOptions.objectToBind);
+            }
+
             Controller.initializePlugins();
             $("#titulo-center-modal").html(modalOptions.tituloNavCenter);
+            $("#icon-titulo-center-modal").html(modalOptions.iconTituloNavCenter);
             loadScrollModal();
             $("#icon-right-modal").unbind("click");
-            $("#icon-right-modal").on("click", function () {
-                var data = $("#form-modal").serializeObject();
-                Object.setPrototypeOf(data, modalOptions.entity);
-                modalOptions.controllerModal.validaFormulario(data, function () {
-                    daoUtil.insert(data, function (rowsAffected) {
-                        if (rowsAffected === 1) {
-                            alertUtil.confirm(i18next.t("alerts-crud.body-insert-success"));
-                            $("#modal").closeModal();
-                            $(modalOptions.element).html("<option value=''>" + modalOptions.labelSelect + "</option>");
-                            $(modalOptions.element).append("<option value='+'>+</option>");
-                            daoUtil.getAll(modalOptions.entity, modalOptions.orderByReRender, function (res) {
 
-                                var maxId = 0;
-                                for (var i = 0; i < res.length; i++) {
-                                    if (maxId < res[i].id) {
-                                        maxId = res[i].id;
-                                    }
-                                }
+            if (!modalOptions.callbackConfirmAction) {
+                $("#icon-right-modal").on("click", function () {
+                    var data = $("#form-modal").serializeObject();
+                    Object.setPrototypeOf(data, modalOptions.entity);
+                    modalOptions.controllerModal.validaFormulario(data, function () {
+                        daoUtil.insert(data, function (rowsAffected) {
+                            if (rowsAffected === 1) {
+                                alertUtil.confirm(i18next.t("alerts-crud.body-insert-success"));
+                                $("#modal").closeModal();
+                                $(modalOptions.element).html("<option value=''>" + modalOptions.labelSelect + "</option>");
+                                $(modalOptions.element).append("<option value='+'>+</option>");
+                                daoUtil.getAll(modalOptions.entity, modalOptions.orderByReRender, function (res) {
 
-                                var selectedString = "";
-                                for (var i = 0; i < res.length; i++) {
-                                    if (res[i].id === maxId) {
-                                        selectedString = "selected";
-                                    } else {
-                                        selectedString = "";
+                                    var maxId = 0;
+                                    for (var i = 0; i < res.length; i++) {
+                                        if (maxId < res[i].id) {
+                                            maxId = res[i].id;
+                                        }
                                     }
 
-                                    $(modalOptions.element).append("<option value='" + res[i].id + "'" + selectedString + ">" + res[i][modalOptions.columnToReRender] + "</option>");
-                                }
+                                    var selectedString = "";
+                                    for (var i = 0; i < res.length; i++) {
+                                        if (res[i].id === maxId) {
+                                            selectedString = "selected";
+                                        } else {
+                                            selectedString = "";
+                                        }
 
-                                $(document).unbind("backbutton");
-                                $(document).on("backbutton", function () {
-                                    if (modalOptions.callbackAction) {
-                                        modalOptions.callbackAction();
+                                        $(modalOptions.element).append("<option value='" + res[i].id + "'" + selectedString + ">" + res[i][modalOptions.columnToReRender] + "</option>");
                                     }
-                                });
-                            }, modalOptions.isDescentReRender);
-                        } else {
-                            alertUtil.confirm(i18next.t("generics.fail-crud-msg"));
-                        }
+
+                                    $(document).unbind("backbutton");
+                                    $(document).on("backbutton", function () {
+                                        if (modalOptions.callbackAction) {
+                                            modalOptions.callbackAction();
+                                        }
+                                    });
+                                }, modalOptions.isDescentReRender);
+                            } else {
+                                alertUtil.confirm(i18next.t("generics.fail-crud-msg"));
+                            }
+                        });
                     });
                 });
-            });
+            } else {
+                $("#icon-right-modal").on("click", function () {
+                    modalOptions.callbackConfirmAction();
+                });
+            }
+
             $(document).unbind("backbutton");
             $(document).on("backbutton", function () {
-                $("#modal").closeModal();
-                $(document).unbind("backbutton");
-                $(document).on("backbutton", function () {
-                    if (modalOptions.callbackAction) {
-                        modalOptions.callbackAction();
-                    }
+                Controller.closeModal(function () {
+                    modalOptions.callbackAction();
                 });
             });
             $("#modal").openModal({dismissible: false});
         }
+    },
+    closeModal: function (cb) {
+        $("#modal").closeModal();
+        $(document).unbind("backbutton");
+        $(document).on("backbutton", function () {
+            if (cb) {
+                cb();
+            }
+        });
     }
 };

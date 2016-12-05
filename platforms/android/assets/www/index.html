@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
-    <head>        
-        <meta http-equiv="Content-Security-Policy" content="default-src *; style-src *  'unsafe-inline'; script-src *  'unsafe-inline'; media-src *">
+    <head>                
         <meta charset="UTF-8">
         <meta name="format-detection" content="telephone=no">        
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
@@ -20,6 +19,7 @@
         <script src="js/util/networkUtil.js" type="text/javascript"></script>
         <script src="js/util/notifyUtil.js" type="text/javascript"></script>
         <script src="js/util/dateUtil.js" type="text/javascript"></script>
+        <script src="js/util/importUtil.js" type="text/javascript"></script>
 
         <!--FRAMEWORKS-->        
         <script src="js/plugins/jquery-3.0.0.min.js" type="text/javascript"></script>        
@@ -32,7 +32,7 @@
         <script src="js/plugins/mustache.min.js" type="text/javascript"></script>
         <script src="js/plugins/jquery.md5.js" type="text/javascript"></script>
         <script src="js/plugins/jquery.mask.min.js" type="text/javascript"></script>
-        <script src="materialize/js/materialize.js" type="text/javascript"></script>
+        <script src="materialize/js/materialize.js" type="text/javascript"></script>          
         <script src="cordova.js" type="text/javascript"></script>        
         <script src="js/index.js" type="text/javascript"></script>
 
@@ -59,6 +59,7 @@
         <script src="js/controller/movimentoController.js" type="text/javascript"></script>
         <script src="js/controller/signupController.js" type="text/javascript"></script>
         <script src="js/controller/reportsController.js" type="text/javascript"></script>
+        <script src="js/controller/chartController.js" type="text/javascript"></script>
 
         <!-- INTERNACIONALIZAÇÃO -->
         <script src="js/plugins/i18next/i18next-jquery.0.0.14.min.js" type="text/javascript"></script>
@@ -92,11 +93,16 @@
     </head>
     <body>                             
         <!-- LEFT-MENU -->
-        <div id="menu-esquerdo" class="menu-esquerdo">
+        <div id="menu-esquerdo" class="menu-esquerdo">            
             <div id="scroller-left-menu">
                 <div id="div-img-menu-esquerdo">
                     <img id="img-menu-esquerdo" src="img/logo.png">
-                </div>                
+                </div>                                
+                <center>
+                    <div>
+                        <h5 id="nome-usuario-left-menu" style="color: white"></h5>
+                    </div>
+                </center>
                 <div id="links"> 
                     <div class="collection">
                         <a class="collection-item" onclick="mainController.render()">
@@ -152,6 +158,14 @@
                             <span class="badge">
                                 <i class="material-icons">
                                     <script>iconUtil.draw(iconUtil.reports);</script>
+                                </i>
+                            </span>
+                        </a>
+                        <a class="collection-item" onclick="chartController.load()">
+                            <span data-i18n="left-menu.charts"> </span>
+                            <span class="badge">
+                                <i class="material-icons">
+                                    <script>iconUtil.draw(iconUtil.charts);</script>
                                 </i>
                             </span>
                         </a>
@@ -263,8 +277,8 @@
 
                         <li id="titulo-center-modal" class="titulo-center-modal red-text darken-1 center">CONTA</li>
 
-                        <li class="icon-titulo-center-modal">
-                            <i class="material-icons red-text darken-1"><script>iconUtil.draw(iconUtil.add);</script></i>                       
+                        <li>
+                            <i class="material-icons red-text darken-1" id="icon-titulo-center-modal"></i>                       
                         </li>
 
                         <li id="icon-right-modal" class="icon-right-modal right red-text darken-1" >

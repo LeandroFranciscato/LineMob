@@ -1,18 +1,30 @@
-<div class="card-panel">
-    <form id="form-cadastro">
-        <div class="invisible">                       
-            <input type="text" class="" id="id" name="id" value="{{id}}">
-        </div> 
-        <div class="row">
-            <label class="label-select" data-i18n="language-select.label"></label>
-            <div class="input-field col s12">                     
-                <select id="select-language" name="language" class="browser-default">
-                    <option value="" disabled selected data-i18n="language-select.label"></option>
-                    {{#languageOptions}}
-                    <option value="{{lng}}" data-i18n="language-select.{{lng}}" {{#selected}}selected{{/selected}}></option>
-                    {{/languageOptions}}
-                </select>                
+<ul class="collection" id="ul-list">         
+    <li id="alterar-idioma" class="collection-item" >
+        <form id="form-cadastro">
+            <div class="invisible">                       
+                <input type="text" class="" id="id" name="id" value="{{id}}">
+            </div> 
+            <div class="row">
+                <label class="label-select" data-i18n="language-select.label"></label>
+                <div class="input-field col s12">                     
+                    <select id="select-language" name="language" class="browser-default">
+                        <option value="" disabled selected data-i18n="language-select.label"></option>
+                        {{#languageOptions}}
+                        <option value="{{lng}}" data-i18n="language-select.{{lng}}" {{#selected}}selected{{/selected}}></option>
+                        {{/languageOptions}}
+                    </select>                
+                </div>
             </div>
+        </form>
+    </li>
+    <li id="alterar-informacoes-cadastrais" class="collection-item" onclick="configController.abrirAlterarDadosCadastrais();">
+        <div class="li-lista row">                                        
+            <div class="col s12 center-align center" data-i18n="config-controller.alterar-informacoes-cadastrais"></div>
         </div>
-    </form>
-</div>
+    </li>        
+    <li id="alterar-senha" class="collection-item" onclick="configController.abrirAlterarSenha();">
+        <div class="li-lista row">                                        
+            <div class="col s12 center-align center" data-i18n="config-controller.alterar-senha"></div>
+        </div>
+    </li> 
+</ul>

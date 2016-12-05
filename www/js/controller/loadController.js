@@ -2,8 +2,8 @@ var loadController = {
     show: function (cbReady, cbComplete, isModal) {
         $('#loader').openModal({
             opacity: 0,
-            in_duration: 300,
-            out_duration: 300,
+            in_duration: 0,
+            out_duration: 0,
             ready: function () {
                 if (cbReady) {
                     cbReady();
@@ -14,13 +14,12 @@ var loadController = {
                     cbComplete();
                 }
             },
-            dismissible: (isModal) ? isModal : true,
-            starting_top: '-20%'
+            dismissible: (isModal) ? isModal : true
         });
     },
     hide: function (cbComplete) {
         $("#loader").closeModal({
-            out_duration: 300,
+            out_duration: 0,
             complete: function () {
                 if (cbComplete) {
                     cbComplete();

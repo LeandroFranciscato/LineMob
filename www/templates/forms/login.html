@@ -23,7 +23,7 @@
 
         <div class="row">
             <div class="input-field col s10">
-                <input type="password" id="inputPassword" name="senha" placeholder="********">                    
+                <input class="password" type="password" id="inputPassword" name="senha" placeholder="********">                    
                 <label for="inputPassword" class="active" data-i18n="login-controller.field-senha"></label>
             </div>
             <div class="input-field col s2">                
@@ -34,17 +34,17 @@
         </div>
 
         <div class="row">
-            <div class="col s6">
+            <div class="col s3">
                 <input id="checkBoxLembrar" type="checkbox" class="filled-in" checked="checked" />
                 <label for="checkBoxLembrar" data-i18n="login-controller.field-check"></label>
             </div>
-            <div class="col s6 grey-text right-align" onclick="signupController.load();">
-                <h6 data-i18n="login-controller.sign-up"> </h6>
-            </div>    
+            <div class="col s9 grey-text right-align" onclick="loginController.esqueciMinhaSenha();">
+                <h6 data-i18n="login-controller.esqueci-minha-senha"> </h6>
+            </div>                  
         </div>            
 
         <div class="row">
-            <div class="col s12">
+            <div class="col s6">
                 <button data-id="btnLogin" 
                         class="red darken-1 btn waves-effect waves-light" 
                         type="button"
@@ -52,6 +52,13 @@
                         data-i18n="login-controller.btn-login">                    
                 </button>
             </div>
+            <div class="col s6">
+                <button class="red darken-1 btn waves-effect waves-light" 
+                        type="button"
+                        onclick="signupController.load();"
+                        data-i18n="login-controller.sign-up">                    
+                </button>
+            </div>            
         </div>
     </form>
 </div>

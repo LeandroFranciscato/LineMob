@@ -1,4 +1,4 @@
-/* global Controller, mainController, iconUtil, i18next, daoUtil, alertUtil, dateUtil */
+/* global Controller, mainController, iconUtil, i18next, daoUtil, alertUtil, dateUtil, google, networkUtil, importUtil */
 var reportsController = {
     TEMPLATE_CHOOSE_REPORTS: "",
     TEMPLATE_ACCOUNT_BALANCE: "",
@@ -134,7 +134,9 @@ var reportsController = {
                                                 display: "none"
                                             }
                                         }, data, function () {
-
+                                            $("#linechart").addClass("hide");
+                                            $("#ul-list").removeClass("hide");
+                                            Controller.initializePlugins();
                                         });
                                     }
                                 }
@@ -197,6 +199,7 @@ var reportsController = {
                 "       (select ifnull(sum(case natureza when 'C' then cast(valor as decimal) else cast(valor*-1 as decimal) end),0) saldo_inicial " +
                 "          from movimento" +
                 "         where movimento.idCartao = cartao.id" +
+                "           and ifnull(isTransferencia,'0') <> '1' " +
                 "           and dataVencimento = '" + dataInicio + "') saldoLancamentos" +
                 "  from cartao " + stringFiltroCartao + " order by nome ", function (cartoesRes) {
 
@@ -218,6 +221,7 @@ var reportsController = {
                                 " where dataVencimento > '" + dataInicio + "'" +
                                 "   and dataVencimento <= '" + dataFinal + "'" +
                                 "   and idCartao = " + cartao.id +
+                                "   and ifnull(isTransferencia,'0') <> '1' " +
                                 " order by dataVencimento", function (movimentosRes) {
                                     movimentosRes.forEach(function (movimento) {
                                         movimento.saldo = movimento.valor + saldo;
@@ -285,22 +289,23 @@ var reportsController = {
                         var dataInicio = $("#dataInicio").val();
                         var dataFinal = $("#dataFinal").val();
                         var categoriaId = $("#select-categoria").val();
+                        var tipoData = $("#tipoData").val();
                         if (!dataInicio || !dataFinal) {
                             alertUtil.confirm(i18next.t("generics.date-range-required"));
                             return;
                         }
-                        reportsController.loadCategory(dataInicio, dataFinal, categoriaId);
+                        reportsController.loadCategory(dataInicio, dataFinal, categoriaId, tipoData);
                     }
                 },
                 navSearch: {
                     display: "none"
                 }
             }, data, function () {
-                reportsController.setDefaultMonthlyDates();
+                reportsController.setDefaultNextMonthlyDates();
             });
         });
     },
-    loadCategory: function (dataInicio, dataFinal, categoriaId) {
+    loadCategory: function (dataInicio, dataFinal, categoriaId, tipoData) {
         var stringFiltroCategoria = (categoriaId) ? " where id = " + categoriaId : "";
         var data = {};
         data.categorias = [];
@@ -311,7 +316,8 @@ var reportsController = {
                 "       (select ifnull(sum(case natureza when 'C' then cast(valor as decimal) else cast(valor*-1 as decimal) end),0) saldo_inicial " +
                 "          from movimento" +
                 "         where movimento.idCategoria = categoria.id" +
-                "           and dataVencimento = '" + dataInicio + "') saldoLancamentos" +
+                "           and ifnull(isTransferencia,'0') <> '1' " +
+                "           and " + tipoData + " = '" + dataInicio + "') saldoLancamentos" +
                 "  from categoria " + stringFiltroCategoria + " order by nome ", function (categoriasRes) {
 
                     categoriasRes.forEach(function (Categoria) {
@@ -326,15 +332,15 @@ var reportsController = {
                         Categoria.movimentos = [];
                         daoUtil.getCustom(
                                 "select case natureza when 'C' then cast(valor as decimal) else cast(valor*-1 as decimal) end valor, " +
-                                "       dataVencimento data, " +
+                                "      " + tipoData + " data, " +
                                 "       descricao " +
                                 "  from movimento " +
                                 " where natureza = 'D' " +
-                                "   and ifnull(isTransferencia,'0') = '0' " +
-                                "   and dataVencimento > '" + dataInicio + "'" +
-                                "   and dataVencimento <= '" + dataFinal + "'" +
+                                "   and ifnull(isTransferencia,'0') <> '1' " +
+                                "   and " + tipoData + " > '" + dataInicio + "'" +
+                                "   and " + tipoData + " <= '" + dataFinal + "'" +
                                 "   and idCategoria = " + Categoria.id +
-                                " order by dataVencimento", function (movimentosRes) {
+                                " order by " + tipoData, function (movimentosRes) {
                                     movimentosRes.forEach(function (movimento) {
                                         movimento.saldo = movimento.valor + saldo;
                                         movimento.valorExibicao = movimento.valor.toFixed(2);
@@ -342,7 +348,7 @@ var reportsController = {
                                         movimento.data = dateUtil.format(movimento.data);
                                         Categoria.movimentos.push(movimento);
                                         saldo += movimento.valor;
-                                        data.saldoTotal += movimento.valor
+                                        data.saldoTotal += movimento.valor;
                                     });
                                     data.categorias.push(Categoria);
                                     if (categoriasRes.length === data.categorias.length) {
@@ -364,7 +370,6 @@ var reportsController = {
                                                 display: "none"
                                             }
                                         }, data, function () {
-
                                         });
                                     }
                                 }
@@ -373,12 +378,19 @@ var reportsController = {
                 }
         );
     },
-    setDefaultMonthlyDates: function () {
+    getFirstMonthlyDay: function () {
         var data = new Date();
         var firstDay = new Date(data.getFullYear(), data.getMonth(), 1);
+        return firstDay;
+    },
+    getLastMonthlyDay: function () {
+        var data = new Date();
         var lastDay = new Date(data.getFullYear(), data.getMonth() + 1, 0);
-        $("#dataInicio").val(dateUtil.toString(firstDay));
-        $("#dataFinal").val(dateUtil.toString(lastDay));
+        return lastDay;
+    },
+    setDefaultMonthlyDates: function () {
+        $("#dataInicio").val(dateUtil.toString(reportsController.getFirstMonthlyDay()));
+        $("#dataFinal").val(dateUtil.toString(reportsController.getLastMonthlyDay()));
     },
     setDefaultNextMonthlyDates: function () {
         var data = new Date();

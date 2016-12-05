@@ -1,4 +1,4 @@
-/* global Mustache, contaController, Controller, iconUtil, i18next, sync, networkUtil, alertUtil, loadController */
+/* global Mustache, contaController, Controller, iconUtil, i18next, sync, networkUtil, alertUtil, loadController, reportsController, chartController, loginController */
 
 var mainController = {
     TEMPLATE_MAIN: "",
@@ -8,34 +8,66 @@ var mainController = {
         $("#header").css("display", "block");
         $("#menu-esquerdo").css("display", "block");
 
-        Controller.render({
-            controllerOrigin: this,
-            entity: new Entity(),
-            template: this.TEMPLATE_MAIN,
-            navLeft: {
-                icon: iconUtil.menu,
-                callbackClick: function (element) {
-                    if (element) {
-                        navigator.app.exitApp();
-                    } else {
-                        mainController.menuEsquerdo();
+        if (networkUtil.isOnline() && networkUtil.connectionType() == "WIFI") {
+            chartController.loadLineExpenses(
+                    reportsController.getFirstMonthlyDay(),
+                    reportsController.getLastMonthlyDay(),
+                    "dataLancamento",
+                    {
+                        navLeft: {
+                            icon: iconUtil.menu,
+                            callbackClick: function (element) {
+                                if (element) {
+                                    navigator.app.exitApp();
+                                } else {
+                                    mainController.menuEsquerdo();
+                                }
+                            }
+                        },
+                        navCenter: {
+                            title: i18next.t("app.name"),
+                            icon: ""
+                        },
+                        navSearch: {
+                            display: "none"
+                        }
                     }
+            , function () {
+                $("#nome-usuario-left-menu").html(loginController.getNomeUsuario());
+                loadScrollLeftMenu();
+                mainController.bindEvents();
+            });
+        } else {
+            Controller.render({
+                controllerOrigin: this,
+                entity: new Entity(),
+                template: this.TEMPLATE_MAIN,
+                navLeft: {
+                    icon: iconUtil.menu,
+                    callbackClick: function (element) {
+                        if (element) {
+                            navigator.app.exitApp();
+                        } else {
+                            mainController.menuEsquerdo();
+                        }
+                    }
+                },
+                navCenter: {
+                    title: i18next.t("app.name"),
+                    icon: ""
+                },
+                navSearch: {
+                    display: "none"
                 }
-            },
-            navCenter: {
-                title: i18next.t("app.name"),
-                icon: ""
-            },
-            navSearch: {
-                display: "none"
-            }
-        }, null, function () {
-            loadScrollLeftMenu();
-            mainController.bindEvents();
-            if (cb) {
-                cb();
-            }
-        });
+            }, null, function () {
+                $("#nome-usuario-left-menu").html(loginController.getNomeUsuario());
+                loadScrollLeftMenu();
+                mainController.bindEvents();
+                if (cb) {
+                    cb();
+                }
+            });
+        }
     },
     bindEvents: function () {
         $("body").on("swipeleft", function (e) {

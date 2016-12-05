@@ -1,4 +1,4 @@
-<div class="card-panel">
+<div class="card-panel">    
     <form id="form-filtro">                                                  
         <div class="row">
             <div class="input-field col s6">
@@ -23,6 +23,18 @@
                     {{/categoria}}                                                            
                 </select>                
             </div>           
+        </div> 
+
+        <div class="row">
+            <label class="label-select" data-i18n="generics.filter-data-type"></label>
+            <div class="input-field col s12">                
+                <select id="tipoData" 
+                        name="tipoData" 
+                        class="browser-default">
+                    <option value="dataVencimento" data-i18n="movimento-controller.field-dataVencimento" selected></option>
+                    <option value="dataLancamento" data-i18n="movimento-controller.field-dataLancamento"></option>
+                </select>                
+            </div>
         </div>
-    </form>
+    </form>    
 </div>

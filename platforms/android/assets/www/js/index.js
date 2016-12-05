@@ -1,4 +1,4 @@
-/* global dbUtil, logUtil, contaController, loginController, mainController, daoUtil, pessoaController, configController, loadController, cartaoController, categoriaController, movimentoController, cordova, i18next, syncUtil, sync, signupController, reportsController */
+/* global dbUtil, logUtil, contaController, loginController, mainController, daoUtil, pessoaController, configController, loadController, cartaoController, categoriaController, movimentoController, cordova, i18next, syncUtil, sync, signupController, reportsController, chartController */
 
 var app = {
     initialize: function () {
@@ -28,10 +28,14 @@ var app = {
                     app.loadTemplateCategoria(function () {
                         app.loadTemplateMovimento(function () {
                             app.loadTemplateMain(function () {
-                                app.loadTemplateReports(function () {
-                                    if (cb) {
-                                        cb();
-                                    }
+                                app.loadTemplateConfig(function () {
+                                    app.loadTemplateReports(function () {
+                                        app.loadTemplateCharts(function () {
+                                            if (cb) {
+                                                cb();
+                                            }
+                                        });
+                                    });
                                 });
                             });
                         });
@@ -114,16 +118,27 @@ var app = {
     loadTemplateMain: function (cb) {
         $.get('templates/forms/login.html', function (string) {
             loginController.TEMPLATE_LOGIN = string;
-            $.get('templates/forms/config.html', function (string) {
-                configController.TEMPLATE_CONFIG = string;
-                $.get('templates/forms/signup.html', function (string) {
-                    signupController.TEMPLATE_SIGNUP = string;
-                    $.get('templates/forms/inicio.html', function (string) {
-                        mainController.TEMPLATE_MAIN = string;
-                        if (cb) {
-                            cb();
-                        }
-                    });
+            $.get('templates/forms/signup.html', function (string) {
+                signupController.TEMPLATE_SIGNUP = string;
+                $.get('templates/forms/inicio.html', function (string) {
+                    mainController.TEMPLATE_MAIN = string;
+                    if (cb) {
+                        cb();
+                    }
+                });
+            });
+        });
+    },
+    loadTemplateConfig: function (cb) {
+        $.get('templates/forms/configAlterarDadosCadastrais.html', function (string) {
+            configController.TEMPLATE_ALTERAR_DADOS_CADASTRAIS = string;
+            $.get('templates/forms/configAlterarSenha.html', function (string) {
+                configController.TEMPLATE_ALTERAR_SENHA = string;
+                $.get('templates/forms/config.html', function (string) {
+                    configController.TEMPLATE_CONFIG = string;
+                    if (cb) {
+                        cb();
+                    }
                 });
             });
         });
@@ -148,6 +163,26 @@ var app = {
                                     }
                                 });
                             });
+                        });
+                    });
+                });
+            });
+        });
+    },
+    loadTemplateCharts: function (cb) {
+        $.get('templates/charts/chooseChart.html', function (string) {
+            chartController.TEMPLATE_CHOOSE_CHART = string;
+            $.get('templates/charts/pieCategory.html', function (string) {
+                chartController.TEMPLATE_PIE_CATEGORY = string;
+                $.get('templates/charts/pieCategoryFilter.html', function (string) {
+                    chartController.TEMPLATE_PIE_CATEGORY_FILTER = string;
+                    $.get('templates/charts/lineCategory.html', function (string) {
+                        chartController.TEMPLATE_LINE_CATEGORY = string;
+                        $.get('templates/charts/lineCategoryFilter.html', function (string) {
+                            chartController.TEMPLATE_LINE_CATEGORY_FILTER = string;
+                            if (cb) {
+                                cb();
+                            }
                         });
                     });
                 });
@@ -182,7 +217,7 @@ var app = {
                         daoUtil.checkTableChanges(new Categoria(), function () {
                             daoUtil.checkTableChanges(new Pessoa(), function () {
                                 daoUtil.checkTableChanges(new Movimento(), function () {
-                                    daoUtil.checkTableChanges(new Config(), function () {                                        
+                                    daoUtil.checkTableChanges(new Config(), function () {
                                         if (cb) {
                                             cb();
                                         }

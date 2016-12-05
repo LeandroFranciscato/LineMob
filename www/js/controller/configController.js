@@ -69,12 +69,13 @@ var configController = {
             }
         }
     },
-    abrirAlterarDadosCadastrais: function () {
+    abrirAlterarDadosCadastrais: function (options) {
         if (!networkUtil.isOnline()) {
             alertUtil.confirm("generics.must-be-online");
             return;
         }
-        Controller.loadNewModal({
+
+        this.options = {
             controllerModal: configController,
             template: configController.TEMPLATE_ALTERAR_DADOS_CADASTRAIS,
             element: "",
@@ -91,7 +92,12 @@ var configController = {
                 });
             },
             data: {nome: window.localStorage.getItem("name"), email: window.localStorage.getItem("user")}
-        });
+        };
+
+        options = (options) ? options : {};
+
+        Controller.setOptions(this.options, options);
+        Controller.loadNewModal(this.options);
     },
     alterarDadosCadastrais: function (cb) {
         // Validações
@@ -201,7 +207,7 @@ var configController = {
     },
     funcionamentoBg: function (element) {
         window.localStorage.setItem("bg", $(element).prop("checked"));
-        
+
         if (window.localStorage.getItem("bg") == "true") {
             cordova.plugins.backgroundMode.setDefaults({
                 title: i18next.t("background-mode.title"),
@@ -218,4 +224,4 @@ var configController = {
             }
         }
     }
-}; 
+};

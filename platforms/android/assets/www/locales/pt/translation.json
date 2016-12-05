@@ -11,7 +11,8 @@
         "activity": "Lançamentos",
         "config": "Opções",
         "exit": "Sair",
-        "reports": "Relatórios"
+        "reports": "Relatórios",
+        "charts": "Gráficos"
     },
     "language-select": {
         "label": "Idioma do App",
@@ -36,7 +37,17 @@
     },
     "config-controller": {
         "plural": "OPÇÕES",
-        "alert-lng-req": "Idioma deve ser informado."
+        "alert-lng-req": "Idioma deve ser informado.",
+        "alterar-informacoes-cadastrais": "Alterar Informações Cadastrais",
+        "alterar-informacoes": "Alterar Informações",
+        "dados-alterados-sucesso": "Dados alterados com sucesso",
+        "alterar-senha": "Alterar Senha",
+        "field-senha-atual": "Senha Atual",
+        "field-senha-nova": "Nova Senha",
+        "field-senha-nova-repete": "Repetir Nova Senha",
+        "senha-incorreta": "Senha Atual Incorreta",
+        "senhas-nao-coincidem": "Nova senha e sua repetição não coincidem",
+        "senha-alterada-sucesso": "Senha alterada com sucesso"
     },
     "conta-controller": {
         "plural": "CONTAS",
@@ -52,18 +63,22 @@
         "title-update": "Conta Atualizada",
         "title-delete": "Conta Deletada",
         "initial-help": "Utilize este cadastro para inserir, editar ou excluir suas \"Contas Bancarias\". Estas contas serão utilizadas posteriormente nos \"Lançamentos\" e poderão ter seu saldo controlado no \"Relatório de Saldo Bancário\". Fique atento aos campos \"Valor do Saldo Inicial\" e \"Data Fundação\", é a partir destes campos que o App calculará seu Saldo.",
-        "field-select-conta-origem" : "Selecione a Conta de Origem",
-        "field-select-conta-destino" : "Selecione a Conta de Destino"
+        "field-select-conta-origem": "Selecione a Conta de Origem",
+        "field-select-conta-destino": "Selecione a Conta de Destino"
     },
     "login-controller": {
-        "alert-usuario-req": "Usuário deve ser informado.",
+        "alert-usuario-req": "E-mail deve ser informado.",
+        "alert-email-invalid": "Informe um E-mail Válido",
+        "alert-nome-req": "Nome deve ser informado.",
         "alert-senha-req": "Senha deve ser informada.",
-        "alert-login-fail": "Usuário e/ou senha incorretos.",
+        "alert-login-fail": "E-mail e/ou senha incorretos.",
         "alert-welcome-pt1": "Bem vindo ",
         "body-alert-logout": "Esta ação fará com que todos os dados locais sejam perdidos, deseja mesmo continuar?",
         "title-alert-logout": "Saindo...",
-        "placeholder-email": "Usuário",
-        "field-email": "Usuário",
+        "placeholder-email": "exemplo@email.com",
+        "placeholder-nome": "João da Silva",
+        "field-email": "E-mail",
+        "field-nome": "Nome Completo",
         "field-senha": "Senha",
         "field-check": "Lembrar",
         "btn-login": "Entrar",
@@ -117,7 +132,8 @@
         "title-insert": "Nova Categoria cadastrada",
         "title-update": "Categoria Atualizada",
         "title-delete": "Categoria Deletada",
-        "initial-help": "\"Categorias\" são utilizadas para controlar suas Despesas em grupos. Alimentação, Combustível, Mercado, Despesas Pessoais, Presentes, enfim... Agrupe seus gastos. O campo \"Sub Categoria\" é opcional e serve para separar um pouco mais os grupos. Por exemplo, \"Impostos-IPVA\" e \"Impostos-IPTU\". Você pode acompanhar os gastos por categoria no \"Relatório de Gastos por Categoria\". "
+        "initial-help": "\"Categorias\" são utilizadas para controlar suas Despesas em grupos. Alimentação, Combustível, Mercado, Despesas Pessoais, Presentes, enfim... Agrupe seus gastos. O campo \"Sub Categoria\" é opcional e serve para separar um pouco mais os grupos. Por exemplo, \"Impostos-IPVA\" e \"Impostos-IPTU\". Você pode acompanhar os gastos por categoria no \"Relatório de Gastos por Categoria\". ",
+        "pie-chart": "Gráfico: Gastos agrupados por categoria"
     },
     "movimento-controller": {
         "plural": "LANÇAMENTOS",
@@ -171,6 +187,17 @@
         "group-category-filter": "Categ Agr (Filtro)",
         "group-category-description": "Mostra os lançamentos agrupados por categoria, de acordo com o período filtardo."
     },
+    "chart-controller": {
+        "single": "Gráfico",
+        "plural": "Gráficos",
+        "description": "Descrição",
+        "pie-category": "Categorias Agrupadas (Pizza)",
+        "pie-category-description": "Mostra o gráfico no estilo Pizza, com o valor e percentual correspondente de cada categoria, por período filtrado. ",
+        "pie-category-filter": "Categ. Agr. (Filtro)",
+        "line-expenses": "Custos Diários (Linha)",
+        "line-expenses-filter": "Custos Diários (Filtro)",
+        "line-expenses-description": "Mostra a evolução dos custos de acordo com o período filtrado. Obs.: Por data de Lançamento."
+    },
     "generics": {
         "no": "Não",
         "yes": "Sim",
@@ -196,7 +223,10 @@
         "name": "Nome",
         "date": "Data",
         "value": "Valor",
-        "balance": "Saldo"
+        "balance": "Saldo",
+        "expenses": "Despesas",
+        "period": "Período",
+        "filter-data-type": "Tipo de Data"
     },
     "server-messages": {
         "remove-categoria-used-movimento": "Categoria não pode ser deletada porque está vinculada a um Lançamento!",
@@ -209,7 +239,7 @@
         "insert-movimento-without-pessoa": "Estabelecimento do lançamento não cadastrada!",
         "insert-movimento-without-categoria": "Categoria do lançamento não cadastrada!",
         "insert-movimento-without-cartao": "Cartão do lançamento não cadastrado!",
-        "user-exists": "Nome de usuário indisponível, tente outro Usuário!",
+        "user-exists": "Este E-mail já existe em nossa base de dados!",
         "user-problems": "Nome de usuário deve conter apenas letras e/ou números."
     }
 }
